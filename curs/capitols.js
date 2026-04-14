@@ -23,8 +23,8 @@ function injectCursLogo() {
 
 const CAPITOLS_DATA = [
   { num: 1,  titol: 'Hola, Python!',        arxiu: 'capitol-1.html' },
-  // { num: 2,  titol: 'Variables',           arxiu: 'capitol-2.html' },
-  // { num: 3,  titol: 'Operacions',          arxiu: 'capitol-3.html' },
+  { num: 2,  titol: 'Variables',             arxiu: 'capitol-2.html' },
+  { num: 3,  titol: 'Operacions i input',    arxiu: 'capitol-3.html' },
   // ...afegir capítols aquí
 ];
 
