@@ -49,9 +49,22 @@ body {
   gap: 7px;
 }
 
+/* Títol del capítol/repte: centrat dins de la capçalera */
 .curs-header-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 0.8rem;
   color: var(--muted);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Contenidor d'accions a la dreta (Glossari, etc.) */
+.curs-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
   margin-left: auto;
 }
 
@@ -82,12 +95,16 @@ body {
   min-height: calc(100vh - 48px);
 }
 
-/* Sidebar */
+/* Sidebar — sticky: es queda fixa mentre l'usuari fa scroll del contingut */
 .curs-sidebar {
   background: var(--surface);
   border-right: 1px solid var(--border);
   padding: 16px 0;
-  overflow-y: auto;
+  position: sticky;
+  top: 48px;                          /* sota la capçalera (height: 48px) */
+  height: calc(100vh - 48px);         /* ocupa la resta de la pantalla */
+  overflow-y: auto;                   /* scroll intern, NO solidari amb la pàgina */
+  align-self: start;                  /* important per a sticky dins de grid */
 }
 
 .sidebar-section-title {
@@ -323,4 +340,198 @@ pre.code-example {
   }
   #sidebar-overlay.visible { opacity: 1; pointer-events: auto; }
   .curs-content { padding: 1.5rem 1rem; }
+}
+
+
+/* ════════════════════════════════════════════════════════
+   GLOSSARI — Modal de referència ràpida (capítols i reptes)
+   ════════════════════════════════════════════════════════ */
+
+.glossari-curs-btn {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.8px;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.glossari-curs-btn:hover { color: var(--text); border-color: var(--text); }
+
+/* Si no hi ha .curs-header-actions, el botó s'enganxa directament al header
+   i necessita ser empès cap a la dreta */
+.curs-header > .glossari-curs-btn { margin-left: auto; }
+
+/* Overlay */
+.glossari-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: rgba(0,0,0,0.45);
+  justify-content: center;
+  align-items: center;
+}
+.glossari-overlay.is-open { display: flex; }
+
+/* Modal */
+.glossari-modal {
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  width: min(540px, 92vw);
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.glossari-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid #e5e5e5;
+  flex-shrink: 0;
+}
+
+.glossari-title {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: 0.5px;
+}
+
+.glossari-close {
+  background: none;
+  border: 1px solid #d0d0d0;
+  color: #6b7280;
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  transition: color 0.15s, border-color 0.15s;
+}
+.glossari-close:hover { color: #1a1a1a; border-color: #1a1a1a; }
+
+.glossari-body {
+  padding: 16px 18px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.glossari-section { margin-bottom: 18px; }
+.glossari-section:last-child { margin-bottom: 0; }
+
+.glossari-section h3 {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #1a1a1a;
+  margin: 0 0 6px;
+}
+
+.glossari-hint {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: #6b7280;
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+.glossari-hint code {
+  color: #2563eb;
+  font-weight: 700;
+  background: none;
+  padding: 0;
+}
+
+.glossari-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 14px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  line-height: 1.7;
+}
+.glossari-grid > code {
+  color: #2563eb;
+  white-space: nowrap;
+  background: none;
+  padding: 0;
+}
+.glossari-grid > span { color: #4b5563; }
+.glossari-grid > span code {
+  color: #2563eb;
+  background: none;
+  padding: 0;
+  font-size: 0.95em;
+}
+
+.glossari-example {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  line-height: 1.6;
+  color: #1a1a1a;
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin: 6px 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.glossari-rules .glossari-rule {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  color: #1a1a1a;
+  line-height: 1.8;
+}
+.glossari-rules .glossari-rule code {
+  color: #2563eb;
+  font-weight: 700;
+  background: none;
+  padding: 0;
+}
+
+/* ── Mobile: fullscreen ── */
+@media (max-width: 640px) {
+  .glossari-overlay {
+    align-items: stretch;
+    overflow: hidden;
+  }
+  .glossari-modal {
+    width: 100vw;
+    max-height: 100dvh;
+    max-height: 100vh;
+    height: 100%;
+    border-radius: 0;
+    border: none;
+    overflow: hidden;
+  }
+  .glossari-body {
+    flex: 1 1 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    padding: 14px 16px 24px;
+  }
+  .glossari-grid { font-size: 0.63rem; gap: 2px 10px; }
+  .glossari-example { font-size: 0.62rem; padding: 6px 10px; }
+}
+
+/* En mòbil amagar el títol centrat per evitar solapaments */
+@media (max-width: 700px) {
+  .curs-header-title { display: none; }
 }
