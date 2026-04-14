@@ -22,9 +22,11 @@ function injectCursLogo() {
 // ESCALAR: afegir capítols aquí i crear el fitxer HTML corresponent.
 
 const CAPITOLS_DATA = [
-  { num: 1,  titol: 'Hola, Python!',        arxiu: 'capitol-1.html' },
-  { num: 2,  titol: 'Variables',             arxiu: 'capitol-2.html' },
-  { num: 3,  titol: 'Operacions i input',    arxiu: 'capitol-3.html' },
+  { num: 1,  titol: 'Hola, Python!',              arxiu: 'capitol-1.html' },
+  { num: 2,  titol: 'Variables',                   arxiu: 'capitol-2.html' },
+  { num: 3,  titol: 'Operacions i input',          arxiu: 'capitol-3.html' },
+  { num: 4,  titol: 'Decisions: if, elif, else',   arxiu: 'capitol-4.html' },
+  { num: 5,  titol: 'Repetir amb while',           arxiu: 'capitol-5.html' },
   // ...afegir capítols aquí
 ];
 
@@ -265,6 +267,15 @@ function initGlossariCurs() {
             <code>and</code><span>I (les dues han de ser certes)</span>
             <code>or</code><span>O (almenys una ha de ser certa)</span>
             <code>not</code><span>Negació</span>
+          </div>
+        </div>
+
+        <div class="glossari-section">
+          <h3>Control de bucles</h3>
+          <p class="glossari-hint">S'usen dins de <code>while</code> i <code>for</code></p>
+          <div class="glossari-grid">
+            <code>break</code><span>Surt del bucle immediatament</span>
+            <code>continue</code><span>Salta la resta de la iteració i torna al principi del bucle</span>
           </div>
         </div>
 

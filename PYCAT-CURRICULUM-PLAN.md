@@ -27,11 +27,11 @@ curs/
 ├── index.html          ← Course landing (auto-generated cards from CAPITOLS_DATA + REPTES_DATA)
 ├── curs.css            ← All styling for chapter and repte pages
 ├── capitols.js         ← Data + sidebar/glossari/simulator renderers (single source of truth)
-├── capitol-1.html      ← Hola, Python!         (DONE)
-├── capitol-2.html      ← Variables             (DONE)
-├── capitol-3.html      ← Operacions i input    (DONE)
-├── capitol-4.html      ← Decisions: if, elif, else  (DONE)
-├── capitol-5.html      ← Repetir amb while           (DONE)
+├── capitol-1.html      ← Hola, Python!                    (DONE)
+├── capitol-2.html      ← Variables                        (DONE)
+├── capitol-3.html      ← Operacions i input               (DONE)
+├── capitol-4.html      ← Decisions: if, elif, else        (DONE)
+├── capitol-5.html      ← Repetir amb while                (DONE)
 ├── capitol-6.html      ← TO WRITE
 ├── capitol-10.html     ← TO WRITE
 └── repte-1.html        ← El primer programa    (DONE — only existing repte)
