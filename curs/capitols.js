@@ -28,6 +28,7 @@ const CAPITOLS_DATA = [
   { num: 4,  titol: 'Decisions: if, elif, else',   arxiu: 'capitol-4.html' },
   { num: 5,  titol: 'Repetir amb while',           arxiu: 'capitol-5.html' },
   { num: 6,  titol: 'Repetir amb for i range',     arxiu: 'capitol-6.html' },
+  { num: 7,  titol: 'Treballant amb text',         arxiu: 'capitol-7.html' },
   // ...afegir capítols aquí
 ];
 
@@ -232,6 +233,24 @@ function initGlossariCurs() {
             <code>range(n)</code><span>Seqüència de nombres enters de <code>0</code> a <code>n-1</code></span>
             <code>range(i,f)</code><span>Seqüència de <code>i</code> fins a <code>f-1</code> (la fi no s'inclou)</span>
             <code>range(i,f,p)</code><span>Seqüència amb pas <code>p</code>; pot ser negatiu per comptar enrere</span>
+          </div>
+        </div>
+
+        <div class="glossari-section">
+          <h3>Mètodes de text (<code>str</code>)</h3>
+          <p class="glossari-hint">Es criden amb un punt: <code>text.metode()</code>. Cap modifica el text original; tots retornen un text nou.</p>
+          <div class="glossari-grid">
+            <code>text[i]</code><span>Caràcter a la posició <code>i</code> (0 = primer, -1 = últim)</span>
+            <code>text[i:f]</code><span>Fragment des de <code>i</code> fins a <code>f-1</code> (la fi no s'inclou)</span>
+            <code>text[::-1]</code><span>Text al revés</span>
+            <code>.upper()</code><span>Converteix a majúscules</span>
+            <code>.lower()</code><span>Converteix a minúscules</span>
+            <code>.strip()</code><span>Elimina espais en blanc dels dos extrems</span>
+            <code>.replace(v,n)</code><span>Substitueix totes les aparicions de <code>v</code> per <code>n</code></span>
+            <code>.split()</code><span>Divideix per espais i retorna una llista de paraules</span>
+            <code>.startswith(s)</code><span>Retorna <code>True</code> si el text comença amb <code>s</code></span>
+            <code>.endswith(s)</code><span>Retorna <code>True</code> si el text acaba amb <code>s</code></span>
+            <code>x in text</code><span>Retorna <code>True</code> si la subcadena <code>x</code> és dins del text</span>
           </div>
         </div>
 

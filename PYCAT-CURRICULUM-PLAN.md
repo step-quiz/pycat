@@ -33,6 +33,7 @@ curs/
 ├── capitol-4.html      ← Decisions: if, elif, else        (DONE)
 ├── capitol-5.html      ← Repetir amb while                (DONE)
 ├── capitol-6.html      ← Repetir amb for i range          (DONE)
+├── capitol-7.html      ← Treballant amb text               (DONE)
 ├── capitol-10.html     ← TO WRITE
 └── repte-1.html        ← El primer programa    (DONE — only existing repte)
 ```
@@ -168,7 +169,7 @@ Three chapters already exist; you must write the remaining seven. The progressio
 | 4  | Decisions: `if`, `elif`, `else`       | **DONE**   | Conditionals, comparison operators, indentation             |
 | 5  | Repetir amb `while`                   | **DONE**   | `while` loop, accumulators, sentinel-controlled loops       |
 | 6  | Repetir amb `for` i `range`           | **DONE** | `for` over `range`, counters, nested loops                  |
-| 7  | Treballant amb text                   | TO WRITE | String indexing, slicing, methods, `len()`                  |
+| 7  | Treballant amb text                   | **DONE** | String indexing, slicing, methods, `len()`                  |
 | 8  | Llistes                               | TO WRITE | Lists, indexing, `append`, iteration with `for x in lst`    |
 | 9  | Funcions                              | TO WRITE | `def`, parameters, `return`, scope                          |
 | 10 | Posant-ho tot junt                    | TO WRITE | Mini-project that combines chapters 1–9                     |
@@ -266,7 +267,7 @@ For chapter `N`:
 
 ---
 
-**End of plan. Begin with `capitol-6.html`.**
+**End of plan. Begin with `capitol-8.html`.**
 
 ---
 
@@ -276,3 +277,4 @@ For chapter `N`:
 |------------|-----------------|-------------------|
 | 2026-04-14 | 4, 5            | `capitol-4.html` (nou), `capitol-5.html` (nou), `capitol-3.html` (nav arreglat), `capitols.js` (CAPITOLS_DATA + glossari `break`/`continue`) |
 | 2026-04-14 | 6               | `capitol-6.html` (nou), `capitols.js` (CAPITOLS_DATA + glossari `range()`), `PYCAT-CURRICULUM-PLAN.md` (estat actualitzat) |
+| 2026-04-14 | 7               | `capitol-7.html` (nou), `capitols.js` (CAPITOLS_DATA + glossari mètodes de text), `PYCAT-CURRICULUM-PLAN.md` (estat actualitzat) |

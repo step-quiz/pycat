@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 7 — Treballant amb text | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    PyCat
+  </span>
+  <nav class="curs-nav">
+    <a href="capitol-1.html" class="active">Capítols</a>
+    <a href="repte-1.html">Reptes</a>
+    <a href="../simulador.html">Simulador</a>
+  </nav>
+  <span class="curs-header-title">Capítol 7 — Treballant amb text</span>
+  <div class="curs-header-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 7</span>
+        <h1>Treballant amb text</h1>
+        <p class="chapter-lead">Els textos no són una caixa tancada: pots mirar-ne caràcters, tallar-los i transformar-los.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — Indexació
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Accedir a un caràcter: indexació</h2>
+
+        <p>Una cadena de text (en anglès, <em>string</em>) és una seqüència de caràcters. Pots agafar un caràcter concret escrivint el seu <strong>índex</strong> entre claudàtors <code>[ ]</code>. El primer caràcter sempre té índex <code>0</code>:</p>
+
+        <div class="simulador"
+             data-code='paraula = "Python"
+print(paraula[0])   # primer caràcter
+print(paraula[1])   # segon caràcter
+print(paraula[5])   # últim caràcter'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p>Els índexs <strong>negatius</strong> compten des del final: <code>-1</code> és l'últim caràcter, <code>-2</code> el penúltim, i així successivament:</p>
+
+        <div class="simulador"
+             data-code='paraula = "Python"
+print(paraula[-1])  # últim caràcter
+print(paraula[-2])  # penúltim caràcter'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p>Prova a canviar el text i els índexs per explorar com funciona:</p>
+
+        <div class="simulador"
+             data-code='text = "Hola, món!"
+print(text[0])
+print(text[-1])'
+             data-height="200">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — Llargada amb len()
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Llargada amb <code>len()</code></h2>
+
+        <p>La funció <code>len()</code> retorna el nombre de caràcters d'un text, espais inclosos:</p>
+
+        <div class="simulador"
+             data-code='missatge = "Hola, món!"
+print(len(missatge))   # 10 caràcters
+
+buit = ""
+print(len(buit))       # 0 caràcters'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p>Combinat amb l'indexació, <code>len()</code> és molt útil per accedir a l'últim caràcter sense saber d'avançada quant és de llarg el text:</p>
+
+        <div class="simulador"
+             data-code='paraula = "programació"
+darrer_index = len(paraula) - 1
+print("Darrer caràcter:", paraula[darrer_index])
+# Equivalent, però més curt:
+print("Darrer caràcter:", paraula[-1])'
+             data-height="280">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — Slicing
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Retallar un fragment: <em>slicing</em></h2>
+
+        <p>En lloc d'agafar un sol caràcter, pots agafar un tros del text indicant <strong>inici</strong> i <strong>fi</strong> separats per <code>:</code>. La fi no s'inclou, igual que <code>range()</code>:</p>
+
+        <div class="simulador"
+             data-code='text = "Barcelona"
+print(text[0:4])    # del 0 al 3 → "Barc"
+print(text[4:9])    # del 4 al 8 → "elona"
+print(text[:3])     # des del principi fins al 2 → "Bar"
+print(text[4:])     # des del 4 fins al final → "elona"'
+             data-readonly="true"
+             data-height="270">
+        </div>
+
+        <p>El tercer valor opcional és el <strong>pas</strong>. Un pas de <code>-1</code> recorre el text al revés — una manera còmoda d'invertir una cadena:</p>
+
+        <div class="simulador"
+             data-code='paraula = "Python"
+print(paraula[::-1])   # inverteix la cadena → "nohtyP"
+
+# Cada dos caràcters
+print(paraula[::2])    # → "Pto"'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p>Experimenta retallant la teva pròpia cadena:</p>
+
+        <div class="simulador"
+             data-code='text = "programació"
+# Prova diferents retalls:
+print(text[3:7])'
+             data-height="200">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — Mètodes habituals
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Mètodes habituals de text</h2>
+
+        <p>Els textos tenen <strong>mètodes</strong> propis que es criden amb un punt: <code>text.metode()</code>. Cap d'ells modifica el text original; tots retornen un text nou.</p>
+
+        <p><strong><code>.upper()</code> i <code>.lower()</code></strong> — converteixen a majúscules o minúscules:</p>
+
+        <div class="simulador"
+             data-code='salutació = "Hola, Món!"
+print(salutació.upper())   # HOLA, MÓN!
+print(salutació.lower())   # hola, món!'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p><strong><code>.strip()</code></strong> — elimina els espais en blanc (i salts de línia) dels extrems. Molt útil per netejar l'entrada de l'usuari:</p>
+
+        <div class="simulador"
+             data-code='resposta = "  sí  "
+print(resposta)           # "  sí  "
+print(resposta.strip())   # "sí"'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p><strong><code>.replace(vell, nou)</code></strong> — substitueix totes les aparicions d'una subcadena per una altra:</p>
+
+        <div class="simulador"
+             data-code='frase = "El gat seu damunt del gat"
+nova = frase.replace("gat", "gos")
+print(nova)   # El gos seu damunt del gos'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p><strong><code>.split()</code></strong> — divideix el text en una llista de paraules, separant pels espais (o per un altre separador que li passis):</p>
+
+        <div class="simulador"
+             data-code='frase = "poma pera plàtan maduixa"
+fruites = frase.split()
+print(fruites)        # ["poma", "pera", "plàtan", "maduixa"]
+print(fruites[0])     # poma
+print(len(fruites))   # 4'
+             data-readonly="true"
+             data-height="260">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 5 — Comprovacions: in, startswith, endswith
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comprovar si un text conté alguna cosa</h2>
+
+        <p>L'operador <code>in</code> comprova si una subcadena és dins d'un text. Retorna <code>True</code> o <code>False</code>:</p>
+
+        <div class="simulador"
+             data-code='frase = "M agrada la programació"
+print("programació" in frase)   # True
+print("Java" in frase)          # False
+
+# Combinat amb if:
+if "Python" not in frase:
+    print("No parla de Python!")'
+             data-readonly="true"
+             data-height="270">
+        </div>
+
+        <p>Els mètodes <strong><code>.startswith()</code></strong> i <strong><code>.endswith()</code></strong> comproven si un text comença o acaba d'una manera concreta:</p>
+
+        <div class="simulador"
+             data-code='fitxer = "informe_final.pdf"
+if fitxer.endswith(".pdf"):
+    print("És un PDF")
+if fitxer.startswith("informe"):
+    print("És un informe")'
+             data-readonly="true"
+             data-height="250">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 6 — Recórrer un text amb for
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Recórrer un text amb <code>for</code></h2>
+
+        <p>Pots iterar directament sobre els caràcters d'un text amb <code>for c in text:</code>, igual que faries amb una llista de nombres:</p>
+
+        <div class="simulador"
+             data-code='paraula = "Hola"
+for c in paraula:
+    print(c)'
+             data-readonly="true"
+             data-height="230">
+        </div>
+
+        <p>Combinant el <code>for</code> amb un condicional, pots filtrar o comptar caràcters concrets. Per exemple, comptar quants espais té una frase:</p>
+
+        <div class="simulador"
+             data-code='frase = "El cel és blau i clar"
+espais = 0
+for c in frase:
+    if c == " ":
+        espais = espais + 1
+print("Nombre despais:", espais)'
+             data-height="270">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 7 — Errors típics
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Errors típics</h2>
+
+        <p><strong>1. IndexError: accedir a un índex que no existeix</strong> — si el text té 5 caràcters, l'índex vàlid va de <code>0</code> a <code>4</code> (o de <code>-1</code> a <code>-5</code> en negatiu):</p>
+
+        <div class="simulador"
+             data-code='paraula = "hola"
+print(paraula[10])   # ERROR: índex fora de rang'
+             data-readonly="true"
+             data-height="200">
+        </div>
+
+        <p><strong>2. TypeError: intentar modificar un caràcter</strong> — els textos a Python són <strong>immutables</strong>: no es pot canviar un caràcter de forma directa. Per modificar-ne una part, has de construir un text nou (per exemple, amb <code>.replace()</code> o concatenació):</p>
+
+        <div class="simulador"
+             data-code='text = "Hola"
+text[0] = "h"   # ERROR: les cadenes no es poden modificar
+print(text)'
+             data-readonly="true"
+             data-height="210">
+        </div>
+
+        <p><strong>3. Oblidar que <code>.split()</code> retorna una llista, no una cadena</strong> — si intentes fer un <em>slice</em> o cridar un mètode de text sobre el resultat de <code>.split()</code>, obtindràs un error:</p>
+
+        <div class="simulador"
+             data-code='frase = "gat gos ocell"
+resultat = frase.split()
+print(resultat.upper())   # ERROR: les llistes no tenen upper()'
+             data-readonly="true"
+             data-height="220">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          Escriu un programa que llegeixi una paraula i mostri quantes vocals (<code>a</code>, <code>e</code>, <code>i</code>, <code>o</code>, <code>u</code>) conté. El programa ha de funcionar tant amb majúscules com amb minúscules.
+        </div>
+
+        <p>Per exemple, amb la paraula <code>Programació</code> la sortida ha de ser <code>5</code>.</p>
+
+        <p>Pista: converteix la paraula a minúscules amb <code>.lower()</code> abans de comptar, i recorre-la caràcter a caràcter amb <code>for</code>.</p>
+
+        <div class="simulador"
+             data-code="paraula = input()
+# Escriu el teu codi aquí:
+"
+             data-tests='[
+               {"stdin": "Programació", "expected": "5"},
+               {"stdin": "hola", "expected": "2"},
+               {"stdin": "PYTHON", "expected": "1"},
+               {"stdin": "ritme", "expected": "2"}
+             ]'
+             data-goal-id="cap7-ex"
+             data-height="320">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           RESUM
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Resum</h2>
+        <ul>
+          <li><code>text[i]</code> accedeix al caràcter de la posició <code>i</code>; els índexs negatius compten des del final (<code>text[-1]</code> és l'últim).</li>
+          <li><code>len(text)</code> retorna el nombre de caràcters del text.</li>
+          <li><code>text[inici:fi]</code> retorna un fragment (la fi no s'inclou); <code>text[::-1]</code> inverteix la cadena.</li>
+          <li>Els mètodes <code>.upper()</code>, <code>.lower()</code>, <code>.strip()</code>, <code>.replace()</code> i <code>.split()</code> retornen un text nou sense modificar l'original.</li>
+          <li><code>in</code> comprova si una subcadena és dins d'un text; <code>.startswith()</code> i <code>.endswith()</code> comproven els extrems.</li>
+          <li>Pots recórrer cada caràcter d'un text amb <code>for c in text:</code>, igual que iteraries sobre una seqüència de nombres.</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-6.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-8.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div>
+  </main>
+</div>
+
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(7);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+</body>
+</html>
