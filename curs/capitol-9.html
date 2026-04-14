@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 9 — Funcions | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    PyCat
+  </span>
+  <nav class="curs-nav">
+    <a href="capitol-1.html" class="active">Capítols</a>
+    <a href="repte-1.html">Reptes</a>
+    <a href="../simulador.html">Simulador</a>
+  </nav>
+  <span class="curs-header-title">Capítol 9 — Funcions</span>
+  <div class="curs-header-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 9</span>
+        <h1>Funcions</h1>
+        <p class="chapter-lead">Les funcions són trossos de codi amb nom: les escrius una vegada i les fas servir tantes vegades com vulguis.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — Per què funcions?
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Per què fer servir funcions?</h2>
+
+        <p>Imagina que has de saludar diverses persones en el teu programa. Sense funcions, hauràs de repetir les mateixes línies una vegada per cada persona:</p>
+
+        <div class="simulador"
+             data-code='# Sense funció — repetim la mateixa lògica tres vegades
+print("Hola, Anna!")
+print("Benvinguda al curs de Python.")
+print("---")
+print("Hola, Bernat!")
+print("Benvingut al curs de Python.")
+print("---")
+print("Hola, Carla!")
+print("Benvinguda al curs de Python.")
+print("---")'
+             data-readonly="true"
+             data-height="300">
+        </div>
+
+        <p>Repetir codi és un problema: si vols canviar el missatge, has de modificar-lo en tres llocs. Les funcions solucionen això seguint el principi <strong>DRY</strong> (<em>Don't Repeat Yourself</em>: no et repeteixis). Escrius la lògica una vegada i la crides tantes vegades com calgui.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — def sense paràmetres
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Definir una funció: <code>def</code></h2>
+
+        <p>Una funció es defineix amb la paraula clau <strong><code>def</code></strong>, seguida del nom de la funció, uns parèntesis i dos punts. El codi de dins va indentat, igual que en un <code>if</code> o un <code>while</code>:</p>
+
+        <div class="simulador"
+             data-code='def saluda():
+    print("Hola!")
+    print("Benvingut al curs de Python.")
+    print("---")
+
+# La funció no s&apos;executa fins que la "cridem"
+saluda()
+saluda()
+saluda()'
+             data-readonly="true"
+             data-height="270">
+        </div>
+
+        <p>Fixa't que la funció s'ha escrit primer i s'ha cridat després. Python llegeix el fitxer de dalt a baix: si intentes cridar una funció abans de definir-la, obtindràs un error.</p>
+
+        <p>Prova a modificar el missatge de la funció i observa com canvia en totes tres crides alhora:</p>
+
+        <div class="simulador"
+             data-code='def linia_separadora():
+    print("=" * 20)
+
+linia_separadora()
+print("Resultat: 42")
+linia_separadora()
+print("Resultat: 99")
+linia_separadora()'
+             data-height="280">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — def amb paràmetres
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Paràmetres: fer funcions flexibles</h2>
+
+        <p>Els <strong>paràmetres</strong> són variables especials que reben valors quan crides la funció. Es declaren dins dels parèntesis del <code>def</code>. Gràcies a ells, la mateixa funció pot treballar amb dades diferents cada vegada:</p>
+
+        <div class="simulador"
+             data-code='def saluda(nom):
+    print("Hola, " + nom + "!")
+    print("Benvingut al curs de Python.")
+    print("---")
+
+saluda("Anna")
+saluda("Bernat")
+saluda("Carla")'
+             data-readonly="true"
+             data-height="290">
+        </div>
+
+        <p>Quan crides <code>saluda("Anna")</code>, el valor <code>"Anna"</code> s'assigna al paràmetre <code>nom</code> dins de la funció. A la propera crida, <code>nom</code> valdrà <code>"Bernat"</code>, i així successivament. Cada crida és independent.</p>
+
+        <div class="simulador"
+             data-code='def comiat(nom, idioma):
+    if idioma == "ca":
+        print("Fins aviat, " + nom + "!")
+    elif idioma == "es":
+        print("¡Hasta pronto, " + nom + "!")
+    else:
+        print("Bye, " + nom + "!")
+
+comiat("Anna", "ca")
+comiat("Bernat", "es")
+comiat("Carla", "en")'
+             data-height="310">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — return vs print
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2><code>return</code> vs <code>print</code>: la diferència clau</h2>
+
+        <p>Aquesta és la distinció més important de tot el capítol. Una funció pot <strong>imprimir</strong> un resultat o <strong>retornar-lo</strong>. Sembla el mateix, però no ho és.</p>
+
+        <p>Una funció que fa <code>print()</code> mostra el resultat a la pantalla, però el valor <strong>desapareix</strong>: no el pots guardar ni usar en cap càlcul posterior:</p>
+
+        <div class="simulador"
+             data-code='def dobla_imprimit(n):
+    print(n * 2)        # mostra el resultat, però no el retorna
+
+dobla_imprimit(5)       # mostra: 10
+resultat = dobla_imprimit(5)  # mostra: 10, però resultat és None!
+print("Resultat:", resultat)  # Resultat: None'
+             data-readonly="true"
+             data-height="270">
+        </div>
+
+        <p>Una funció amb <strong><code>return</code></strong> envia el valor de tornada al lloc on s'ha cridat. Pots guardar-lo en una variable, usar-lo en una expressió, o passar-lo a una altra funció:</p>
+
+        <div class="simulador"
+             data-code='def dobla(n):
+    return n * 2        # retorna el resultat sense imprimir-lo
+
+resultat = dobla(5)     # 10, guardat en una variable
+print(resultat + 3)     # 13
+print(dobla(7))         # 14
+print(dobla(dobla(4)))  # dobla(4)=8, dobla(8)=16'
+             data-readonly="true"
+             data-height="280">
+        </div>
+
+        <p>La instrucció <code>return</code> <strong>acaba la funció immediatament</strong>. Qualsevol codi que posis després d'un <code>return</code> no s'executarà mai:</p>
+
+        <div class="simulador"
+             data-code='def valor_absolut(n):
+    if n >= 0:
+        return n        # si n és positiu, acabem aquí
+    return -n           # si no, retornem el valor negat
+
+print(valor_absolut(7))    # 7
+print(valor_absolut(-3))   # 3
+print(valor_absolut(0))    # 0'
+             data-height="290">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 5 — Diversos paràmetres
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Funcions amb diversos paràmetres</h2>
+
+        <p>Una funció pot tenir tants paràmetres com necessitis, separats per comes. L'ordre importa: el primer valor que passes va al primer paràmetre, el segon al segon, i així successivament:</p>
+
+        <div class="simulador"
+             data-code='def area_rectangle(base, alçada):
+    return base * alçada
+
+def perimetre_rectangle(base, alçada):
+    return 2 * (base + alçada)
+
+b = 4
+a = 3
+print("Àrea:", area_rectangle(b, a))          # 12
+print("Perímetre:", perimetre_rectangle(b, a)) # 14'
+             data-readonly="true"
+             data-height="290">
+        </div>
+
+        <p>Les funcions es poden cridar des de dins d'altres funcions. Quan ho fas, el programa entra a la funció interior, n'obté el resultat, i el fa servir en la funció exterior:</p>
+
+        <div class="simulador"
+             data-code='def quadrat(n):
+    return n * n
+
+def suma_quadrats(a, b):
+    return quadrat(a) + quadrat(b)
+
+print(suma_quadrats(3, 4))   # 9 + 16 = 25
+print(suma_quadrats(5, 12))  # 25 + 144 = 169'
+             data-height="270">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 6 — Variables locals vs globals
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Variables locals: el que passa dins, queda dins</h2>
+
+        <p>Les variables que declares <strong>dins</strong> d'una funció s'anomenen <strong>variables locals</strong>. Existeixen únicament mentre la funció s'executa i desapareixen quan la funció acaba. No les pots veure des de fora:</p>
+
+        <div class="simulador"
+             data-code='def calcula_area(base, alçada):
+    area = base * alçada   # variable local
+    return area
+
+print(calcula_area(5, 3))  # 15
+# print(area)              # ERROR: area no existeix fora de la funció'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p>Tampoc no cal que els paràmetres tinguin el mateix nom que les variables que uses quan crides la funció. El valor es <em>copia</em> al paràmetre en el moment de la crida:</p>
+
+        <div class="simulador"
+             data-code='def duplica(n):
+    resultat = n * 2
+    return resultat
+
+x = 7
+y = duplica(x)    # x és 7, n rep el valor 7 dins de la funció
+print(y)          # 14
+print(x)          # 7 — x no ha canviat'
+             data-height="270">
+        </div>
+
+        <p>Per ara, la regla pràctica és senzilla: <strong>passa sempre les dades que necessita una funció com a paràmetres</strong>, i obté els resultats amb <code>return</code>. Evita llegir variables de fora de la funció directament.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 7 — Errors típics
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Errors típics</h2>
+
+        <p><strong>1. Usar <code>print</code> en comptes de <code>return</code></strong> — la funció mostra el valor però no el retorna, de manera que guardar el resultat en una variable dona <code>None</code>:</p>
+
+        <div class="simulador"
+             data-code='def suma(a, b):
+    print(a + b)    # hauria de ser: return a + b
+
+total = suma(3, 4)   # imprimeix 7, però total val None
+print(total * 2)     # TypeError: NoneType no es pot multiplicar'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p><strong>2. Cridar la funció abans de definir-la</strong> — Python llegeix el codi de dalt a baix, de manera que si crides una funció que encara no ha estat definida, obtindràs un <code>NameError</code>:</p>
+
+        <div class="simulador"
+             data-code='saluda("Marc")   # ERROR: la funció no existeix encara
+
+def saluda(nom):
+    print("Hola, " + nom + "!")'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p><strong>3. Oblidar els parèntesis en cridar la funció</strong> — sense <code>()</code> no estàs cridant la funció sinó referint-t'hi com a objecte. No s'executa res i el resultat no és el que esperes:</p>
+
+        <div class="simulador"
+             data-code='def salutacio():
+    return "Hola!"
+
+# Oblidant els parèntesis:
+resultat = salutacio    # assigna la funció, no el resultat!
+print(resultat)         # <function salutacio at 0x...>
+
+# Correcte:
+resultat = salutacio()
+print(resultat)         # Hola!'
+             data-readonly="true"
+             data-height="280">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          Escriu una funció <code>es_primer(n)</code> que retorni <code>True</code> si <code>n</code> és un nombre primer, i <code>False</code> en cas contrari. Un nombre és primer si és més gran que 1 i no és divisible per cap nombre entre 2 i <code>n-1</code>.
+        </div>
+
+        <p>Per exemple: <code>es_primer(2)</code> → <code>True</code>, <code>es_primer(7)</code> → <code>True</code>, <code>es_primer(10)</code> → <code>False</code>, <code>es_primer(1)</code> → <code>False</code>.</p>
+
+        <p>Pista: fes servir un bucle <code>for</code> amb <code>range(2, n)</code> i l'operador <code>%</code> per comprovar si <code>n</code> és divisible per algun nombre. Si trobes un divisor, retorna <code>False</code> immediatament. Si el bucle acaba sense trobar-ne cap, retorna <code>True</code>.</p>
+
+        <div class="simulador"
+             data-code="def es_primer(n):
+    # Escriu el codi aquí
+    pass
+"
+             data-testcode="print(es_primer(2))
+print(es_primer(7))
+print(es_primer(10))
+print(es_primer(1))"
+             data-expected="True
+True
+False
+False"
+             data-goal-id="cap9-ex"
+             data-height="360">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           RESUM
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Resum</h2>
+        <ul>
+          <li>Una funció es defineix amb <code>def nom():</code> i es crida escrivint <code>nom()</code>. El codi de dins s'executa cada vegada que la crides.</li>
+          <li>Els <strong>paràmetres</strong> es declaren dins els parèntesis del <code>def</code> i permeten passar dades a la funció en cada crida.</li>
+          <li><code>return valor</code> envia el resultat de tornada i acaba la funció. Sense <code>return</code>, la funció retorna <code>None</code>.</li>
+          <li>La diferència entre <code>print</code> i <code>return</code> és crucial: <code>print</code> mostra un valor a la pantalla; <code>return</code> el torna al codi que ha cridat la funció perquè el pugui usar.</li>
+          <li>Les variables declarades dins d'una funció són <strong>locals</strong>: existeixen únicament mentre la funció s'executa i no es poden veure des de fora.</li>
+          <li>Les funcions fan el codi més curt, més llegible i més fàcil de corregir: si has de canviar una lògica que uses en molts llocs, ho fas en un sol lloc.</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-8.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-10.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div>
+  </main>
+</div>
+
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(9);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+</body>
+</html>
