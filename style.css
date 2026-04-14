@@ -1,0 +1,360 @@
+/* ════════════════════════════════════════════════════════
+   style.css — PyCat
+   Derivat de KarelCat: mateixa estètica, consola en lloc de graella
+════════════════════════════════════════════════════════ */
+
+:root {
+  --bg:         #000000;
+  --surface:    #141414;
+  --border:     #2a2a2a;
+  --text:       #ddddd8;
+  --muted:      #8a8a85;
+  --accent:     #a8a8a2;
+  --accent-dim: rgba(168,168,162,0.13);
+  --error:      #ff5252;
+  --error-dim:  rgba(255,82,82,0.13);
+  --ok:         #4ade80;
+  --ok-dim:     rgba(74,222,128,0.10);
+  --mono:       'Space Mono','Courier New',monospace;
+  --topbar-h:   46px;
+  --ed-font-size:   0.8rem;
+  --ed-line-height: 1.75;
+  --ed-pad-top:     12px;
+  --ed-pad-x:       14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+
+/* ── MODE CLAR ─────────────────────────────────────── */
+body.light {
+  --bg:         #ffffff;
+  --surface:    #f5f5f5;
+  --border:     #d0d0d0;
+  --text:       #1a1a1a;
+  --muted:      #6b7280;
+  --accent:     #2563eb;
+  --accent-dim: rgba(37,99,235,0.08);
+  --error:      #dc2626;
+  --error-dim:  rgba(220,38,38,0.08);
+  --ok:         #16a34a;
+  --ok-dim:     rgba(22,163,74,0.08);
+}
+body.light { background: var(--bg); color: var(--text); }
+
+body {
+  font-family: var(--mono);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   CAPÇALERA — Idèntica a KarelCat
+══════════════════════════════════════════════════════ */
+
+.topbar {
+  height: var(--topbar-h);
+  min-height: var(--topbar-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.logo {
+  font-size: 0.9rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+.logo-icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin-left: auto;
+}
+
+/* Badge d'estat */
+#state-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.68rem;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+#state-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+  flex-shrink: 0;
+  transition: background 0.25s, box-shadow 0.25s;
+}
+#state-dot.idle    { background: var(--muted); }
+#state-dot.loading { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; animation: pulse-dot 1.2s ease-in-out infinite; }
+#state-dot.running { background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: pulse-dot 1s ease-in-out infinite; }
+#state-dot.done    { background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+#state-dot.error   { background: var(--error); box-shadow: 0 0 8px var(--error); }
+@keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+
+/* ══════════════════════════════════════════════════════
+   BOTONS — Idèntics a KarelCat
+══════════════════════════════════════════════════════ */
+
+.btn {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn.p { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn.p:hover { filter: brightness(1.15); }
+.btn.r { background: var(--error); color: #fff; border-color: var(--error); }
+.btn.r:hover { filter: brightness(1.15); }
+
+body.light .btn { border-color: var(--border); background: #fff; color: var(--text); }
+body.light .btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+body.light .btn.p { background: var(--accent); color: #fff; }
+body.light .btn.r { background: var(--error); color: #fff; }
+
+.btn-theme {
+  padding: 5px 8px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   TOOLBAR — Fila de controls d'execució
+══════════════════════════════════════════════════════ */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT PRINCIPAL — Editor (esquerra) + Consola (dreta)
+══════════════════════════════════════════════════════ */
+
+.main {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+
+/* ── COLUMNA ESQUERRA: EDITOR DE CODI ────────────── */
+
+.code-col {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  border-right: 1px solid var(--border);
+}
+
+.editor-wrap {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Números de línia */
+#line-numbers {
+  width: 36px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding-top: var(--ed-pad-top);
+  overflow: hidden;
+  text-align: right;
+  user-select: none;
+}
+#line-numbers .ln {
+  font-size: var(--ed-font-size);
+  line-height: var(--ed-line-height);
+  padding-right: 8px;
+  color: var(--muted);
+}
+
+/* Contenidor interior (textarea + highlight overlay) */
+.editor-inner {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+
+#code-editor,
+#code-highlight,
+#line-bg {
+  position: absolute;
+  inset: 0;
+  font-family: var(--mono);
+  font-size: var(--ed-font-size);
+  line-height: var(--ed-line-height);
+  padding: var(--ed-pad-top) var(--ed-pad-x);
+  tab-size: 4;
+  white-space: pre;
+  overflow: auto;
+}
+
+#code-editor {
+  background: transparent;
+  color: transparent;
+  caret-color: var(--text);
+  border: none;
+  outline: none;
+  resize: none;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+}
+
+#code-highlight {
+  z-index: 1;
+  pointer-events: none;
+  color: var(--text);
+  background: var(--bg);
+  margin: 0;
+}
+
+#line-bg {
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Fons de línia activa/error */
+.lbg-row {
+  height: calc(var(--ed-font-size) * 1.75);
+  line-height: calc(var(--ed-font-size) * 1.75);
+}
+.lbg-row.active { background: var(--accent-dim); }
+.lbg-row.error  { background: var(--error-dim); }
+
+/* Ressaltat sintàctic */
+.hl-kw   { color: #c084fc; }  /* keywords: morat */
+.hl-cmd  { color: #60a5fa; }  /* builtins: blau */
+.hl-str  { color: #4ade80; }  /* strings: verd */
+.hl-num  { color: #fbbf24; }  /* números: groc */
+.hl-cm   { color: #6b7280; font-style: italic; }  /* comentaris: gris */
+.hl-br   { color: var(--muted); }  /* puntuació */
+.hl-user { color: var(--text); }   /* identificadors */
+
+body.light .hl-kw  { color: #7c3aed; }
+body.light .hl-cmd { color: #2563eb; }
+body.light .hl-str { color: #16a34a; }
+body.light .hl-num { color: #d97706; }
+body.light .hl-cm  { color: #9ca3af; }
+
+
+/* ══════════════════════════════════════════════════════
+   COLUMNA DRETA: CONSOLA (substitueix la graella Karel)
+══════════════════════════════════════════════════════ */
+
+.console-col {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.console-header {
+  padding: 6px 12px;
+  font-size: 0.68rem;
+  color: var(--muted);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.console-header span { letter-spacing: 0.5px; text-transform: uppercase; }
+
+.console-area {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 12px 14px;
+  background: var(--bg);
+}
+
+#console-output {
+  font-family: var(--mono);
+  font-size: var(--ed-font-size);
+  line-height: 1.7;
+}
+
+/* Línies de consola */
+.con-line     { white-space: pre-wrap; word-break: break-all; }
+.con-line.out { color: var(--text); }
+.con-line.err { color: var(--error); }
+.con-line.ok  { color: var(--ok); }
+.con-line.dim { color: var(--muted); }
+
+
+/* ══════════════════════════════════════════════════════
+   MODE EMBED — Per a iframes dins del curs
+══════════════════════════════════════════════════════ */
+
+body.embed .topbar { display: none; }
+body.embed { font-size: 12px; }
+
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — Mòbil
+══════════════════════════════════════════════════════ */
+
+@media (max-width: 700px) {
+  .main {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .code-col { border-right: none; border-bottom: 1px solid var(--border); }
+}
+
+@media (max-width: 400px) {
+  .topbar { padding: 0 8px; gap: 8px; }
+  .toolbar { padding: 4px 8px; }
+}
