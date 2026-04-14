@@ -30,8 +30,9 @@ curs/
 ├── capitol-1.html      ← Hola, Python!         (DONE)
 ├── capitol-2.html      ← Variables             (DONE)
 ├── capitol-3.html      ← Operacions i input    (DONE)
-├── capitol-4.html      ← TO WRITE
-├── ...
+├── capitol-4.html      ← Decisions: if, elif, else  (DONE)
+├── capitol-5.html      ← Repetir amb while           (DONE)
+├── capitol-6.html      ← TO WRITE
 ├── capitol-10.html     ← TO WRITE
 └── repte-1.html        ← El primer programa    (DONE — only existing repte)
 ```
@@ -164,8 +165,8 @@ Three chapters already exist; you must write the remaining seven. The progressio
 | 1  | Hola, Python!                         | **DONE** | `print()`, comments, strings                                |
 | 2  | Variables                             | **DONE** | Assignment, types (`int`, `float`, `str`, `bool`), f-strings |
 | 3  | Operacions i input                    | **DONE** | Arithmetic, `input()`, `int()`/`float()` casting            |
-| 4  | Decisions: `if`, `elif`, `else`       | TO WRITE | Conditionals, comparison operators, indentation             |
-| 5  | Repetir amb `while`                   | TO WRITE | `while` loop, accumulators, sentinel-controlled loops       |
+| 4  | Decisions: `if`, `elif`, `else`       | **DONE**   | Conditionals, comparison operators, indentation             |
+| 5  | Repetir amb `while`                   | **DONE**   | `while` loop, accumulators, sentinel-controlled loops       |
 | 6  | Repetir amb `for` i `range`           | TO WRITE | `for` over `range`, counters, nested loops                  |
 | 7  | Treballant amb text                   | TO WRITE | String indexing, slicing, methods, `len()`                  |
 | 8  | Llistes                               | TO WRITE | Lists, indexing, `append`, iteration with `for x in lst`    |
@@ -265,4 +266,12 @@ For chapter `N`:
 
 ---
 
-**End of plan. Begin with `capitol-4.html`.**
+**End of plan. Begin with `capitol-6.html`.**
+
+---
+
+## 7. Historial de canvis
+
+| Data       | Capítols escrits | Arxius modificats |
+|------------|-----------------|-------------------|
+| 2026-04-14 | 4, 5            | `capitol-4.html` (nou), `capitol-5.html` (nou), `capitol-3.html` (nav arreglat), `capitols.js` (CAPITOLS_DATA + glossari `break`/`continue`) |
