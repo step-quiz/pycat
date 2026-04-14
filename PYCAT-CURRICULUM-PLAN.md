@@ -35,7 +35,8 @@ curs/
 ├── capitol-6.html      ← Repetir amb for i range          (DONE)
 ├── capitol-7.html      ← Treballant amb text               (DONE)
 ├── capitol-8.html      ← Llistes                          (DONE)
-├── capitol-10.html     ← TO WRITE
+├── capitol-9.html      ← Funcions                            (DONE)
+├── capitol-10.html     ← Posant-ho tot junt                  (DONE)
 └── repte-1.html        ← El primer programa    (DONE — only existing repte)
 ```
 
@@ -172,8 +173,8 @@ Three chapters already exist; you must write the remaining seven. The progressio
 | 6  | Repetir amb `for` i `range`           | **DONE** | `for` over `range`, counters, nested loops                  |
 | 7  | Treballant amb text                   | **DONE** | String indexing, slicing, methods, `len()`                  |
 | 8  | Llistes                               | **DONE** | Lists, indexing, `append`, iteration with `for x in lst`    |
-| 9  | Funcions                              | TO WRITE | `def`, parameters, `return`, scope                          |
-| 10 | Posant-ho tot junt                    | TO WRITE | Mini-project that combines chapters 1–9                     |
+| 9  | Funcions                              | **DONE** | `def`, parameters, `return`, scope                          |
+| 10 | Posant-ho tot junt                    | **DONE** | Mini-project that combines chapters 1–9                     |
 
 ### 3.1 Chapter-by-chapter detail
 
@@ -268,7 +269,7 @@ For chapter `N`:
 
 ---
 
-**End of plan. Begin with `capitol-8.html`.**
+**Tots els capítols han estat escrits. El curs és complet.**
 
 ---
 
@@ -280,3 +281,5 @@ For chapter `N`:
 | 2026-04-14 | 6               | `capitol-6.html` (nou), `capitols.js` (CAPITOLS_DATA + glossari `range()`), `PYCAT-CURRICULUM-PLAN.md` (estat actualitzat) |
 | 2026-04-14 | 7               | `capitol-7.html` (nou), `capitols.js` (CAPITOLS_DATA + glossari mètodes de text), `PYCAT-CURRICULUM-PLAN.md` (estat actualitzat) |
 | 2026-04-14 | 8               | `capitol-8.html` (nou), `capitols.js` (CAPITOLS_DATA + glossari secció Llistes amb `[]`, `.append()`, `.pop()`, `sum()`, `min()`, `max()`, `sorted()`), `PYCAT-CURRICULUM-PLAN.md` (estat actualitzat) |
+| 2026-04-14 | 9               | `capitol-9.html` (nou), `capitols.js` (CAPITOLS_DATA + glossari secció Funcions amb `def`, `return`, `None`, `True`, `False`), `PYCAT-CURRICULUM-PLAN.md` (estat actualitzat) |
+| 2026-04-14 | 10              | `capitol-10.html` (nou), `capitols.js` (CAPITOLS_DATA + glossari `random.shuffle()`), `PYCAT-CURRICULUM-PLAN.md` (estat actualitzat — curs complet) |

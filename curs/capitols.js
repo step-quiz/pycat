@@ -30,6 +30,8 @@ const CAPITOLS_DATA = [
   { num: 6,  titol: 'Repetir amb for i range',     arxiu: 'capitol-6.html' },
   { num: 7,  titol: 'Treballant amb text',         arxiu: 'capitol-7.html' },
   { num: 8,  titol: 'Llistes',                     arxiu: 'capitol-8.html' },
+  { num: 9,  titol: 'Funcions',                    arxiu: 'capitol-9.html' },
+  { num: 10, titol: 'Posant-ho tot junt',          arxiu: 'capitol-10.html' },
   // ...afegir capítols aquí
 ];
 
@@ -234,6 +236,7 @@ function initGlossariCurs() {
             <code>range(n)</code><span>Seqüència de nombres enters de <code>0</code> a <code>n-1</code></span>
             <code>range(i,f)</code><span>Seqüència de <code>i</code> fins a <code>f-1</code> (la fi no s'inclou)</span>
             <code>range(i,f,p)</code><span>Seqüència amb pas <code>p</code>; pot ser negatiu per comptar enrere</span>
+            <code>random.shuffle(l)</code><span>Barreja la llista <code>l</code> al seu lloc (cal <code>import random</code> primer)</span>
           </div>
         </div>
 
@@ -270,6 +273,21 @@ function initGlossariCurs() {
             <code>min(llista)</code><span>Element mínim de la llista</span>
             <code>max(llista)</code><span>Element màxim de la llista</span>
             <code>sorted(llista)</code><span>Retorna una còpia ordenada de la llista (no modifica l'original)</span>
+          </div>
+        </div>
+
+        <div class="glossari-section">
+          <h3>Funcions pròpies (<code>def</code>)</h3>
+          <p class="glossari-hint">Es defineixen amb <code>def</code> i es criden amb els parèntesis <code>()</code>. Sense <code>return</code>, retornen <code>None</code> automàticament.</p>
+          <div class="glossari-grid">
+            <code>def nom():</code><span>Defineix una funció sense paràmetres</span>
+            <code>def nom(p):</code><span>Defineix una funció amb un paràmetre <code>p</code></span>
+            <code>def nom(p1, p2):</code><span>Defineix una funció amb dos paràmetres</span>
+            <code>return valor</code><span>Retorna <code>valor</code> i acaba la funció immediatament</span>
+            <code>return</code><span>Acaba la funció sense retornar res (retorna <code>None</code>)</span>
+            <code>None</code><span>Valor "res": és el que retorna una funció sense <code>return</code></span>
+            <code>True</code><span>Valor booleà cert — es pot retornar des d'una funció</span>
+            <code>False</code><span>Valor booleà fals — es pot retornar des d'una funció</span>
           </div>
         </div>
 
