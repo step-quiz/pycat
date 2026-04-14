@@ -29,6 +29,7 @@ const CAPITOLS_DATA = [
   { num: 5,  titol: 'Repetir amb while',           arxiu: 'capitol-5.html' },
   { num: 6,  titol: 'Repetir amb for i range',     arxiu: 'capitol-6.html' },
   { num: 7,  titol: 'Treballant amb text',         arxiu: 'capitol-7.html' },
+  { num: 8,  titol: 'Llistes',                     arxiu: 'capitol-8.html' },
   // ...afegir capítols aquí
 ];
 
@@ -251,6 +252,24 @@ function initGlossariCurs() {
             <code>.startswith(s)</code><span>Retorna <code>True</code> si el text comença amb <code>s</code></span>
             <code>.endswith(s)</code><span>Retorna <code>True</code> si el text acaba amb <code>s</code></span>
             <code>x in text</code><span>Retorna <code>True</code> si la subcadena <code>x</code> és dins del text</span>
+          </div>
+        </div>
+
+        <div class="glossari-section">
+          <h3>Llistes (<code>list</code>)</h3>
+          <p class="glossari-hint">Es creen amb claudàtors <code>[ ]</code>. Els elements s'indexen igual que els caràcters dels textos.</p>
+          <div class="glossari-grid">
+            <code>[1, 2, 3]</code><span>Crea una llista amb tres elements</span>
+            <code>[]</code><span>Llista buida</span>
+            <code>llista[i]</code><span>Element a la posició <code>i</code> (0 = primer, -1 = últim)</span>
+            <code>len(llista)</code><span>Nombre d'elements de la llista</span>
+            <code>.append(x)</code><span>Afegeix <code>x</code> al final de la llista</span>
+            <code>.pop()</code><span>Treu i retorna l'últim element (o el de la posició indicada)</span>
+            <code>del llista[i]</code><span>Esborra l'element de la posició <code>i</code></span>
+            <code>sum(llista)</code><span>Suma de tots els elements (numèrics)</span>
+            <code>min(llista)</code><span>Element mínim de la llista</span>
+            <code>max(llista)</code><span>Element màxim de la llista</span>
+            <code>sorted(llista)</code><span>Retorna una còpia ordenada de la llista (no modifica l'original)</span>
           </div>
         </div>
 
