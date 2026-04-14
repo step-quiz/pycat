@@ -82,6 +82,40 @@ body {
   font-size: 1.2rem;
 }
 
+/* Navegació global */
+.topbar-nav {
+  display: flex;
+  gap: 4px;
+  margin-left: 8px;
+}
+.topbar-nav-link {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  padding: 4px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: var(--muted);
+  transition: background 0.15s, color 0.15s;
+}
+.topbar-nav-link:hover {
+  background: var(--accent);
+  color: #fff;
+}
+.topbar-nav-link.active {
+  background: var(--accent);
+  color: #fff;
+}
+body.light .topbar-nav-link       { color: var(--muted); }
+body.light .topbar-nav-link:hover { background: var(--accent); color: #fff; }
+body.light .topbar-nav-link.active{ background: var(--accent); color: #fff; }
+
+/* Amaga la nav en mode embed (iframes del curs) */
+body.embed .topbar-nav { display: none; }
+
+@media (max-width: 500px) {
+  .topbar-nav-link { font-size: 0.6rem; padding: 3px 7px; }
+}
+
 .topbar-actions {
   display: flex;
   gap: 18px;
