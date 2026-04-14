@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 6 — Repetir amb for i range | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    PyCat
+  </span>
+  <nav class="curs-nav">
+    <a href="capitol-1.html" class="active">Capítols</a>
+    <a href="repte-1.html">Reptes</a>
+    <a href="../simulador.html">Simulador</a>
+  </nav>
+  <span class="curs-header-title">Capítol 6 — Repetir amb for i range</span>
+  <div class="curs-header-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 6</span>
+        <h1>Repetir amb <code>for</code> i <code>range</code></h1>
+        <p class="chapter-lead">Si saps quantes vegades has de repetir una cosa, <code>for</code> és més curt i clar que <code>while</code>.</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — for i in range(n)
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2><code>for i in range(n)</code></h2>
+
+        <p>Al capítol anterior vam fer servir <code>while</code> per comptar fins a 5. Ho pots fer amb molt menys codi usant <code>for</code> (en anglès, <em>for loop</em>):</p>
+
+        <div class="simulador"
+             data-code='for i in range(5):
+    print(i)'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p>Llegeix-ho: «<em>per cada <code>i</code> dins de <code>range(5)</code>, imprimeix <code>i</code></em>». <code>range(5)</code> genera la seqüència de nombres <code>0, 1, 2, 3, 4</code> —cinc valors que comencen a <strong>0</strong> i arriben fins a <strong>4</strong> (sense incloure el 5). Fixa't que el valor <code>5</code> no apareix mai a la sortida.</p>
+
+        <p>El <code>for</code> ja s'encarrega de tot: inicialitzar <code>i</code>, avançar-lo i aturar-se quan s'acaba la seqüència. No cal escriure <code>i = 0</code> ni <code>i = i + 1</code>.</p>
+
+        <p>Si vols que els números comencin a 1 en comptes de 0, pots sumar-hi 1 o usar la forma de dos arguments (que veurem a continuació):</p>
+
+        <div class="simulador"
+             data-code='# Comptar de l1 al 5
+for i in range(5):
+    print(i + 1)'
+             data-height="220">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — range amb start, stop i step
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2><code>range(inici, fi)</code> i <code>range(inici, fi, pas)</code></h2>
+
+        <p><code>range()</code> accepta fins a tres arguments: <strong>inici</strong>, <strong>fi</strong> (sense incloure) i <strong>pas</strong>. Amb dos arguments, triem exactament on comença i on acaba:</p>
+
+        <div class="simulador"
+             data-code='# Comptar de l1 al 10 (sense trucs)
+for i in range(1, 11):
+    print(i)'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p>Amb el tercer argument —el <strong>pas</strong>— controlem quant avança <code>i</code> a cada iteració:</p>
+
+        <div class="simulador"
+             data-code='# Parells del 0 al 10
+for i in range(0, 11, 2):
+    print(i)'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p>El pas també pot ser <strong>negatiu</strong> per comptar enrere. En aquest cas l'inici ha de ser més gran que la fi:</p>
+
+        <div class="simulador"
+             data-code='# Compte enrere: del 5 al 1
+for i in range(5, 0, -1):
+    print(i)
+print("Enlairem!")'
+             data-height="260">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — Bucles imbricats
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Bucles imbricats: la taula de multiplicar</h2>
+
+        <p>Pots posar un <code>for</code> dins d'un altre <code>for</code>. El bucle interior s'executa sencer per cada iteració del bucle exterior. Això s'anomena <strong>bucles imbricats</strong> (en anglès, <em>nested loops</em>).</p>
+
+        <p>L'exemple clàssic és la taula de multiplicar:</p>
+
+        <div class="simulador"
+             data-code='# Taula de multiplicar del 1 al 3
+for fila in range(1, 4):
+    for columna in range(1, 4):
+        resultat = fila * columna
+        print(fila, "x", columna, "=", resultat)'
+             data-readonly="true"
+             data-height="320">
+        </div>
+
+        <p>Observa la indentació: el <code>print</code> té <strong>8 espais</strong> (dues capes d'indentació) perquè pertany al bucle interior, que al seu torn pertany al bucle exterior.</p>
+
+        <p>Modifica el codi per generar la taula completa del 1 al 10:</p>
+
+        <div class="simulador"
+             data-code='# Modifica el range per generar la taula fins al 10
+for fila in range(1, 4):
+    for columna in range(1, 4):
+        print(fila, "x", columna, "=", fila * columna)'
+             data-height="320">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — for vs while
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Quan fer servir <code>for</code> i quan <code>while</code>?</h2>
+
+        <p>La regla pràctica és senzilla:</p>
+
+        <ul>
+          <li>Usa <strong><code>for</code></strong> quan saps d'antuvi quantes vegades vols repetir, o quan recorres una seqüència de valors.</li>
+          <li>Usa <strong><code>while</code></strong> quan el nombre de repeticions depèn d'una condició que pot canviar durant l'execució (per exemple, la resposta de l'usuari).</li>
+        </ul>
+
+        <p>Compara els dos codis que fan exactament el mateix:</p>
+
+        <div class="simulador"
+             data-code='# Amb while: has de gestionar tu el comptador
+i = 1
+while i <= 5:
+    print("Iteració", i)
+    i = i + 1'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <div class="simulador"
+             data-code='# Amb for: més curt i més llegible
+for i in range(1, 6):
+    print("Iteració", i)'
+             data-readonly="true"
+             data-height="200">
+        </div>
+
+        <p>El <code>for</code> és l'eina adequada per al primer cas. Reserva el <code>while</code> per quan la condició és variable o desconeguda.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 5 — Errors típics
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Errors típics</h2>
+
+        <p>Aquests són els errors més habituals en els primers programes amb <code>for</code> i <code>range</code>.</p>
+
+        <p><strong>1. Off-by-one: confondre el límit de <code>range</code></strong> — recorda que <code>range(n)</code> va de 0 fins a <code>n-1</code>, i que el segon argument de <code>range(a, b)</code> no s'inclou mai:</p>
+
+        <div class="simulador"
+             data-code='# Volem imprimir de l1 al 5, però surt malament
+for i in range(1, 5):   # ERROR: hauria de ser range(1, 6)
+    print(i)'
+             data-readonly="true"
+             data-height="220">
+        </div>
+
+        <p><strong>2. Modificar la variable de control dins del bucle</strong> — el <code>for</code> sobreescriu <code>i</code> a cada iteració; canviar-la dins del bucle no té l'efecte que esperaries:</p>
+
+        <div class="simulador"
+             data-code='# Intentem saltar el 3, però no funciona
+for i in range(1, 6):
+    if i == 3:
+        i = i + 1   # no serveix de res: for ho sobreescriu
+    print(i)'
+             data-readonly="true"
+             data-height="260">
+        </div>
+
+        <p>Per saltar una iteració usa <code>continue</code>, igual que amb <code>while</code>:</p>
+
+        <div class="simulador"
+             data-code='# La manera correcta de saltar el 3
+for i in range(1, 6):
+    if i == 3:
+        continue
+    print(i)'
+             data-readonly="true"
+             data-height="240">
+        </div>
+
+        <p><strong>3. Oblidar els dos punts <code>:</code></strong>:</p>
+
+        <div class="simulador"
+             data-code='for i in range(5)
+    print(i)'
+             data-readonly="true"
+             data-height="200">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           EXERCICI
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Exercici</h2>
+
+        <div class="exercise-enunciat">
+          Escriu un programa que llegeixi un nombre enter <strong>N</strong> i imprimeixi un triangle de asteriscs (<code>*</code>) d'alçada N. La primera línia té 1 asterisc, la segona en té 2, i així fins a la fila N.
+        </div>
+
+        <p>Per exemple, amb <code>N = 4</code> la sortida ha de ser:</p>
+        <pre>*
+**
+***
+****</pre>
+
+        <p>Pista: a la iteració <code>i</code> (que va de 1 fins a N) has d'imprimir <code>i</code> asteriscs. Pots usar <code>"*" * i</code> per repetir el caràcter.</p>
+
+        <div class="simulador"
+             data-code="n = int(input())
+# Escriu el bucle for aquí:
+"
+             data-tests='[
+               {"stdin": "3", "expected": "*\n**\n***"},
+               {"stdin": "5", "expected": "*\n**\n***\n****\n*****"},
+               {"stdin": "1", "expected": "*"}
+             ]'
+             data-goal-id="cap6-ex"
+             data-height="320">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           RESUM
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Resum</h2>
+        <ul>
+          <li><code>for i in range(n):</code> repeteix el bloc <code>n</code> vegades, amb <code>i</code> prenent valors <code>0, 1, …, n-1</code>.</li>
+          <li><code>range(inici, fi)</code> genera valors des de <code>inici</code> fins a <code>fi-1</code> (la fi no s'inclou mai).</li>
+          <li><code>range(inici, fi, pas)</code> avança de <code>pas</code> en <code>pas</code>; el pas pot ser negatiu per comptar enrere.</li>
+          <li>Els <strong>bucles imbricats</strong> posen un <code>for</code> dins d'un altre: el bucle interior s'executa complet per cada iteració de l'exterior.</li>
+          <li>Usa <code>for</code> quan saps quantes repeticions vols; usa <code>while</code> quan la condició depèn d'un valor variable.</li>
+          <li>No modifiquis la variable de control (<code>i</code>) dins del <code>for</code>; usa <code>continue</code> per saltar iteracions.</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-5.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
+        <a href="capitol-7.html" class="btn-nav btn-nav--next">Capítol següent →</a>
+      </nav>
+
+
+    </div>
+  </main>
+</div>
+
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(6);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+</body>
+</html>

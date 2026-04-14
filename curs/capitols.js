@@ -27,6 +27,7 @@ const CAPITOLS_DATA = [
   { num: 3,  titol: 'Operacions i input',          arxiu: 'capitol-3.html' },
   { num: 4,  titol: 'Decisions: if, elif, else',   arxiu: 'capitol-4.html' },
   { num: 5,  titol: 'Repetir amb while',           arxiu: 'capitol-5.html' },
+  { num: 6,  titol: 'Repetir amb for i range',     arxiu: 'capitol-6.html' },
   // ...afegir capítols aquí
 ];
 
@@ -228,6 +229,9 @@ function initGlossariCurs() {
             <code>float(x)</code><span>Converteix <code>x</code> a nombre amb decimals</span>
             <code>str(x)</code><span>Converteix <code>x</code> a text</span>
             <code>len(x)</code><span>Longitud d'un text o llista</span>
+            <code>range(n)</code><span>Seqüència de nombres enters de <code>0</code> a <code>n-1</code></span>
+            <code>range(i,f)</code><span>Seqüència de <code>i</code> fins a <code>f-1</code> (la fi no s'inclou)</span>
+            <code>range(i,f,p)</code><span>Seqüència amb pas <code>p</code>; pot ser negatiu per comptar enrere</span>
           </div>
         </div>
 
