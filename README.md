@@ -17,7 +17,7 @@ python3 -m http.server 8000
 
 # Obre al navegador
 open http://localhost:8000/curs/index.html     # el curs
-open http://localhost:8000/simulador.html       # el simulador lliure
+open http://localhost:8000/index.html           # el simulador lliure
 ```
 
 > **Important:** Cal un servidor HTTP — obrir els fitxers directament (`file://`) no funciona perquè els Web Workers necessiten el protocol `http://` o `https://`.
@@ -28,7 +28,7 @@ La primera càrrega descarrega Pyodide (~12MB) des del CDN. Es cacheja al navega
 
 ```
 pycat/
-├── simulador.html          ← Simulador lliure (editor + consola Python)
+├── index.html              ← Simulador lliure (editor + consola Python)
 ├── style.css               ← Estils del simulador
 ├── js/
 │   ├── constants.js        ← Configuració, i18n, namespace P
@@ -37,11 +37,12 @@ pycat/
 │   ├── pyrunner.js         ← Gestió del Worker des del main thread
 │   ├── console.js          ← Panell de sortida
 │   ├── editor.js           ← Ressaltat sintàctic Python + numeració
-│   ├── ui.js               ← Botons, tema, validació
+│   ├── ui.js               ← Botons, tema, validació multi-test
 │   └── main.js             ← Inicialització i paràmetres URL
 ├── curs/
 │   ├── index.html          ← Índex del curs
 │   ├── capitol-1.html      ← Capítol 1: Hola, Python!
+│   ├── ...                 ← Capítols 2 a 10
 │   ├── repte-1.html        ← Repte 1: El primer programa
 │   ├── capitols.js         ← Motor del curs (sidebar, iframes, feedback)
 │   └── curs.css            ← Estils del curs
@@ -59,9 +60,9 @@ pycat/
 
 1. Crea `curs/repte-N.html`
 2. Usa els atributs `data-*` per configurar la validació:
-   - `data-expected="sortida esperada"` — comparació simple de stdout
-   - `data-tests='[{"input":"5","expected":"10"}]'` — múltiples test cases
-   - `data-testcode="assert f(2)==4"` — tests unitaris
+   - `data-expected="sortida esperada"` — comparació simple de stdout (possiblement amb `data-stdin`)
+   - `data-tests='[{"stdin":"5","expected":"10"}, ...]'` — múltiples test cases (s'executen seqüencialment)
+   - `data-testcode="print(funcio(3))"` — codi Python afegit al final del codi de l'alumne abans d'executar
 3. Afegeix l'entrada a `REPTES_DATA` dins `curs/capitols.js`
 
 ### Incrustar un simulador a qualsevol pàgina

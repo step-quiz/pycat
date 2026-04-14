@@ -8,13 +8,9 @@
 const P = {};
 
 // ── Claus de localStorage ────────────────────────────────
-P.LS_KEY_CODE    = 'pycat_code';
-P.LS_KEY_THEME   = 'pycat-theme';
-P.LS_KEY_PROGRESS = 'pycat_progress';
-
-// ── Velocitats d'execució (no aplica directament, però
-//    es manté per coherència amb Karel si es vol animació) ──
-P.SPEED_DELAYS = [1200, 600, 300, 100, 30, 0];
+P.LS_KEY_CODE     = 'pycat_code';
+P.LS_KEY_THEME    = 'pycat-theme';
+P.LS_KEY_PROGRESS = 'pycat_progress';   // reservat per al sistema de progrés (B1)
 
 // ── Codi per defecte al simulador lliure ─────────────────
 P.DEFAULT_CODE = `# El teu primer programa Python
@@ -34,7 +30,6 @@ P.UI_LANGS = {
     'ui.run':       '▶ Executa',
     'ui.stop':      '■ Atura',
     'ui.reset':     '↺ Neteja',
-    'ui.speed':     'Velocitat:',
     'state.idle':   'llest',
     'state.loading':'carregant Python…',
     'state.running':'executant…',
@@ -47,7 +42,6 @@ P.UI_LANGS = {
     'log.loading':  '🐍 Preparant Python…',
     'log.ready':    '🟢 Python llest',
     'log.reset':    '↺ Consola netejada',
-    speed: ['Molt lent','Lent','Normal','Ràpid','Molt ràpid','Instant'],
   }
 };
 

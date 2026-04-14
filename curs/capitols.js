@@ -120,7 +120,7 @@ function renderSimuladors() {
     if (goalId)   params.set('goalId', goalId);
 
     const iframe = document.createElement('iframe');
-    iframe.src = '../simulador.html?' + params.toString();
+    iframe.src = '../index.html?' + params.toString();
     iframe.style.width = '100%';
     iframe.style.height = height + 'px';
     iframe.style.border = '1px solid #d0d0d0';
@@ -186,10 +186,25 @@ window.addEventListener('message', function(e) {
     if (!fb) return;
     if (success) {
       fb.className = 'simulador-feedback fb-ok';
-      fb.textContent = '✓ Correcte! El programa funciona bé.';
+      const n = (e.data.results && e.data.results.length) || 0;
+      fb.textContent = n > 1
+        ? `✓ Correcte! Has passat els ${n} tests.`
+        : '✓ Correcte! El programa funciona bé.';
     } else {
       fb.className = 'simulador-feedback fb-ko';
-      fb.textContent = '✗ La sortida no coincideix amb l\'esperada. Revisa el codi.';
+      // Si hi ha detall de tests, mostra el primer que ha fallat
+      const results = e.data.results || [];
+      const failed = results.find(r => !r.passed);
+      if (failed && failed.actual === null) {
+        fb.textContent = '✗ El programa ha donat error. Revisa la consola.';
+      } else if (failed) {
+        const stdinInfo = failed.stdin
+          ? ` amb input «${failed.stdin.replace(/\n/g, ' | ')}»`
+          : '';
+        fb.textContent = `✗ Test ${failed.testIdx + 1} fallit${stdinInfo}: esperava «${failed.expected}», has tret «${failed.actual || ''}».`;
+      } else {
+        fb.textContent = '✗ La sortida no coincideix amb l\'esperada. Revisa el codi.';
+      }
     }
   }
 });

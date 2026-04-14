@@ -1,14 +1,16 @@
 // ════════════════════════════════════════════════════════
 // main.js — Inicialització: connecta els mòduls
 //
-// Paràmetres d'URL suportats (idèntics en esperit a KarelCat):
+// Paràmetres d'URL suportats:
 //   ?embed=1         → amaga topbar (mode iframe)
 //   ?code=BASE64     → codi inicial
 //   ?readonly=1      → editor no editable
 //   ?stdin=BASE64    → input predefinit per a input()
-//   ?expected=BASE64 → output esperat (validació simple)
-//   ?tests=BASE64    → JSON de test cases
-//   ?testcode=BASE64 → codi de test unitari
+//                       · Si hi ha ?tests o ?expected, el stdin d'aquell param mana.
+//                       · Si no, és un input lliure (simulador sense validació).
+//   ?expected=BASE64 → output esperat (validació simple d'un sol cas)
+//   ?tests=BASE64    → JSON de test cases: [{stdin, expected}, ...]
+//   ?testcode=BASE64 → codi Python afegit al final del codi de l'alumne abans d'executar
 //   ?goalId=ID       → identificador del repte (per postMessage)
 //   ?theme=light     → força mode clar
 // ════════════════════════════════════════════════════════
@@ -52,19 +54,36 @@
     setTimeout(() => P.updateEditor(), 50);
   }
 
-  // 2) Paràmetres de validació
+  // 2) Paràmetres de validació — estat normalitzat
   S.goalId    = params.get('goalId') || '';
-  S._currentStdin = params.get('stdin') ? dec(params.get('stdin')) : null;
-  S._currentTestIdx = 0;
+  S.testCode  = params.get('testcode') ? (dec(params.get('testcode')) || '') : '';
 
-  if (params.get('expected')) {
-    S.testCases = [{ input: S._currentStdin || '', expected: dec(params.get('expected')) }];
-  } else if (params.get('tests')) {
-    try { S.testCases = JSON.parse(dec(params.get('tests'))); } catch(_) {}
-  }
+  const urlStdin = params.get('stdin') ? dec(params.get('stdin')) : null;
 
-  if (params.get('testcode')) {
-    S.testCode = dec(params.get('testcode'));
+  if (params.get('tests')) {
+    // Múltiples test cases
+    try {
+      const parsed = JSON.parse(dec(params.get('tests')));
+      // Normalitza: accepta tant {stdin, expected} com {input, expected} (legacy)
+      S.testCases = parsed.map(tc => ({
+        stdin:    tc.stdin !== undefined ? tc.stdin : (tc.input !== undefined ? tc.input : null),
+        expected: tc.expected !== undefined ? tc.expected : ''
+      }));
+    } catch(_) {
+      S.testCases = null;
+    }
+    S.freeStdin = null;
+  } else if (params.get('expected')) {
+    // Un sol test case amb expected (i possiblement un stdin associat)
+    S.testCases = [{
+      stdin:    urlStdin,
+      expected: dec(params.get('expected')) || ''
+    }];
+    S.freeStdin = null;
+  } else {
+    // Sense validació — simulador lliure, potser amb stdin predefinit
+    S.testCases = null;
+    S.freeStdin = urlStdin;
   }
 
   // 3) Inicialitza Pyodide (pre-carrega al worker)

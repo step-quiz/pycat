@@ -18,7 +18,7 @@
   <nav class="curs-nav">
     <a href="capitol-1.html" class="active">Capítols</a>
     <a href="repte-1.html">Reptes</a>
-    <a href="../simulador.html">Simulador</a>
+    <a href="../index.html">Simulador</a>
   </nav>
   <span class="curs-header-title">Capítol 10 — Posant-ho tot junt</span>
   <div class="curs-header-actions"></div>
@@ -274,6 +274,7 @@ preguntes = [
 ]
 
 # ── Joc ─────────────────────────────────────────
+random.seed(42)   # llavor fixa: el curs no suporta input interactiu amb shuffle
 random.shuffle(preguntes)
 print("=== Quiz de cultura general ===")
 print()
@@ -298,8 +299,20 @@ elif encerts >= total * 0.6:
     print("Be! Pero encara pots millorar.")
 else:
     print("Anim! Torna-ho a intentar.")'
+             data-stdin="8
+366
+or
+jupiter
+paris"
              data-height="500">
         </div>
+
+        <p class="chapter-note" style="font-size:0.82rem;color:var(--muted);">
+          <em>Nota tècnica:</em> al curs el programa rep les respostes predefinides (totes correctes)
+          perquè Pyodide no suporta input interactiu. Si executes aquest mateix codi fora del
+          navegador, podràs respondre-hi manualment. Prova de canviar alguna resposta del
+          <code>data-stdin</code> per veure el missatge d'«Incorrecte».
+        </p>
       </section>
 
 
@@ -338,6 +351,7 @@ preguntes = [
     ["Quin planeta es el mes gran del sistema solar?", "jupiter"],
 ]
 
+random.seed(42)
 random.shuffle(preguntes)
 print("=== Quiz de cultura general ===")
 print()
@@ -350,6 +364,11 @@ for p, r in preguntes:
 
 total = len(preguntes)
 print("Has encertat", encerts, "de", total, "preguntes.")'
+             data-stdin="8
+366
+or
+jupiter
+paris"
              data-height="500">
         </div>
       </section>

@@ -3,6 +3,9 @@
 //
 // Adaptat de KarelCat: mateixa mecànica (textarea + pre overlay),
 // però amb keywords de Python real en lloc de comandes Karel.
+//
+// El tokenitzador gestiona strings i comentaris de manera que
+// un '#' dins d'una string no es confon amb un comentari.
 // ════════════════════════════════════════════════════════
 
 // ── Vocabulari Python per al ressaltat ───────────────────
@@ -30,6 +33,12 @@ function tokenizeLine(line) {
   while (i < line.length) {
     const c = line[i];
 
+    // Comentari (fins a final de línia)
+    if (c === '#') {
+      out += `<span class="hl-cm">${P.escHtml(line.slice(i))}</span>`;
+      break;
+    }
+
     // Espai en blanc
     if (/\s/.test(c)) {
       let ws = '';
@@ -45,7 +54,6 @@ function tokenizeLine(line) {
       // Detecta triple-quote
       if (i < line.length - 1 && line[i] === q && line[i+1] === q) {
         s += q + q; i += 2;
-        // Consumeix fins a triple-quote de tancament o final de línia
         while (i < line.length) {
           if (line[i] === q && i+2 < line.length && line[i+1] === q && line[i+2] === q) {
             s += q + q + q; i += 3; break;
@@ -98,11 +106,7 @@ function tokenizeLine(line) {
 function highlightCode(code) {
   return code.split('\n').map((line, i) => {
     const ln = i + 1;
-    const ci = line.indexOf('#');
-    const content = ci !== -1
-      ? tokenizeLine(line.slice(0, ci)) + `<span class="hl-cm">${P.escHtml(line.slice(ci))}</span>`
-      : tokenizeLine(line);
-    return `<span class="code-line" id="cln-${ln}">${content}</span>`;
+    return `<span class="code-line" id="cln-${ln}">${tokenizeLine(line)}</span>`;
   }).join('\n');
 }
 

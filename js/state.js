@@ -21,10 +21,13 @@ P.state = {
   startTime:    null,
 
   // Exercici (quan s'usa dins d'un iframe del curs)
-  goalId:       '',        // identificador del repte
-  testCases:    null,      // array de {input, expected}
-  testCode:     '',        // codi de test unitari
-
-  // Configuració
-  stepDelay:    P.SPEED_DELAYS[1],
+  // ── Format normalitzat per a la validació ──
+  //   goalId:    identificador del repte
+  //   testCases: array de {stdin, expected}  — null si no hi ha validació
+  //   testCode:  codi Python que s'appendeja al codi de l'alumne abans d'executar
+  //   freeStdin: stdin d'un simulador no validat (p.ex. exemples amb input())
+  goalId:       '',
+  testCases:    null,
+  testCode:     '',
+  freeStdin:    null,
 };

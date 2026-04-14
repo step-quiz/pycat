@@ -1,8 +1,15 @@
 // ════════════════════════════════════════════════════════
-// ui.js — Interfície: badge d'estat, botons, tema
+// ui.js — Interfície: badge d'estat, botons, tema, validació
 //
 // Patró idèntic a KarelCat: setStateUI muta el botó
 // principal entre "Executa" i "Atura".
+//
+// Flux de validació:
+//   1. runProgram() construeix finalCode = userCode + testCode
+//   2. Si hi ha testCases, executa el finalCode un cop per cada test case
+//      (seqüencialment) amb el seu stdin, i compara amb expected.
+//   3. Si no, fa una execució lliure (amb freeStdin si n'hi ha).
+//   4. Un cop acaba tot, notifica el pare amb {success, results}.
 // ════════════════════════════════════════════════════════
 
 // ── Badge d'estat + mutació del botó ─────────────────────
@@ -33,24 +40,64 @@ function handleRunClick() {
   }
 }
 
+// ── Construeix el codi final (codi de l'alumne + testCode) ──
+function _buildFinalCode(userCode) {
+  const tc = P.state.testCode || '';
+  if (!tc) return userCode;
+  return userCode + '\n\n# ── Tests ──\n' + tc;
+}
+
 // ── Executa el programa ──────────────────────────────────
-function runProgram() {
+async function runProgram() {
   P.consoleClear();
   P.clearLineMarks();
 
-  const code = document.getElementById('code-editor')?.value || '';
-  if (!code.trim()) {
+  const userCode = document.getElementById('code-editor')?.value || '';
+  if (!userCode.trim()) {
     P.consolePush('⚠ Escriu codi abans d\'executar.', 'dim');
     return;
   }
 
-  // Notifica al pare (iframe) que s'esborra el feedback anterior
   _notifyClear();
 
-  P.pyRun(code, P.state._currentStdin || null, function(output) {
-    // Callback quan l'execució acaba
-    _validateAndNotify(output);
-  });
+  const S = P.state;
+  const finalCode = _buildFinalCode(userCode);
+
+  // ── Cas 1: sense validació (simulador lliure) ──
+  if (!S.testCases) {
+    await P.pyRunAsync(finalCode, S.freeStdin || null);
+    return;
+  }
+
+  // ── Cas 2: amb validació — itera pels test cases ──
+  const results = [];
+  for (let i = 0; i < S.testCases.length; i++) {
+    const tc = S.testCases[i];
+
+    // Divider visual entre tests (només si n'hi ha més d'un)
+    if (S.testCases.length > 1) {
+      P.consolePush(`── Test ${i + 1}/${S.testCases.length} ──`, 'dim');
+    }
+
+    const output = await P.pyRunAsync(finalCode, tc.stdin || null);
+
+    const passed = output !== null &&
+                   _normalizeOutput(output) === _normalizeOutput(tc.expected || '');
+
+    results.push({
+      testIdx:  i,
+      stdin:    tc.stdin || '',
+      expected: tc.expected || '',
+      actual:   output,
+      passed:   passed
+    });
+
+    // Si hi ha un error d'execució, no té sentit continuar amb la resta
+    // (el codi de l'alumne peta de la mateixa manera amb qualsevol input).
+    if (output === null) break;
+  }
+
+  _notifyResults(results);
 }
 
 // ── Atura el programa ────────────────────────────────────
@@ -67,46 +114,33 @@ function resetConsole() {
   _notifyClear();
 }
 
-// ── Validació (per a reptes) ─────────────────────────────
-function _validateAndNotify(output) {
-  if (!P.state.goalId) return;
-
-  // Validació per stdout
-  if (P.state.testCases && P.state.testCases.length > 0) {
-    // Ja s'ha executat amb el primer test case; comparem
-    const expected = P.state.testCases[P.state._currentTestIdx]?.expected ?? '';
-    const success  = _normalizeOutput(output) === _normalizeOutput(expected);
-
-    window.parent.postMessage({
-      type: 'pycat-result',
-      goalId: P.state.goalId,
-      testIdx: P.state._currentTestIdx,
-      success
-    }, P.parentOrigin);
-    return;
-  }
-
-  // Validació per test code
-  if (P.state.testCode) {
-    const success = output !== null; // si no hi ha error, els asserts han passat
-    window.parent.postMessage({
-      type: 'pycat-result',
-      goalId: P.state.goalId,
-      success
-    }, P.parentOrigin);
-  }
-}
-
+// ── Normalització d'output per a comparació ──────────────
 function _normalizeOutput(s) {
-  if (!s) return '';
-  return s.replace(/\r\n/g, '\n').trim();
+  if (s === null || s === undefined) return '';
+  return String(s).replace(/\r\n/g, '\n').trim();
 }
 
+// ── Notificacions al pare (iframe) ───────────────────────
 function _notifyClear() {
   if (!P.state.goalId) return;
-  window.parent.postMessage({
-    type: 'pycat-clear', goalId: P.state.goalId
-  }, P.parentOrigin);
+  try {
+    window.parent.postMessage({
+      type: 'pycat-clear', goalId: P.state.goalId
+    }, P.parentOrigin);
+  } catch(_) {}
+}
+
+function _notifyResults(results) {
+  if (!P.state.goalId) return;
+  const allPassed = results.length > 0 && results.every(r => r.passed);
+  try {
+    window.parent.postMessage({
+      type:    'pycat-result',
+      goalId:  P.state.goalId,
+      success: allPassed,
+      results: results
+    }, P.parentOrigin);
+  } catch(_) {}
 }
 
 // ── Tema clar/fosc ───────────────────────────────────────
@@ -135,7 +169,7 @@ function initTheme() {
 
 
 // ── Exporta ──────────────────────────────────────────────
-P.setStateUI    = setStateUI;
+P.setStateUI     = setStateUI;
 P.handleRunClick = handleRunClick;
 P.initTheme      = initTheme;
 P.toggleTheme    = toggleTheme;

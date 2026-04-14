@@ -10,6 +10,13 @@
 //
 // Patró: el Worker és un recurs que es pot matar i tornar
 //        a crear. Això és la clau per aturar bucles infinits.
+//
+// API pública:
+//   P.pyInit()                          — carrega Pyodide al worker
+//   P.pyRun(code, stdin, onDone)        — executa i crida callback(output|null)
+//   P.pyRunAsync(code, stdin)           — executa i retorna Promise<output|null>
+//   P.pyKill()                          — mata el worker
+//   P.pyStop()                          — mata i re-spawna
 // ════════════════════════════════════════════════════════
 
 // ── Spawna el worker ─────────────────────────────────────
@@ -32,7 +39,6 @@ function _spawnWorker() {
 }
 
 // ── Handlers de missatges del worker ─────────────────────
-// S'actualitzen dinàmicament quan comença una execució.
 const _handlers = {
   ready: function() {
     P.state.pyodideReady = true;
@@ -51,7 +57,7 @@ const _handlers = {
     P.state.running = false;
     P.consolePush(`${P.t('log.done')} (${d.elapsed}ms)`, 'ok');
     P.setStateUI('done');
-    // Usa d.output (raw Python stdout) per a la validació — és la font de veritat
+    // Usa d.output (raw Python stdout) com a font de veritat per a la validació
     if (_onDone) _onDone(d.output ?? _currentOutput.join('\n'));
   },
   error: function(d) {
@@ -91,12 +97,11 @@ function pyRun(code, stdin, onDone) {
   // Inicialitza Pyodide si encara no s'ha fet
   if (!S.worker) {
     _spawnWorker();
-    // Quan estigui llest, re-intentem
     const origReady = _handlers.ready;
     _handlers.ready = function() {
       origReady();
-      _handlers.ready = origReady;  // restaura
-      pyRun(code, stdin, onDone);      // re-intenta
+      _handlers.ready = origReady;
+      pyRun(code, stdin, onDone);
     };
     P.setStateUI('loading');
     P.consolePush(P.t('log.loading'), 'dim');
@@ -105,7 +110,13 @@ function pyRun(code, stdin, onDone) {
   }
 
   if (!S.pyodideReady) {
-    P.consolePush('⏳ Esperant que Python estigui llest…', 'dim');
+    // Espera que Pyodide acabi de carregar abans d'executar
+    const origReady = _handlers.ready;
+    _handlers.ready = function() {
+      origReady();
+      _handlers.ready = origReady;
+      pyRun(code, stdin, onDone);
+    };
     return;
   }
 
@@ -125,10 +136,20 @@ function pyRun(code, stdin, onDone) {
     P.consolePush(P.t('log.timeout'), 'err');
     P.setStateUI('error');
     if (_onDone) _onDone(null);
+    // Re-spawna per a la propera execució
+    _spawnWorker();
+    P.state.worker.postMessage({ type: 'init', cdnUrl: P.PYODIDE_CDN });
   }, P.EXEC_TIMEOUT);
 
   // Envia al worker
-  S.worker.postMessage({ type: 'run', code, stdin });
+  S.worker.postMessage({ type: 'run', code: code, stdin: stdin });
+}
+
+// Versió Promise (més còmoda per a iteracions)
+function pyRunAsync(code, stdin) {
+  return new Promise(function(resolve) {
+    pyRun(code, stdin, function(output) { resolve(output); });
+  });
 }
 
 // Mata el worker (atura qualsevol execució)
@@ -141,12 +162,13 @@ function pyKill() {
   }
   S.running = false;
   S.pyodideReady = false;
+  // Si hi ha una execució pendent esperant callback, resol-la com a error
+  if (_onDone) { _onDone(null); _onDone = null; }
 }
 
 // Atura i re-spawna (per a poder executar de nou)
 function pyStop() {
   pyKill();
-  // Re-spawna i re-inicialitza per a la propera execució
   _spawnWorker();
   P.setStateUI('loading');
   P.consolePush('🔄 Re-inicialitzant Python…', 'dim');
@@ -155,7 +177,8 @@ function pyStop() {
 
 
 // ── Exporta al namespace P ───────────────────────────────
-P.pyInit = pyInit;
-P.pyRun  = pyRun;
-P.pyKill = pyKill;
-P.pyStop = pyStop;
+P.pyInit      = pyInit;
+P.pyRun       = pyRun;
+P.pyRunAsync  = pyRunAsync;
+P.pyKill      = pyKill;
+P.pyStop      = pyStop;
