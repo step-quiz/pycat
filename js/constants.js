@@ -42,6 +42,10 @@ P.UI_LANGS = {
     'log.loading':  '🐍 Preparant Python…',
     'log.ready':    '🟢 Python llest',
     'log.reset':    '↺ Consola netejada',
+    'log.stdin':    '📥 Entrades del programa',
+    'log.stdin.hint':'(una per línia — es passen a input())',
+    'log.input.placeholder': 'Escriu aquí i prem Enter…',
+    'log.waiting':  '⏳ Esperant entrada…',
   }
 };
 

@@ -392,3 +392,85 @@ body.embed { font-size: 12px; }
   .topbar { padding: 0 8px; gap: 8px; }
   .toolbar { padding: 4px 8px; }
 }
+
+
+/* ── Input interactiu (mode SAB) ────────────────────── */
+.console-input-wrap {
+  display: flex;
+  padding: 4px 10px 6px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+.console-input {
+  flex: 1;
+  font-family: var(--mono);
+  font-size: var(--ed-font-size);
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 4px 8px;
+  outline: none;
+  caret-color: var(--accent);
+}
+.console-input:focus {
+  border-color: var(--ok);
+  box-shadow: 0 0 0 2px var(--ok-dim);
+}
+.console-input::placeholder {
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+/* Línia d'input de l'alumne (mostra el que ha escrit) */
+.con-line.in {
+  color: var(--accent);
+  font-style: italic;
+}
+.con-line.in::before {
+  content: '▸ ';
+  opacity: 0.5;
+}
+
+/* Línia parcial (prompt d'input() sense newline) */
+.con-line.partial {
+  /* No afegeix newline visual — la línia està "oberta" */
+}
+
+/* ── Panell stdin (fallback sense SAB) ──────────────── */
+.stdin-panel {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  padding: 6px 10px 8px;
+}
+.stdin-label {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.stdin-hint {
+  font-size: 0.65rem;
+  opacity: 0.7;
+}
+.stdin-textarea {
+  width: 100%;
+  font-family: var(--mono);
+  font-size: var(--ed-font-size);
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  resize: vertical;
+  min-height: 40px;
+  outline: none;
+}
+.stdin-textarea:focus {
+  border-color: var(--accent);
+}

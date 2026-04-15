@@ -92,4 +92,20 @@
   // 4) Estat inicial de la UI
   P.setStateUI('loading');
 
+  // 5) Mostra el panell stdin si estem en mode lliure sense SAB
+  //    i el codi per defecte (o el carregat) conté input()
+  if (!S.testCases && !S.freeStdin && !P.canInteractive()) {
+    var code = ta ? ta.value : '';
+    if (/\binput\s*\(/.test(code)) {
+      // Mostra el panell un cop Pyodide estigui llest (per no tapar el loading)
+      var origReady = P.state.pyodideReady;
+      var checkReady = setInterval(function() {
+        if (P.state.pyodideReady || P.state.currentState === 'idle') {
+          clearInterval(checkReady);
+          P.consoleShowStdinPanel();
+        }
+      }, 500);
+    }
+  }
+
 })();

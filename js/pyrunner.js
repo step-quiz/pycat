@@ -7,9 +7,7 @@
 //   3. Executar codi i recopilar stdout/stderr
 //   4. Gestionar timeout (bucles infinits → terminate)
 //   5. Exposar l'output per a la validació
-//
-// Patró: el Worker és un recurs que es pot matar i tornar
-//        a crear. Això és la clau per aturar bucles infinits.
+//   6. Mode interactiu: gestionar input() via SharedArrayBuffer
 //
 // API pública:
 //   P.pyInit()                          — carrega Pyodide al worker
@@ -17,18 +15,45 @@
 //   P.pyRunAsync(code, stdin)           — executa i retorna Promise<output|null>
 //   P.pyKill()                          — mata el worker
 //   P.pyStop()                          — mata i re-spawna
+//   P.canInteractive()                  — true si SharedArrayBuffer disponible
 // ════════════════════════════════════════════════════════
+
+// ── Capacitat interactiva ────────────────────────────────
+var _canInteractive = (typeof SharedArrayBuffer !== 'undefined');
+
+function canInteractive() {
+  return _canInteractive;
+}
+
+// ── SharedArrayBuffer per input interactiu ───────────────
+// Layout: Int32[0]=estat, Int32[1]=longitud, bytes 8..4104=dades UTF-8
+var _inputSAB     = null;
+var _inputControl = null;
+var INPUT_BUF_SIZE = 4104;  // 8 bytes control + 4096 bytes dades
+
+function _ensureInputBuffer() {
+  if (!_inputSAB && _canInteractive) {
+    try {
+      _inputSAB = new SharedArrayBuffer(INPUT_BUF_SIZE);
+      _inputControl = new Int32Array(_inputSAB);
+    } catch (e) {
+      _canInteractive = false;
+      _inputSAB = null;
+      _inputControl = null;
+    }
+  }
+}
 
 // ── Spawna el worker ─────────────────────────────────────
 function _spawnWorker() {
-  const S = P.state;
+  var S = P.state;
   if (S.worker) return;
 
   S.worker = new Worker('js/pyworker.js');
   S.pyodideReady = false;
 
   S.worker.onmessage = function(e) {
-    const { type } = e.data;
+    var type = e.data.type;
     if (_handlers[type]) _handlers[type](e.data);
   };
 
@@ -39,7 +64,7 @@ function _spawnWorker() {
 }
 
 // ── Handlers de missatges del worker ─────────────────────
-const _handlers = {
+var _handlers = {
   ready: function() {
     P.state.pyodideReady = true;
     P.consolePush(P.t('log.ready'), 'ok');
@@ -49,34 +74,81 @@ const _handlers = {
     P.consolePush(d.text, 'out');
     _currentOutput.push(d.text);
   },
+  stdout_partial: function(d) {
+    // Prompt d'input() — mostra com a línia parcial
+    P.consolePushPartial(d.text);
+  },
   stderr: function(d) {
     P.consolePush(d.text, 'err');
   },
   done: function(d) {
     _clearTimeout();
     P.state.running = false;
-    P.consolePush(`${P.t('log.done')} (${d.elapsed}ms)`, 'ok');
+    P.consolePush(P.t('log.done') + ' (' + d.elapsed + 'ms)', 'ok');
     P.setStateUI('done');
-    // Usa d.output (raw Python stdout) com a font de veritat per a la validació
-    if (_onDone) _onDone(d.output ?? _currentOutput.join('\n'));
+    var cb = _onDone;
+    _onDone = null;   // ← FIX: nul·lifica ABANS de cridar per evitar doble invocació
+    if (cb) cb(d.output != null ? d.output : _currentOutput.join('\n'));
   },
   error: function(d) {
     _clearTimeout();
     P.state.running = false;
-    P.consolePush(`${P.t('log.error')}: ${d.msg}`, 'err');
+    P.consolePush(P.t('log.error') + ': ' + d.msg, 'err');
     if (d.line) P.markErrorLine(d.line);
     P.setStateUI('error');
-    if (_onDone) _onDone(null);
+    var cb = _onDone;
+    _onDone = null;   // ← FIX: nul·lifica ABANS de cridar per evitar doble invocació
+    if (cb) cb(null);
   },
+  input_request: function() {
+    // El worker necessita input de l'alumne
+    _clearTimeout();  // Pausa el timeout mentre espera input
+
+    P.consoleShowInput(function(text) {
+      // L'alumne ha escrit i premut Enter
+      _sendInputToWorker(text);
+      // Reinicia el timeout
+      _restartTimeout();
+    });
+  }
 };
 
+// ── Envia l'input al worker via SharedArrayBuffer ────────
+function _sendInputToWorker(text) {
+  if (!_inputControl || !_inputSAB) return;
+  var encoded = new TextEncoder().encode(text);
+  var maxLen = INPUT_BUF_SIZE - 8;
+  if (encoded.length > maxLen) encoded = encoded.slice(0, maxLen);
+  var bytes = new Uint8Array(_inputSAB, 8);
+  bytes.set(encoded);
+  Atomics.store(_inputControl, 1, encoded.length);
+  Atomics.store(_inputControl, 0, 2);   // input ready
+  Atomics.notify(_inputControl, 0, 1);
+}
+
 // ── Estat d'una execució en curs ─────────────────────────
-let _currentOutput = [];
-let _timeoutId     = null;
-let _onDone        = null;
+var _currentOutput = [];
+var _timeoutId     = null;
+var _onDone        = null;
+var _currentCode   = null;   // per reiniciar el timeout
 
 function _clearTimeout() {
   if (_timeoutId) { clearTimeout(_timeoutId); _timeoutId = null; }
+}
+
+function _restartTimeout() {
+  _clearTimeout();
+  _timeoutId = setTimeout(_onTimeout, P.EXEC_TIMEOUT);
+}
+
+function _onTimeout() {
+  pyKill();
+  P.consolePush(P.t('log.timeout'), 'err');
+  P.setStateUI('error');
+  // _onDone ja s'ha nul·lificat dins pyKill()
+  // Re-spawna per a la propera execució
+  _spawnWorker();
+  P.state.worker.postMessage({ type: 'init', cdnUrl: P.PYODIDE_CDN });
 }
 
 // ── API pública ──────────────────────────────────────────
@@ -90,18 +162,20 @@ function pyInit() {
 }
 
 // Executa codi Python.
+// stdin: string o null
 // onDone(output): callback amb el text complet de stdout (o null si error)
-function pyRun(code, stdin, onDone) {
-  const S = P.state;
+// interactive: boolean (forçar mode interactiu)
+function pyRun(code, stdin, onDone, interactive) {
+  var S = P.state;
 
   // Inicialitza Pyodide si encara no s'ha fet
   if (!S.worker) {
     _spawnWorker();
-    const origReady = _handlers.ready;
+    var origReady = _handlers.ready;
     _handlers.ready = function() {
       origReady();
       _handlers.ready = origReady;
-      pyRun(code, stdin, onDone);
+      pyRun(code, stdin, onDone, interactive);
     };
     P.setStateUI('loading');
     P.consolePush(P.t('log.loading'), 'dim');
@@ -110,12 +184,11 @@ function pyRun(code, stdin, onDone) {
   }
 
   if (!S.pyodideReady) {
-    // Espera que Pyodide acabi de carregar abans d'executar
-    const origReady = _handlers.ready;
+    var origReady2 = _handlers.ready;
     _handlers.ready = function() {
-      origReady();
-      _handlers.ready = origReady;
-      pyRun(code, stdin, onDone);
+      origReady2();
+      _handlers.ready = origReady2;
+      pyRun(code, stdin, onDone, interactive);
     };
     return;
   }
@@ -123,6 +196,7 @@ function pyRun(code, stdin, onDone) {
   // Reset
   _currentOutput = [];
   _onDone = onDone || null;
+  _currentCode = code;
   S.running = true;
   S.startTime = Date.now();
 
@@ -131,30 +205,32 @@ function pyRun(code, stdin, onDone) {
   P.consolePush(P.t('log.running'), 'dim');
 
   // Timeout de seguretat
-  _timeoutId = setTimeout(function() {
-    pyKill();
-    P.consolePush(P.t('log.timeout'), 'err');
-    P.setStateUI('error');
-    if (_onDone) _onDone(null);
-    // Re-spawna per a la propera execució
-    _spawnWorker();
-    P.state.worker.postMessage({ type: 'init', cdnUrl: P.PYODIDE_CDN });
-  }, P.EXEC_TIMEOUT);
+  _timeoutId = setTimeout(_onTimeout, P.EXEC_TIMEOUT);
+
+  // Determina si usar mode interactiu
+  var useInteractive = interactive && _canInteractive;
+  if (useInteractive) _ensureInputBuffer();
 
   // Envia al worker
-  S.worker.postMessage({ type: 'run', code: code, stdin: stdin });
+  S.worker.postMessage({
+    type:         'run',
+    code:         code,
+    stdin:        stdin,
+    interactive:  useInteractive,
+    inputBuffer:  useInteractive ? _inputSAB : null
+  });
 }
 
 // Versió Promise (més còmoda per a iteracions)
-function pyRunAsync(code, stdin) {
+function pyRunAsync(code, stdin, interactive) {
   return new Promise(function(resolve) {
-    pyRun(code, stdin, function(output) { resolve(output); });
+    pyRun(code, stdin, function(output) { resolve(output); }, interactive);
   });
 }
 
 // Mata el worker (atura qualsevol execució)
 function pyKill() {
-  const S = P.state;
+  var S = P.state;
   _clearTimeout();
   if (S.worker) {
     S.worker.terminate();
@@ -162,8 +238,10 @@ function pyKill() {
   }
   S.running = false;
   S.pyodideReady = false;
-  // Si hi ha una execució pendent esperant callback, resol-la com a error
-  if (_onDone) { _onDone(null); _onDone = null; }
+  P.consoleHideInput();
+  var cb = _onDone;
+  _onDone = null;
+  if (cb) cb(null);
 }
 
 // Atura i re-spawna (per a poder executar de nou)
@@ -177,8 +255,9 @@ function pyStop() {
 
 
 // ── Exporta al namespace P ───────────────────────────────
-P.pyInit      = pyInit;
-P.pyRun       = pyRun;
-P.pyRunAsync  = pyRunAsync;
-P.pyKill      = pyKill;
-P.pyStop      = pyStop;
+P.pyInit         = pyInit;
+P.pyRun          = pyRun;
+P.pyRunAsync     = pyRunAsync;
+P.pyKill         = pyKill;
+P.pyStop         = pyStop;
+P.canInteractive = canInteractive;

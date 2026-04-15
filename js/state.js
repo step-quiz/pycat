@@ -30,4 +30,8 @@ P.state = {
   testCases:    null,
   testCode:     '',
   freeStdin:    null,
+
+  // Input interactiu (simulador lliure)
+  interactive:    false,   // true si SharedArrayBuffer disponible i mode lliure
+  inputCallback:  null,    // callback per resoldre l'input pendent
 };
