@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 10 — La piràmide | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els reptes" aria-expanded="false">☰</button>
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    PyCat
+  </span>
+  <nav class="curs-nav">
+    <a href="capitol-1.html">Capítols</a>
+    <a href="repte-1.html" class="active">Reptes</a>
+    <a href="../index.html">Simulador</a>
+  </nav>
+  <span class="curs-header-title">Repte 10 — La piràmide</span>
+  <div class="curs-header-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+
+    <header class="chapter-header">
+      <span class="chapter-badge" style="background: #fef3c7; color: #92400e;">⚡ Repte 10 — Intermedi</span>
+      <h1>La piràmide</h1>
+    </header>
+
+    <section class="chapter-section">
+      <h2>Objectiu</h2>
+      <p>Escriu un programa que llegeixi un nombre enter <code>n</code> i dibuixi una piràmide d'asteriscs <code>*</code> d'alçada <code>n</code>, alineada a l'esquerra. Cada fila té tants asteriscs com el seu número de fila.</p>
+      <p>Per exemple, si l'entrada és <code>4</code>:</p>
+      <pre class="code-example">*
+**
+***
+****</pre>
+      <p>Si l'entrada és <code>1</code>, la sortida és simplement <code>*</code>.</p>
+
+      <h2>Simulador</h2>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diverses alçades.</p>
+
+      <div class="simulador"
+           data-code="# Repte 10: La piràmide
+# Llegeix n i dibuixa una piràmide de * d'alçada n
+
+n = int(input())
+"
+           data-tests='[
+             {"stdin":"1","expected":"*"},
+             {"stdin":"3","expected":"*\n**\n***"},
+             {"stdin":"5","expected":"*\n**\n***\n****\n*****"},
+             {"stdin":"7","expected":"*\n**\n***\n****\n*****\n******\n*******"}
+           ]'
+           data-goal-id="repte-10"
+           data-height="340">
+      </div>
+    </section>
+
+    <details style="margin-top: 1.5rem;">
+      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+        Un <code>for i in range(1, n + 1):</code> i dins <code>print("*" * i)</code>. Multiplicar un text per un nombre el repeteix.
+      </p>
+    </details>
+
+    <nav class="chapter-nav">
+      <a href="repte-9.html" class="btn-nav btn-nav--prev">← Repte anterior</a>
+      <a href="repte-11.html" class="btn-nav btn-nav--next">Repte següent →</a>
+    </nav>
+
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(10);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+</body>
+</html>

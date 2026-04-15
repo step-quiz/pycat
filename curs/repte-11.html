@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repte 11 — Comptador de vocals | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="curs-header">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els reptes" aria-expanded="false">☰</button>
+  <span class="curs-header-logo">
+    <span class="logo-icon"></span>
+    PyCat
+  </span>
+  <nav class="curs-nav">
+    <a href="capitol-1.html">Capítols</a>
+    <a href="repte-1.html" class="active">Reptes</a>
+    <a href="../index.html">Simulador</a>
+  </nav>
+  <span class="curs-header-title">Repte 11 — Comptador de vocals</span>
+  <div class="curs-header-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Reptes del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+
+    <header class="chapter-header">
+      <span class="chapter-badge" style="background: #fee2e2; color: #991b1b;">⚡ Repte 11 — Difícil</span>
+      <h1>Comptador de vocals</h1>
+    </header>
+
+    <section class="chapter-section">
+      <h2>Objectiu</h2>
+      <p>Escriu un programa que llegeixi una paraula o frase i mostri quantes vocals conté. Compta les vocals <code>a</code>, <code>e</code>, <code>i</code>, <code>o</code>, <code>u</code> tant en minúscula com en majúscula. <strong>No comptis les vocals accentuades</strong> (<code>à</code>, <code>é</code>, etc.).</p>
+      <p>Exemples:</p>
+      <pre class="code-example">Entrada: hola     →  Vocals: 2
+Entrada: Python   →  Vocals: 1
+Entrada: AEIOU    →  Vocals: 5
+Entrada: xyz      →  Vocals: 0</pre>
+
+      <h2>Simulador</h2>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diverses paraules i frases.</p>
+
+      <div class="simulador"
+           data-code="# Repte 11: Comptador de vocals
+# Llegeix un text i compta les vocals (a, e, i, o, u)
+
+text = input()
+"
+           data-tests='[
+             {"stdin":"hola","expected":"Vocals: 2"},
+             {"stdin":"Python","expected":"Vocals: 1"},
+             {"stdin":"AEIOU","expected":"Vocals: 5"},
+             {"stdin":"xyz","expected":"Vocals: 0"},
+             {"stdin":"Bona tarda","expected":"Vocals: 4"}
+           ]'
+           data-goal-id="repte-11"
+           data-height="360">
+      </div>
+    </section>
+
+    <details style="margin-top: 1.5rem;">
+      <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
+        Recorre el text amb <code>for c in text:</code> i comprova si <code>c.lower() in "aeiou"</code>.
+        Acumula el comptador amb una variable que comenci a 0.
+      </p>
+    </details>
+
+    <nav class="chapter-nav">
+      <a href="repte-10.html" class="btn-nav btn-nav--prev">← Repte anterior</a>
+      <a href="repte-12.html" class="btn-nav btn-nav--next">Repte següent →</a>
+    </nav>
+
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderReptesSidebar(11);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+</body>
+</html>
