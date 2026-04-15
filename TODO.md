@@ -15,35 +15,11 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 - Extracted the glossary into its own file (`curs/glossari-data.js`)
 - Added interactive `input()` support via SharedArrayBuffer, with a fallback stdin textarea panel for environments without COOP/COEP headers
 - Added mobile keyboard accessory (`js/kbd-accessory.js`) — a fixed bottom bar with Python-specific keys that appears on touch devices when the editor has focus. Scrollable, respects embed mode, hidden on desktop. Styles in `style.css`, loaded from `index.html`.
+- Created all 14 missing reptes (`curs/repte-2.html` through `curs/repte-15.html`) — 5 easy, 5 intermediate, 5 hard. Updated `REPTES_DATA` in `capitols.js` with all 15 entries. Updated `repte-1.html` navigation. Each repte uses Mode C validation with 4–6 test cases covering edge cases.
 
 ---
 
-## Task 1 — Create the 14 Missing Reptes (Challenges)
-
-**Priority: HIGH** — This is the single largest content gap.
-
-**What:** Create `curs/repte-2.html` through `curs/repte-15.html` following the detailed plan in `PYCAT-REPTES-PLAN.md`. Each repte is a standalone HTML file with an embedded simulator iframe.
-
-**How:**
-1. Read `PYCAT-REPTES-PLAN.md` in full — it contains the exact specifications for all 15 reptes (repte-1 already exists as a reference).
-2. Read `curs/repte-1.html` as the canonical template — copy its structure exactly.
-3. For each repte, create the HTML file with the correct `data-code`, `data-tests` (or `data-expected`/`data-testcode`), and `data-goal-id` attributes.
-4. After creating all files, update `REPTES_DATA` in `curs/capitols.js` — uncomment and add all 15 entries with the correct `goalId`.
-5. Make sure every repte HTML loads `glossari-data.js` before `capitols.js`.
-
-**Validation:** Each repte should be manually testable: open it in a browser, enter the correct solution, and verify that the feedback shows "✓ Correcte". Enter an incorrect solution and verify "✗" feedback with a useful message.
-
-**Critical rules from the plan:**
-- All content in Catalan (Python keywords stay in English)
-- Warm, concise, second-person singular tone
-- Each repte has 3–5 test cases to avoid false positives
-- Test cases must cover edge cases (zero, negative, empty string, etc.)
-- Variable names in code skeletons should be in Catalan
-- `data-goal-id` format: `repte-N` (e.g., `repte-2`, `repte-3`, ...)
-
----
-
-## Task 2 — Shift+Tab Unindent and Block Indent/Unindent
+## Task 1 — Shift+Tab Unindent and Block Indent/Unindent
 
 **Priority: MEDIUM**
 
@@ -59,7 +35,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 3 — CDN Fallback and Friendly Error on Pyodide Load Failure
+## Task 2 — CDN Fallback and Friendly Error on Pyodide Load Failure
 
 **Priority: MEDIUM**
 
@@ -75,7 +51,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 4 — i18n Module Separation
+## Task 3 — i18n Module Separation
 
 **Priority: LOW**
 
@@ -91,7 +67,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 5 — Automated Test Runner for Exercises
+## Task 4 — Automated Test Runner for Exercises
 
 **Priority: LOW**
 
@@ -110,7 +86,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 6 — Service Worker for Offline Support
+## Task 5 — Service Worker for Offline Support
 
 **Priority: LOW**
 
@@ -129,7 +105,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 7 — Chapter Template Generator
+## Task 6 — Chapter Template Generator
 
 **Priority: LOW**
 
@@ -147,7 +123,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 8 — Migrate to ES Modules
+## Task 7 — Migrate to ES Modules
 
 **Priority: LOW — Only do if the project grows significantly.**
 
@@ -164,7 +140,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 9 — Progress Tracking for Capítol 2 and Capítol 10
+## Task 8 — Progress Tracking for Capítol 2 and Capítol 10
 
 **Priority: LOW**
 

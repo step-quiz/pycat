@@ -40,9 +40,21 @@ var CAPITOLS_DATA = [
 ];
 
 var REPTES_DATA = [
-  { num: 1,  titol: 'El primer programa',    arxiu: 'repte-1.html', goalId: 'repte-1' },
-  // { num: 2,  titol: 'La suma',              arxiu: 'repte-2.html', goalId: 'repte-2' },
-  // ...afegir reptes aquí
+  { num: 1,  titol: 'El primer programa',       arxiu: 'repte-1.html',  goalId: 'repte-1' },
+  { num: 2,  titol: 'Presenta\'t',              arxiu: 'repte-2.html',  goalId: 'repte-2' },
+  { num: 3,  titol: 'La calculadora ràpida',     arxiu: 'repte-3.html',  goalId: 'repte-3' },
+  { num: 4,  titol: 'Anys, mesos, dies',         arxiu: 'repte-4.html',  goalId: 'repte-4' },
+  { num: 5,  titol: 'Canvi de moneda',           arxiu: 'repte-5.html',  goalId: 'repte-5' },
+  { num: 6,  titol: 'Parell o senar',            arxiu: 'repte-6.html',  goalId: 'repte-6' },
+  { num: 7,  titol: 'El més gran de tres',       arxiu: 'repte-7.html',  goalId: 'repte-7' },
+  { num: 8,  titol: 'Compte enrere',             arxiu: 'repte-8.html',  goalId: 'repte-8' },
+  { num: 9,  titol: 'La taula de multiplicar',   arxiu: 'repte-9.html',  goalId: 'repte-9' },
+  { num: 10, titol: 'La piràmide',               arxiu: 'repte-10.html', goalId: 'repte-10' },
+  { num: 11, titol: 'Comptador de vocals',       arxiu: 'repte-11.html', goalId: 'repte-11' },
+  { num: 12, titol: 'Paraula al revés',          arxiu: 'repte-12.html', goalId: 'repte-12' },
+  { num: 13, titol: 'La mitjana',                arxiu: 'repte-13.html', goalId: 'repte-13' },
+  { num: 14, titol: 'És palíndrom?',             arxiu: 'repte-14.html', goalId: 'repte-14' },
+  { num: 15, titol: 'FizzBuzz',                  arxiu: 'repte-15.html', goalId: 'repte-15' },
 ];
 
 
