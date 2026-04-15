@@ -14,6 +14,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 - Fixed multi-line triple-quote syntax highlighting in `editor.js`
 - Extracted the glossary into its own file (`curs/glossari-data.js`)
 - Added interactive `input()` support via SharedArrayBuffer, with a fallback stdin textarea panel for environments without COOP/COEP headers
+- Added mobile keyboard accessory (`js/kbd-accessory.js`) — a fixed bottom bar with Python-specific keys that appears on touch devices when the editor has focus. Scrollable, respects embed mode, hidden on desktop. Styles in `style.css`, loaded from `index.html`.
 
 ---
 
@@ -42,29 +43,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 2 — Mobile Keyboard Accessory
-
-**Priority: MEDIUM**
-
-**What:** Create `js/kbd-accessory.js` — a virtual keyboard bar that appears above the system keyboard on mobile devices, providing quick access to characters commonly needed in Python but hard to type on mobile keyboards.
-
-**How:**
-1. Look at how KarelCat implements its `kbd-accessory.js` for reference patterns.
-2. The accessory should show buttons for: `=`, `(`, `)`, `[`, `]`, `{`, `}`, `"`, `'`, `:`, `#`, `_`, `<`, `>`, `+`, `-`, `*`, `/`, `%`
-3. Tapping a button inserts the character at the cursor position in the `code-editor` textarea.
-4. The accessory should only appear on touch devices (detect via `'ontouchstart' in window` or similar).
-5. It should be a fixed bar at the bottom of the screen, above the system keyboard.
-6. Add the script to `index.html` (after `ui.js`, before `main.js`).
-7. Style it in `style.css` using the existing CSS variables for consistency.
-
-**Considerations:**
-- Must not interfere with the existing Tab→4-spaces behavior
-- Should scroll horizontally if there are too many keys for the screen width
-- Should respect embed mode (might want to hide it in small iframes)
-
----
-
-## Task 3 — Shift+Tab Unindent and Block Indent/Unindent
+## Task 2 — Shift+Tab Unindent and Block Indent/Unindent
 
 **Priority: MEDIUM**
 
@@ -80,7 +59,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 4 — CDN Fallback and Friendly Error on Pyodide Load Failure
+## Task 3 — CDN Fallback and Friendly Error on Pyodide Load Failure
 
 **Priority: MEDIUM**
 
@@ -96,7 +75,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 5 — i18n Module Separation
+## Task 4 — i18n Module Separation
 
 **Priority: LOW**
 
@@ -112,7 +91,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 6 — Automated Test Runner for Exercises
+## Task 5 — Automated Test Runner for Exercises
 
 **Priority: LOW**
 
@@ -131,7 +110,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 7 — Service Worker for Offline Support
+## Task 6 — Service Worker for Offline Support
 
 **Priority: LOW**
 
@@ -150,7 +129,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 8 — Chapter Template Generator
+## Task 7 — Chapter Template Generator
 
 **Priority: LOW**
 
@@ -168,7 +147,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 9 — Migrate to ES Modules
+## Task 8 — Migrate to ES Modules
 
 **Priority: LOW — Only do if the project grows significantly.**
 
@@ -185,7 +164,7 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 10 — Progress Tracking for Capítol 2 and Capítol 10
+## Task 9 — Progress Tracking for Capítol 2 and Capítol 10
 
 **Priority: LOW**
 
