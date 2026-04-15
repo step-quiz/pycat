@@ -21,10 +21,14 @@ function setStateUI(state) {
 
   var btn = document.getElementById('btn-run');
   if (btn) {
-    var active = (state === 'running' || state === 'loading');
-    btn.textContent = P.t(active ? 'ui.stop' : 'ui.run');
-    btn.classList.toggle('p', !active);
-    btn.classList.toggle('r', active);
+    var running = (state === 'running');
+    var loading = (state === 'loading');
+    btn.textContent = P.t(running ? 'ui.stop' : 'ui.run');
+    btn.classList.toggle('p', !running);
+    btn.classList.toggle('r', running);
+    btn.disabled = loading;
+    btn.style.opacity = loading ? '0.45' : '';
+    btn.style.cursor  = loading ? 'not-allowed' : '';
   }
 }
 

@@ -67,7 +67,7 @@ function _spawnWorker() {
 var _handlers = {
   ready: function() {
     P.state.pyodideReady = true;
-    P.consolePush(P.t('log.ready'), 'ok');
+    P.consoleClear();
     P.setStateUI('idle');
   },
   stdout: function(d) {
