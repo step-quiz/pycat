@@ -46,7 +46,7 @@ _orig_stderr = sys.stderr
 
     postMessage({ type: 'ready' });
   } catch (e) {
-    postMessage({ type: 'error', msg: 'Error carregant Pyodide: ' + e.message });
+    postMessage({ type: 'load_error', msg: 'Error carregant Pyodide: ' + e.message, cdnUrl: cdnUrl });
   }
 }
 

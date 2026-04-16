@@ -63,12 +63,36 @@ function _spawnWorker() {
   };
 }
 
+// ── Estat de fallback CDN ──────────────────────────────
+var _triedFallback = false;
+
 // ── Handlers de missatges del worker ─────────────────────
 var _handlers = {
   ready: function() {
     P.state.pyodideReady = true;
+    _triedFallback = false;   // Reset per a futures recàrregues
     P.consoleClear();
     P.setStateUI('idle');
+  },
+  load_error: function(d) {
+    // Si encara no hem provat el CDN alternatiu, torna a provar automàticament
+    if (!_triedFallback && P.PYODIDE_CDN_FALLBACK && d.cdnUrl !== P.PYODIDE_CDN_FALLBACK) {
+      _triedFallback = true;
+      P.consolePush(P.t('log.load_retry'), 'dim');
+      // Mata el worker actual i spawna un de nou amb el CDN alternatiu
+      if (P.state.worker) {
+        P.state.worker.terminate();
+        P.state.worker = null;
+      }
+      _spawnWorker();
+      P.state.worker.postMessage({ type: 'init', cdnUrl: P.PYODIDE_CDN_FALLBACK });
+      return;
+    }
+    // Tots els CDN han fallat — mostra l'error i el botó de reintentar
+    P.consoleClear();
+    P.consolePush(P.t('log.load_error'), 'err');
+    P.setStateUI('error');
+    _showRetryButton();
   },
   stdout: function(d) {
     P.consolePush(d.text, 'out');
@@ -151,10 +175,27 @@ function _onTimeout() {
   P.state.worker.postMessage({ type: 'init', cdnUrl: P.PYODIDE_CDN });
 }
 
+// ── Botó "Torna a provar" per errors de càrrega ────────
+function _showRetryButton() {
+  var consol = document.getElementById('console');
+  if (!consol) return;
+  var btn = document.createElement('button');
+  btn.textContent = P.t('ui.retry');
+  btn.className = 'retry-btn';
+  btn.style.cssText = 'margin:8px 0;padding:6px 16px;border:none;border-radius:4px;background:#e67e22;color:#fff;cursor:pointer;font-size:14px;';
+  btn.onclick = function() {
+    btn.remove();
+    _triedFallback = false;
+    pyInit();
+  };
+  consol.appendChild(btn);
+}
+
 // ── API pública ──────────────────────────────────────────
 
 // Inicialitza Pyodide (carrega el runtime al worker)
 function pyInit() {
+  _triedFallback = false;
   _spawnWorker();
   P.setStateUI('loading');
   P.consolePush(P.t('log.loading'), 'dim');

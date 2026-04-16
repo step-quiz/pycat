@@ -246,16 +246,63 @@ function initEditor() {
   // Actualitza el ressaltat a cada input
   ta.addEventListener('input', updateEditor);
 
-  // Tab → 4 espais (com KarelCat)
+  // Tab / Shift+Tab → indentació / desindentació (4 espais)
   ta.addEventListener('keydown', function(e) {
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      var start = ta.selectionStart;
-      var end   = ta.selectionEnd;
-      ta.value = ta.value.substring(0, start) + '    ' + ta.value.substring(end);
+    if (e.key !== 'Tab') return;
+    e.preventDefault();
+
+    var start = ta.selectionStart;
+    var end   = ta.selectionEnd;
+    var val   = ta.value;
+
+    // ── Trobar les línies afectades ──────────────────────
+    var lineStart = val.lastIndexOf('\n', start - 1) + 1;
+    var lineEnd   = val.indexOf('\n', end);
+    if (lineEnd === -1) lineEnd = val.length;
+
+    var block     = val.substring(lineStart, lineEnd);
+    var lines     = block.split('\n');
+    var multiLine = (start !== end && lines.length > 1);
+
+    if (e.shiftKey) {
+      // ── Shift+Tab: desindenta ────────────────────────
+      var removed = 0;
+      var firstRemoved = 0;
+      var newLines = lines.map(function(ln, idx) {
+        var m = ln.match(/^( {1,4})/);
+        if (m) {
+          var r = m[1].length;
+          if (idx === 0) firstRemoved = r;
+          removed += r;
+          return ln.substring(r);
+        }
+        return ln;
+      });
+      var newBlock = newLines.join('\n');
+      ta.value = val.substring(0, lineStart) + newBlock + val.substring(lineEnd);
+
+      // Preserva la selecció
+      var newStart = Math.max(lineStart, start - firstRemoved);
+      if (multiLine) {
+        ta.selectionStart = newStart;
+        ta.selectionEnd   = end - removed;
+      } else {
+        ta.selectionStart = ta.selectionEnd = newStart;
+      }
+    } else if (multiLine) {
+      // ── Tab amb selecció multilínia: indenta tot ─────
+      var newLines = lines.map(function(ln) { return '    ' + ln; });
+      var newBlock = newLines.join('\n');
+      ta.value = val.substring(0, lineStart) + newBlock + val.substring(lineEnd);
+      ta.selectionStart = start + 4;
+      ta.selectionEnd   = end + (lines.length * 4);
+    } else {
+      // ── Tab normal: insereix 4 espais ────────────────
+      ta.value = val.substring(0, start) + '    ' + val.substring(end);
       ta.selectionStart = ta.selectionEnd = start + 4;
-      updateEditor();
     }
+
+    updateEditor();
   });
 }
 
