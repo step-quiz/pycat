@@ -13,7 +13,6 @@ PyCat és un curs interactiu per aprendre Python real, adreçat a alumnes que ja
 ### Principis heretats de KarelCat
 
 - **Zero instal·lació**: tot funciona obrint un HTML al navegador
-- **Offline-first**: un cop carregat Pyodide, funciona sense connexió
 - **Editor esquerra, resultat dreta**: la disposició bàsica es manté
 - **Capítols + Reptes**: mateixa estructura pedagògica
 - **Validació automàtica**: feedback immediat de si el repte és correcte

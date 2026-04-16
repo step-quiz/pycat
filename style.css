@@ -193,7 +193,7 @@ body.light .btn.r { background: var(--error); color: #fff; }
   border: 1px solid var(--border);
   border-radius: 4px;
   background: var(--surface);
-  color: var(--fg);
+  color: var(--text);
   cursor: pointer;
   outline: none;
   line-height: 1.2;
@@ -204,7 +204,7 @@ body.light .btn.r { background: var(--error); color: #fff; }
 body.light .lang-select {
   background: #fff;
   border-color: var(--border);
-  color: var(--fg);
+  color: var(--text);
 }
 body.embed .lang-select { display: none; }
 
