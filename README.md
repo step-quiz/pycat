@@ -1,93 +1,47 @@
-# PyCat
+# PyCat — Test Runner
 
-Entorn interactiu per aprendre **Python real** al navegador, adreçat a alumnes que han completat [KarelCat](https://github.com/...) o equivalent. Seqüela independent amb la mateixa arquitectura web i la mateixa UI/UX.
+Eina de desenvolupament per verificar que cada exercici del curs té una solució correcta i que els test cases són consistents. **No s'enllaça des de la UI del curs.**
 
-## Què és
+## Fitxers
 
-Un curs de capítols i reptes, accessible des del navegador sense instal·lació. L'alumne escriu Python real a l'editor (esquerra) i veu la sortida a la consola (dreta). Els reptes tenen validació automàtica.
+- **`test-exercises.html`** — Pàgina web que carrega Pyodide, extreu tots els exercicis de les pàgines del curs (`../curs/*.html`) i executa les solucions contra cada test case.
+- **`solutions.js`** — Solucions de referència per a cada `goalId`. Clau: `goalId` (p.ex. `cap-4-ex`, `repte-15`). Valor: codi Python.
 
-**Motor:** [Pyodide](https://pyodide.org/) — CPython compilat a WebAssembly, executat dins d'un Web Worker per no bloquejar la UI.
+## Com usar-la
 
-## Com executar-lo
+Des de l'arrel del projecte:
 
 ```bash
-# Serveix els fitxers amb qualsevol servidor HTTP local
-cd pycat/
 python3 -m http.server 8000
-
-# Obre al navegador
-open http://localhost:8000/curs/index.html     # el curs
-open http://localhost:8000/index.html           # el simulador lliure
 ```
 
-> **Important:** Cal un servidor HTTP — obrir els fitxers directament (`file://`) no funciona perquè els Web Workers necessiten el protocol `http://` o `https://`.
-
-La primera càrrega descarrega Pyodide (~12MB) des del CDN. Es cacheja al navegador i les càrregues posteriors són quasi instantànies.
-
-## Estructura
+Obre al navegador:
 
 ```
-pycat/
-├── index.html              ← Simulador lliure (editor + consola Python)
-├── style.css               ← Estils del simulador
-├── js/
-│   ├── constants.js        ← Configuració, i18n, namespace P
-│   ├── state.js            ← Estat centralitzat
-│   ├── pyworker.js         ← Web Worker amb Pyodide (motor Python)
-│   ├── pyrunner.js         ← Gestió del Worker des del main thread
-│   ├── console.js          ← Panell de sortida
-│   ├── editor.js           ← Ressaltat sintàctic Python + numeració
-│   ├── ui.js               ← Botons, tema, validació multi-test
-│   └── main.js             ← Inicialització i paràmetres URL
-├── curs/
-│   ├── index.html          ← Índex del curs
-│   ├── capitol-1.html      ← Capítol 1: Hola, Python!
-│   ├── ...                 ← Capítols 2 a 10
-│   ├── repte-1.html        ← Repte 1: El primer programa
-│   ├── capitols.js         ← Motor del curs (sidebar, iframes, feedback)
-│   └── curs.css            ← Estils del curs
-└── docs/
+http://localhost:8000/tests/test-exercises.html
 ```
 
-## Com escalar
+Prem **«Executa tots els tests»**. L'eina:
 
-### Afegir un capítol
+1. Descarrega els HTML del curs via `fetch()`.
+2. Parseja els `<div class="simulador" data-*>` per extreure `data-code`, `data-stdin`, `data-expected`, `data-tests`, `data-testcode`.
+3. Per a cada exercici amb `data-goal-id`, busca la solució a `solutions.js` i l'executa amb Pyodide contra cada test case.
+4. Mostra **PASS/FAIL** per exercici i per test, amb diff de la sortida.
 
-1. Crea `curs/capitol-N.html` (copia `capitol-1.html` com a plantilla)
-2. Afegeix l'entrada a `CAPITOLS_DATA` dins `curs/capitols.js`
+## Afegir un exercici nou
 
-### Afegir un repte
+1. Afegir el `<div class="simulador" data-goal-id="...">` a la pàgina del curs corresponent.
+2. Afegir la pàgina a `COURSE_PAGES` dins de `test-exercises.html` si encara no hi és.
+3. Afegir la solució a `solutions.js` amb la mateixa clau `goalId`.
+4. Executar la pàgina i verificar que tots els tests passen.
 
-1. Crea `curs/repte-N.html`
-2. Usa els atributs `data-*` per configurar la validació:
-   - `data-expected="sortida esperada"` — comparació simple de stdout (possiblement amb `data-stdin`)
-   - `data-tests='[{"stdin":"5","expected":"10"}, ...]'` — múltiples test cases (s'executen seqüencialment)
-   - `data-testcode="print(funcio(3))"` — codi Python afegit al final del codi de l'alumne abans d'executar
-3. Afegeix l'entrada a `REPTES_DATA` dins `curs/capitols.js`
+## Per què
 
-### Incrustar un simulador a qualsevol pàgina
+Prevé regressions quan s'editen els test cases o el codi d'un exercici. Detecta:
+- Errors tipogràfics a la sortida esperada (`data-expected` / `data-tests`).
+- Test cases on la solució correcta no hi encaixa.
+- Exercicis sense solució de referència.
 
-```html
-<div class="simulador"
-     data-code='print("Hola!")'
-     data-readonly="true"
-     data-height="220">
-</div>
-```
+## Verificació local (sense navegador)
 
-## Arquitectura
-
-Mateixa filosofia que KarelCat:
-
-| Patró | KarelCat | PyCat |
-|-------|----------|-------|
-| Namespace global | `K` | `P` |
-| Motor | Intèrpret JS propi | Pyodide (WebAssembly) |
-| Panell dret | Graella visual | Consola de text |
-| Validació | Comparació de CSVs | Comparació de stdout / tests |
-| Comunicació iframe↔pare | `postMessage` | `postMessage` |
-| Execució | Generadors JS (yield) | Web Worker (terminate per aturar) |
-
-## Llicència
-
-(la mateixa que KarelCat)
+També pots verificar les solucions amb CPython local executant el script de Node inclòs durant el desenvolupament d'aquesta tasca (veure historial de commits). Això és útil per al CI.

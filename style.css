@@ -185,6 +185,29 @@ body.light .btn.r { background: var(--error); color: #fff; }
   align-items: center;
 }
 
+/* Selector d'idioma */
+.lang-select {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  padding: 3px 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--fg);
+  cursor: pointer;
+  outline: none;
+  line-height: 1.2;
+}
+.lang-select:focus {
+  border-color: var(--accent);
+}
+body.light .lang-select {
+  background: #fff;
+  border-color: var(--border);
+  color: var(--fg);
+}
+body.embed .lang-select { display: none; }
+
 
 /* ══════════════════════════════════════════════════════
    TOOLBAR — Fila de controls d'execució
