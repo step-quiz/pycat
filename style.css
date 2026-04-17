@@ -607,3 +607,28 @@ body.embed .kbd-bar { display: none; }
 
 /* Amaga en mode embed (iframes del curs) */
 body.embed #offline-indicator { display: none; }
+
+
+/* ══════════════════════════════════════════════════════
+   EDITOR: EDITABLE vs READONLY
+   Distinció visual perquè l'alumne sàpiga d'un cop
+   d'ull si pot modificar el codi o no.
+══════════════════════════════════════════════════════ */
+
+/* ── Editable (per defecte): barra d'accent a l'esquerra ── */
+.code-col {
+  border-left: 3px solid var(--accent);
+}
+
+/* ── Readonly: sense barra, fons atenuat ── */
+body.is-readonly .code-col {
+  border-left: 3px solid transparent;
+}
+
+body.is-readonly #code-highlight {
+  background: var(--surface);
+}
+
+body.is-readonly #line-numbers {
+  background: var(--surface);
+}

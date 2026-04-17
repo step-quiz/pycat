@@ -51,6 +51,7 @@
     if (params.get('readonly') === '1') {
       ta.setAttribute('readonly', 'readonly');
       ta.style.cursor = 'default';
+      document.body.classList.add('is-readonly');
     }
 
     P.updateEditor();
