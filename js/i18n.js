@@ -40,6 +40,7 @@ P.UI_LANGS = {
     'log.load_retry':       '🔄 Tornant a provar amb un servidor alternatiu…',
     'ui.retry':             '🔄 Torna a provar',
     'ui.validate':          '▶ Valida',
+    'ui.readonly':          'No editable',
     'log.ran_interactive':  '✔ Programa executat. Prem ▶ Valida per comprovar.',
     'log.validating':       '── Validació ──',
   },
@@ -68,6 +69,7 @@ P.UI_LANGS = {
     'log.load_retry':       '🔄 Reintentando con un servidor alternativo…',
     'ui.retry':             '🔄 Reintentar',
     'ui.validate':          '▶ Validar',
+    'ui.readonly':          'No editable',
     'log.ran_interactive':  '✔ Programa ejecutado. Pulsa ▶ Validar para comprobar.',
     'log.validating':       '── Validación ──',
   },
@@ -96,6 +98,7 @@ P.UI_LANGS = {
     'log.load_retry':       '🔄 Retrying with an alternative server…',
     'ui.retry':             '🔄 Retry',
     'ui.validate':          '▶ Validate',
+    'ui.readonly':          'Read-only',
     'log.ran_interactive':  '✔ Program ran. Press ▶ Validate to check.',
     'log.validating':       '── Validation ──',
   }

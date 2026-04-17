@@ -52,6 +52,19 @@
       ta.setAttribute('readonly', 'readonly');
       ta.style.cursor = 'default';
       document.body.classList.add('is-readonly');
+
+      // Toast "No editable" en clicar l'editor readonly
+      var toast = document.createElement('div');
+      toast.className = 'readonly-toast';
+      toast.textContent = P.t('ui.readonly');
+      document.querySelector('.editor-inner').appendChild(toast);
+
+      var hideTimer = null;
+      ta.addEventListener('pointerdown', function() {
+        clearTimeout(hideTimer);
+        toast.classList.add('visible');
+        hideTimer = setTimeout(function() { toast.classList.remove('visible'); }, 1400);
+      });
     }
 
     P.updateEditor();
