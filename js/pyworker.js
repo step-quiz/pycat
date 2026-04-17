@@ -36,12 +36,20 @@ async function initPyodide(cdnUrl) {
     importScripts(cdnUrl + 'pyodide.js');
     pyodide = await loadPyodide({ indexURL: cdnUrl });
 
-    // Guardem stdout/stderr originals (una sola vegada)
+    // Guardem stdout/stderr/input originals (una sola vegada)
     pyodide.runPython(`
 import sys
+import builtins
 from io import StringIO
 _orig_stdout = sys.stdout
 _orig_stderr = sys.stderr
+_orig_input  = builtins.input
+
+def _batch_input(prompt=''):
+    line = sys.stdin.readline()
+    if not line:
+        raise EOFError
+    return line.rstrip('\\n')
 `);
 
     postMessage({ type: 'ready' });
@@ -143,6 +151,7 @@ _live_in  = _InteractiveStdin()
 sys.stdout = _live_out
 sys.stderr = _live_err
 sys.stdin  = _live_in
+builtins.input = _orig_input
 `);
 }
 
@@ -156,6 +165,7 @@ _cap_out = StringIO()
 _cap_err = StringIO()
 sys.stdout = _cap_out
 sys.stderr = _cap_err
+builtins.input = _batch_input
 `);
   if (stdin !== undefined && stdin !== null && stdin !== '') {
     pyodide.runPython('sys.stdin = StringIO(' + JSON.stringify(stdin) + ')');
@@ -195,13 +205,13 @@ async function runCode(code, stdin, interactive, sharedBuffer) {
       try { pyodide.runPython('sys.stdout.flush()'); } catch(_) {}
       var stdout = pyodide.runPython('sys.stdout.getvalue()');
       // Restaura
-      pyodide.runPython('sys.stdout = _orig_stdout; sys.stderr = _orig_stderr');
+      pyodide.runPython('sys.stdout = _orig_stdout; sys.stderr = _orig_stderr; builtins.input = _orig_input');
       postMessage({ type: 'done', elapsed: elapsed, output: stdout || '' });
     } else {
       // Mode batch: llegeix la sortida capturada
       var stdout = pyodide.runPython('_cap_out.getvalue()');
       var stderr = pyodide.runPython('_cap_err.getvalue()');
-      pyodide.runPython('sys.stdout = _orig_stdout; sys.stderr = _orig_stderr');
+      pyodide.runPython('sys.stdout = _orig_stdout; sys.stderr = _orig_stderr; builtins.input = _orig_input');
 
       if (stdout) {
         var lines = stdout.split('\n');
@@ -237,9 +247,9 @@ async function runCode(code, stdin, interactive, sharedBuffer) {
       }
     } catch(_) {}
 
-    // Restaura stdout/stderr
+    // Restaura stdout/stderr/input
     try {
-      pyodide.runPython('sys.stdout = _orig_stdout; sys.stderr = _orig_stderr');
+      pyodide.runPython('sys.stdout = _orig_stdout; sys.stderr = _orig_stderr; builtins.input = _orig_input');
     } catch(_) {}
 
     var elapsed2 = Math.round(performance.now() - t0);

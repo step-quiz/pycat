@@ -52,7 +52,7 @@
            data-code="# Repte 5: Canvi de moneda
 # Llegeix euros i converteix a dòlars (canvi: 1.08)
 
-euros = float(input())
+euros = float(input(&quot;Quantitat en euros: &quot;))
 "
            data-tests='[
              {"stdin":"50","expected":"50.0 € = 54.00 $"},
@@ -69,7 +69,7 @@ euros = float(input())
     <details style="margin-top: 1.5rem;">
       <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
       <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
-        Fes servir <code>float(input())</code> per llegir i una f-string amb format per als decimals:
+        Fes servir <code>float(input("text"))</code> per llegir i una f-string amb format per als decimals:
         <code>f"{euros} € = {dolars:.2f} $"</code>. El <code>:.2f</code> força exactament 2 decimals.
       </p>
     </details>
