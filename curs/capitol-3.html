@@ -137,14 +137,14 @@ print("Tinc " + edat + " anys")'
 
         <p>Fins ara tots els valors estaven escrits directament al codi. Però un programa de veritat sovint necessita rebre dades de fora. La funció <code>input()</code> llegeix una línia de text que l'usuari escriu.</p>
 
-        <p>En els simuladors d'aquest curs, l'input ve predefinit (no el teclat). A cada exemple t'indicarem quins valors rep el programa.</p>
+        <p>Quan executis un programa amb <code>input()</code>, el simulador et mostrarà un camp de text a la consola. Escriu el valor que vulguis i prem Enter.</p>
 
-        <p>En l'exemple següent, el programa rep el nom <code>Ada</code> com a input:</p>
+        <p>En l'exemple següent, prova d'escriure un nom (per exemple <code>Ada</code>) quan el programa ho demani:</p>
 
         <div class="simulador"
              data-code='nom = input()
 print(f"Hola, {nom}!")'
-             data-stdin="Ada"
+             data-interactive="true"
              data-readonly="true"
              data-height="220">
         </div>
@@ -166,14 +166,14 @@ print(f"Hola, {nom}!")'
           <li><code>float("3.14")</code> — converteix el string <code>"3.14"</code> al número decimal <code>3.14</code>.</li>
         </ul>
 
-        <p>L'exemple següent rep el número <code>7</code> com a input i en calcula el doble:</p>
+        <p>L'exemple següent demana un número i en calcula el doble. Prova d'escriure <code>7</code>:</p>
 
         <div class="simulador"
              data-code='text = input()
 numero = int(text)
 doble = numero * 2
 print(f"El doble de {numero} és {doble}")'
-             data-stdin="7"
+             data-interactive="true"
              data-readonly="true"
              data-height="260">
         </div>
@@ -183,7 +183,7 @@ print(f"El doble de {numero} és {doble}")'
         <div class="simulador"
              data-code='n = int(input())
 print(f"El doble de {n} és {n * 2}")'
-             data-stdin="7"
+             data-interactive="true"
              data-readonly="true"
              data-height="220">
         </div>
@@ -198,15 +198,14 @@ print(f"El doble de {n} és {n * 2}")'
       <section class="chapter-section">
         <h2>Múltiples inputs</h2>
 
-        <p>Cada crida a <code>input()</code> llegeix una línia nova. Si necessites dos valors, fas dues crides. L'exemple següent rep <code>5</code> i <code>3</code> en dues línies separades:</p>
+        <p>Cada crida a <code>input()</code> llegeix una línia nova. Si necessites dos valors, fas dues crides. Prova d'escriure dos números, per exemple <code>5</code> i <code>3</code>:</p>
 
         <div class="simulador"
              data-code='a = int(input())
 b = int(input())
 suma = a + b
 print(f"{a} + {b} = {suma}")'
-             data-stdin="5
-3"
+             data-interactive="true"
              data-readonly="true"
              data-height="260">
         </div>
@@ -219,7 +218,7 @@ print(f"{a} + {b} = {suma}")'
       <section class="chapter-section">
         <h2>Posant-ho tot junt</h2>
 
-        <p>Ara ja tens les peces per fer un programa complet: llegir dades, operar-hi i mostrar el resultat. L'exemple següent calcula l'àrea d'un rectangle a partir de la base i l'altura. Rep <code>8</code> i <code>5</code>:</p>
+        <p>Ara ja tens les peces per fer un programa complet: llegir dades, operar-hi i mostrar el resultat. L'exemple següent calcula l'àrea d'un rectangle. Prova d'escriure una base (per exemple <code>8</code>) i una altura (per exemple <code>5</code>):</p>
 
         <div class="simulador"
              data-code='base = int(input())
@@ -229,8 +228,7 @@ perimetre = 2 * (base + altura)
 print(f"Rectangle {base}x{altura}")
 print(f"Àrea: {area}")
 print(f"Perímetre: {perimetre}")'
-             data-stdin="8
-5"
+             data-interactive="true"
              data-readonly="true"
              data-height="320">
         </div>
@@ -267,6 +265,7 @@ Producte: 48</pre>
              data-expected="Suma: 16
 Diferència: 8
 Producte: 48"
+             data-interactive="true"
              data-goal-id="cap-3-ex"
              data-height="340">
         </div>

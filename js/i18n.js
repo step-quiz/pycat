@@ -39,6 +39,9 @@ P.UI_LANGS = {
     'log.load_error':       '❌ No s\'ha pogut carregar Python. Comprova la connexió a internet i recarrega la pàgina.',
     'log.load_retry':       '🔄 Tornant a provar amb un servidor alternatiu…',
     'ui.retry':             '🔄 Torna a provar',
+    'ui.validate':          '▶ Valida',
+    'log.ran_interactive':  '✔ Programa executat. Prem ▶ Valida per comprovar.',
+    'log.validating':       '── Validació ──',
   },
 
   es: {
@@ -64,6 +67,9 @@ P.UI_LANGS = {
     'log.load_error':       '❌ No se ha podido cargar Python. Comprueba la conexión a internet y recarga la página.',
     'log.load_retry':       '🔄 Reintentando con un servidor alternativo…',
     'ui.retry':             '🔄 Reintentar',
+    'ui.validate':          '▶ Validar',
+    'log.ran_interactive':  '✔ Programa ejecutado. Pulsa ▶ Validar para comprobar.',
+    'log.validating':       '── Validación ──',
   },
 
   en: {
@@ -89,6 +95,9 @@ P.UI_LANGS = {
     'log.load_error':       '❌ Could not load Python. Check your internet connection and reload the page.',
     'log.load_retry':       '🔄 Retrying with an alternative server…',
     'ui.retry':             '🔄 Retry',
+    'ui.validate':          '▶ Validate',
+    'log.ran_interactive':  '✔ Program ran. Press ▶ Validate to check.',
+    'log.validating':       '── Validation ──',
   }
 };
 

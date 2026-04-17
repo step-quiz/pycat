@@ -114,7 +114,7 @@ for p, r in preguntes:
 
 # Prova la funció amb una sola pregunta:
 pregunta("Quina es la capital de Franca?", "paris")'
-             data-stdin="paris"
+             data-interactive="true"
              data-height="320">
         </div>
 
@@ -133,7 +133,7 @@ pregunta("Quina es la capital de Franca?", "paris")'
         return False
 
 pregunta("Quants dies te un any de traspos?", "366")'
-             data-stdin="365"
+             data-interactive="true"
              data-height="310">
         </div>
       </section>
@@ -170,9 +170,7 @@ for p, r in preguntes:
 
 print()
 print("Has encertat", encerts, "de", len(preguntes), "preguntes.")'
-             data-stdin="paris
-366
-or"
+             data-interactive="true"
              data-height="430">
         </div>
 
@@ -274,7 +272,6 @@ preguntes = [
 ]
 
 # ── Joc ─────────────────────────────────────────
-random.seed(42)   # llavor fixa: el curs no suporta input interactiu amb shuffle
 random.shuffle(preguntes)
 print("=== Quiz de cultura general ===")
 print()
@@ -299,20 +296,9 @@ elif encerts >= total * 0.6:
     print("Be! Pero encara pots millorar.")
 else:
     print("Anim! Torna-ho a intentar.")'
-             data-stdin="8
-366
-or
-jupiter
-paris"
+             data-interactive="true"
              data-height="500">
         </div>
-
-        <p class="chapter-note" style="font-size:0.82rem;color:var(--muted);">
-          <em>Nota tècnica:</em> al curs el programa rep les respostes predefinides (totes correctes)
-          perquè Pyodide no suporta input interactiu. Si executes aquest mateix codi fora del
-          navegador, podràs respondre-hi manualment. Prova de canviar alguna resposta del
-          <code>data-stdin</code> per veure el missatge d'«Incorrecte».
-        </p>
       </section>
 
 
@@ -351,7 +337,6 @@ preguntes = [
     ["Quin planeta es el mes gran del sistema solar?", "jupiter"],
 ]
 
-random.seed(42)
 random.shuffle(preguntes)
 print("=== Quiz de cultura general ===")
 print()
@@ -364,11 +349,7 @@ for p, r in preguntes:
 
 total = len(preguntes)
 print("Has encertat", encerts, "de", total, "preguntes.")'
-             data-stdin="8
-366
-or
-jupiter
-paris"
+             data-interactive="true"
              data-height="500">
         </div>
       </section>

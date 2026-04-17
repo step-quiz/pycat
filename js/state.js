@@ -34,4 +34,8 @@ P.state = {
   // Input interactiu (simulador lliure)
   interactive:    false,   // true si SharedArrayBuffer disponible i mode lliure
   inputCallback:  null,    // callback per resoldre l'input pendent
+
+  // Dual-mode: interactive run + batch validation
+  wantsInteractive: false, // true si el simulador té data-interactive="true"
+  ranInteractive:   false, // true després d'una execució interactiva (pendent de validació)
 };

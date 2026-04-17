@@ -92,6 +92,9 @@
   // 3) Inicialitza Pyodide (pre-carrega al worker)
   P.pyInit();
 
+  // 3b) Paràmetre interactive (opt-in per a dual-mode)
+  S.wantsInteractive = params.get('interactive') === '1';
+
   // 4) Estat inicial de la UI
   P.setStateUI('loading');
 

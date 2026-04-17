@@ -17,13 +17,23 @@ function setStateUI(state) {
   var dot = document.getElementById('state-dot');
   var lbl = document.getElementById('state-lbl');
   if (dot) dot.className = state;
-  if (lbl) lbl.textContent = P.t('state.' + state);
+  // Map internal states to display states for badge
+  var displayState = state;
+  if (state === 'ran-interactive') displayState = 'done';
+  if (state === 'validating')     displayState = 'running';
+  if (lbl) lbl.textContent = P.t('state.' + displayState);
 
   var btn = document.getElementById('btn-run');
   if (btn) {
-    var running = (state === 'running');
-    var loading = (state === 'loading');
-    btn.textContent = P.t(running ? 'ui.stop' : 'ui.run');
+    var running    = (state === 'running' || state === 'validating');
+    var loading    = (state === 'loading');
+    var wantValid  = (state === 'ran-interactive');
+
+    if (wantValid) {
+      btn.textContent = P.t('ui.validate');
+    } else {
+      btn.textContent = P.t(running ? 'ui.stop' : 'ui.run');
+    }
     btn.classList.toggle('p', !running);
     btn.classList.toggle('r', running);
     btn.disabled = loading;
@@ -35,8 +45,10 @@ function setStateUI(state) {
 // ── Handler del botó principal ───────────────────────────
 function handleRunClick() {
   var s = P.state.currentState;
-  if (s === 'running') {
+  if (s === 'running' || s === 'validating') {
     stopProgram();
+  } else if (s === 'ran-interactive') {
+    _runValidation();
   } else {
     runProgram();
   }
@@ -96,6 +108,7 @@ async function runProgram() {
   }
 
   _notifyClear();
+  P.state.ranInteractive = false;
 
   var S = P.state;
   var finalCode = _buildFinalCode(userCode);
@@ -126,7 +139,42 @@ async function runProgram() {
     return;
   }
 
-  // ── Cas 2: amb validació — itera pels test cases ──
+  // ── Cas 2: amb validació ──
+
+  // Dual-mode: si wantsInteractive i SAB disponible i el codi usa input(),
+  // primer executa interactivament, després l'alumne fa clic a Valida.
+  if (S.wantsInteractive && P.canInteractive() && _usesInput(userCode)) {
+    P.consoleHideStdinPanel();
+    await P.pyRunAsync(finalCode, null, true);  // interactive=true
+    // Si el programa ha acabat bé (no error/timeout), entrem en mode validació
+    if (P.state.currentState === 'done') {
+      P.state.ranInteractive = true;
+      P.consolePush(P.t('log.ran_interactive'), 'dim');
+      setStateUI('ran-interactive');
+    }
+    return;
+  }
+
+  // Fallback: batch directe (sense SAB o sense wantsInteractive)
+  await _runBatchValidation(finalCode);
+}
+
+// ── Executa la validació batch (des del botó Valida o directament) ──
+async function _runValidation() {
+  var userCode = (document.getElementById('code-editor') || {}).value || '';
+  var finalCode = _buildFinalCode(userCode);
+
+  P.consoleClear();
+  P.clearLineMarks();
+  P.consolePush(P.t('log.validating'), 'dim');
+
+  P.state.ranInteractive = false;
+  await _runBatchValidation(finalCode);
+}
+
+// ── Itera pels test cases en batch ──────────────────────
+async function _runBatchValidation(finalCode) {
+  var S = P.state;
   var results = [];
   for (var i = 0; i < S.testCases.length; i++) {
     var tc = S.testCases[i];
@@ -163,6 +211,7 @@ function stopProgram() {
 function resetConsole() {
   P.consoleClear();
   P.clearLineMarks();
+  P.state.ranInteractive = false;
   P.setStateUI('idle');
   P.consolePush(P.t('log.reset'), 'dim');
   _notifyClear();

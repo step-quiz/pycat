@@ -140,6 +140,7 @@ function renderSimuladors() {
     var tests    = div.getAttribute('data-tests') || '';
     var testcode = div.getAttribute('data-testcode') || '';
     var goalId   = div.getAttribute('data-goal-id') || '';
+    var interactive = div.getAttribute('data-interactive') === 'true';
 
     var params = new URLSearchParams();
     params.set('embed', '1');
@@ -152,6 +153,7 @@ function renderSimuladors() {
     if (tests)    params.set('tests', btoa(unescape(encodeURIComponent(tests))));
     if (testcode) params.set('testcode', btoa(unescape(encodeURIComponent(testcode))));
     if (goalId)   params.set('goalId', goalId);
+    if (interactive) params.set('interactive', '1');
 
     var iframe = document.createElement('iframe');
     iframe.src = '../index.html?' + params.toString();
