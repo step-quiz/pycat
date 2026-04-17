@@ -16,11 +16,11 @@ function setStateUI(state) {
   P.state.currentState = state;
   var dot = document.getElementById('state-dot');
   var lbl = document.getElementById('state-lbl');
-  if (dot) dot.className = state;
-  // Map internal states to display states for badge
+  // Map internal states to display states for badge/dot
   var displayState = state;
   if (state === 'ran-interactive') displayState = 'done';
   if (state === 'validating')     displayState = 'running';
+  if (dot) dot.className = displayState;
   if (lbl) lbl.textContent = P.t('state.' + displayState);
 
   var btn = document.getElementById('btn-run');
@@ -167,6 +167,7 @@ async function _runValidation() {
   P.consoleClear();
   P.clearLineMarks();
   P.consolePush(P.t('log.validating'), 'dim');
+  setStateUI('validating');
 
   P.state.ranInteractive = false;
   await _runBatchValidation(finalCode);
