@@ -177,6 +177,20 @@ print(f"Total: {preu * quantitat} euros")'
              data-readonly="true"
              data-height="230">
         </div>
+
+        <p>Dins de les claus <code>{}</code> també pots afegir un <strong>format especial</strong> per als números. El més útil és <code>:.2f</code>, que força que un decimal sempre es mostri amb exactament 2 xifres decimals — ideal per a preus i mesures:</p>
+
+        <div class="simulador"
+             data-code='preu = 9.5
+print(f"Preu: {preu:.2f} €")
+
+resultat = 1 / 3
+print(f"Un terç és aproximadament {resultat:.2f}")'
+             data-readonly="true"
+             data-height="250">
+        </div>
+
+        <p>El <code>:.2f</code> es llegeix com «format de coma flotant amb 2 decimals». El número s'arrodoneix automàticament si cal.</p>
       </section>
 
 
@@ -208,12 +222,10 @@ print(missatge)'
         <h2>Exercici</h2>
 
         <div class="exercise-enunciat">
-          Crea tres variables: <code>nom</code> (amb el teu nom), <code>edat</code> (amb la teva edat), i <code>llenguatge</code> (amb el valor <code>"Python"</code>). Després, fes servir una f-string per imprimir <strong>exactament</strong> aquesta frase (amb els valors de les teves variables):
+          Crea tres variables: <code>nom</code> amb el valor <code>"Ada"</code>, <code>edat</code> amb el valor <code>16</code>, i <code>llenguatge</code> amb el valor <code>"Python"</code>. Després, fes servir una f-string per imprimir <strong>exactament</strong> aquesta frase:
         </div>
 
         <pre class="code-example">Em dic Ada, tinc 16 anys i estic aprenent Python</pre>
-
-        <p>(Substitueix «Ada» i «16» pels valors que hagis posat a les teves variables.)</p>
 
         <div class="simulador"
              data-code='# Crea les tres variables aquí:
@@ -222,6 +234,8 @@ print(missatge)'
 # Imprimeix la frase amb una f-string:
 
 '
+             data-expected="Em dic Ada, tinc 16 anys i estic aprenent Python"
+             data-goal-id="cap-2-ex"
              data-height="300">
         </div>
       </section>
@@ -233,7 +247,7 @@ print(missatge)'
           <li>Una <strong>variable</strong> guarda un valor: <code>x = 42</code>.</li>
           <li>El signe <code>=</code> vol dir «guarda», no «és igual a».</li>
           <li>Python té diversos <strong>tipus</strong>: <code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>.</li>
-          <li>Les <strong>f-strings</strong> permeten barrejar text i variables: <code>f"Hola, {nom}"</code>.</li>
+          <li>Les <strong>f-strings</strong> permeten barrejar text i variables: <code>f"Hola, {nom}"</code>. Amb <code>:.2f</code> pots controlar els decimals: <code>f"{preu:.2f} €"</code>.</li>
           <li>Les variables poden canviar de valor: <code>x = x + 1</code>.</li>
         </ul>
       </section>

@@ -236,6 +236,24 @@ pre.code-example {
 .simulador-feedback.fb-ok { color: #16a34a; }
 .simulador-feedback.fb-ko { color: #dc2626; }
 
+/* Botó de pantalla completa (només visible en mòbil) */
+.simulador-fullscreen-btn {
+  display: none;
+  text-align: right;
+  font-size: 0.78rem;
+  color: var(--muted, #888);
+  text-decoration: none;
+  padding: 5px 2px 0;
+  font-family: inherit;
+}
+.simulador-fullscreen-btn:hover {
+  color: var(--accent, #0070f3);
+  text-decoration: underline;
+}
+@media (max-width: 640px) {
+  .simulador-fullscreen-btn { display: block; }
+}
+
 
 /* ══════════════════════════════════════════════════════
    PÀGINA INDEX DEL CURS

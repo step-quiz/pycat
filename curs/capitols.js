@@ -167,6 +167,15 @@ function renderSimuladors() {
     div.innerHTML = '';
     div.appendChild(iframe);
 
+    // Botó de pantalla completa (visible en mòbil via CSS)
+    var fullscreenBtn = document.createElement('a');
+    fullscreenBtn.href = '../index.html?' + params.toString();
+    fullscreenBtn.target = '_blank';
+    fullscreenBtn.rel = 'noopener';
+    fullscreenBtn.className = 'simulador-fullscreen-btn';
+    fullscreenBtn.textContent = '↗ Obre a pantalla completa';
+    div.appendChild(fullscreenBtn);
+
     if (goalId) {
       var fb = document.createElement('div');
       fb.className = 'simulador-feedback';
