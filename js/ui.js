@@ -296,11 +296,65 @@ function initGlossari() {
 }
 
 
+// ── Obrir / Desar fitxers .py ───────────────────────────
+
+var _currentFileName = 'programa.py';
+
+function initFileActions() {
+  var btnOpen  = document.getElementById('btn-open');
+  var btnSave  = document.getElementById('btn-save');
+  var fileInput = document.getElementById('file-open-input');
+  if (!btnOpen || !btnSave || !fileInput) return;
+
+  // Obre: delega al input[type=file] ocult
+  btnOpen.addEventListener('click', function() {
+    fileInput.value = '';  // permet reobrir el mateix fitxer
+    fileInput.click();
+  });
+
+  fileInput.addEventListener('change', function() {
+    var file = fileInput.files[0];
+    if (!file) return;
+
+    _currentFileName = file.name;
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var ta = document.getElementById('code-editor');
+      if (!ta) return;
+      ta.value = e.target.result;
+      P.updateEditor();
+      if (!document.body.classList.contains('embed')) {
+        try { localStorage.setItem(P.LS_KEY_CODE, ta.value); } catch(_) {}
+      }
+      ta.focus();
+    };
+    reader.readAsText(file);
+  });
+
+  // Desa: descarrega el contingut com a .py
+  btnSave.addEventListener('click', function() {
+    var ta = document.getElementById('code-editor');
+    if (!ta) return;
+    var blob = new Blob([ta.value], { type: 'text/x-python;charset=utf-8' });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href     = url;
+    a.download = _currentFileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+}
+
+
 // ── Exporta ──────────────────────────────────────────────
 P.setStateUI     = setStateUI;
 P.handleRunClick = handleRunClick;
 P.initTheme      = initTheme;
 P.initGlossari   = initGlossari;
+P.initFileActions = initFileActions;
 P.toggleTheme    = toggleTheme;
 P.updateThemeBtn = updateThemeBtn;
 

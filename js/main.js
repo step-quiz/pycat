@@ -39,6 +39,9 @@
   // 0b) Glossari
   P.initGlossari();
 
+  // 0c) Obrir / Desar fitxers
+  P.initFileActions();
+
   // 1) Editor
   P.initEditor();
   const ta = document.getElementById('code-editor');
