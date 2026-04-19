@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Repte 10 — La piràmide | PyCat</title>
+  <title>Repte 10 — Comptar paraules | PyCat</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
 </head>
@@ -20,7 +20,7 @@
     <a href="repte-1.html" class="active">Reptes</a>
     <a href="../index.html">Simulador</a>
   </nav>
-  <span class="curs-header-title">Repte 10 — La piràmide</span>
+  <span class="curs-header-title">Repte 10 — Comptar paraules</span>
   <div class="curs-header-actions"></div>
 </header>
 
@@ -34,33 +34,34 @@
 
     <header class="chapter-header">
       <span class="chapter-badge" style="background: #fef3c7; color: #92400e;">⚡ Repte 10 — Intermedi</span>
-      <h1>La piràmide</h1>
+      <h1>Comptar paraules</h1>
     </header>
 
     <section class="chapter-section">
       <h2>Objectiu</h2>
-      <p>Escriu un programa que llegeixi un nombre enter <code>n</code> i dibuixi una piràmide d'asteriscs <code>*</code> d'alçada <code>n</code>, alineada a l'esquerra. Cada fila té tants asteriscs com el seu número de fila.</p>
-      <p>Per exemple, si l'entrada és <code>4</code>:</p>
-      <pre class="code-example">*
-**
-***
-****</pre>
-      <p>Si l'entrada és <code>1</code>, la sortida és simplement <code>*</code>.</p>
+      <p>Escriu un programa que llegeixi una frase i mostri quantes paraules conté. Es considera que les paraules estan separades per espais.</p>
+      <p>Exemples:</p>
+      <pre class="code-example">Entrada: Hola món          →  Paraules: 2
+Entrada: Python és divertit →  Paraules: 3
+Entrada: hola               →  Paraules: 1</pre>
+
+      <p><strong>Pista conceptual:</strong> els strings tenen el mètode <code>.split()</code>, que divideix un text per espais i retorna una llista de paraules. La funció <code>len()</code> et dona la longitud d'una llista.</p>
 
       <h2>Simulador</h2>
-      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diverses alçades.</p>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diverses frases.</p>
 
       <div class="simulador"
-           data-code="# Repte 10: La piràmide
-# Llegeix n i dibuixa una piràmide de * d'alçada n
+           data-code="# Repte 10: Comptar paraules
+# Llegeix una frase i mostra quantes paraules té
 
-n = int(input(&quot;Quantes files? &quot;))
+frase = input(&quot;Escriu una frase: &quot;)
 "
            data-tests='[
-             {"stdin":"1","expected":"*"},
-             {"stdin":"3","expected":"*\n**\n***"},
-             {"stdin":"5","expected":"*\n**\n***\n****\n*****"},
-             {"stdin":"7","expected":"*\n**\n***\n****\n*****\n******\n*******"}
+             {"stdin":"Hola món","expected":"Paraules: 2"},
+             {"stdin":"Python és divertit","expected":"Paraules: 3"},
+             {"stdin":"hola","expected":"Paraules: 1"},
+             {"stdin":"el cel és blau avui","expected":"Paraules: 5"},
+             {"stdin":"un dos tres quatre","expected":"Paraules: 4"}
            ]'
            data-interactive="true"
            data-goal-id="repte-10"
@@ -71,7 +72,7 @@ n = int(input(&quot;Quantes files? &quot;))
     <details style="margin-top: 1.5rem;">
       <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
       <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
-        Un <code>for i in range(1, n + 1):</code> i dins <code>print("*" * i)</code>. Multiplicar un text per un nombre el repeteix.
+        <code>paraules = frase.split()</code> retorna una llista de paraules. Després <code>len(paraules)</code> et dona el nombre. Finalment <code>print(f"Paraules: {len(paraules)}")</code>.
       </p>
     </details>
 

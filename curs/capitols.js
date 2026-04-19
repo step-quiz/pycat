@@ -27,7 +27,7 @@ function injectCursLogo() {
 
 var CAPITOLS_DATA = [
   { num: 1,  titol: 'Hola, Python!',              arxiu: 'capitol-1.html',  goalId: 'cap-1-ex' },
-  { num: 2,  titol: 'Variables',                   arxiu: 'capitol-2.html',  goalId: null },
+  { num: 2,  titol: 'Variables',                   arxiu: 'capitol-2.html',  goalId: 'cap-2-ex' },
   { num: 3,  titol: 'Operacions i input',          arxiu: 'capitol-3.html',  goalId: 'cap-3-ex' },
   { num: 4,  titol: 'Decisions: if, elif, else',   arxiu: 'capitol-4.html',  goalId: 'cap-4-ex' },
   { num: 5,  titol: 'Repetir amb while',           arxiu: 'capitol-5.html',  goalId: 'cap-5-ex' },
@@ -35,7 +35,8 @@ var CAPITOLS_DATA = [
   { num: 7,  titol: 'Treballant amb text',         arxiu: 'capitol-7.html',  goalId: 'cap-7-ex' },
   { num: 8,  titol: 'Llistes',                     arxiu: 'capitol-8.html',  goalId: 'cap-8-ex' },
   { num: 9,  titol: 'Funcions',                    arxiu: 'capitol-9.html',  goalId: 'cap-9-ex' },
-  { num: 10, titol: 'Posant-ho tot junt',          arxiu: 'capitol-10.html', goalId: null },
+  { num: 10, titol: 'Diccionaris',                 arxiu: 'capitol-10.html', goalId: 'cap-10-ex' },
+  { num: 11, titol: 'Posant-ho tot junt',          arxiu: 'capitol-11.html', goalId: null },
   // ...afegir capítols aquí
 ];
 
@@ -49,8 +50,8 @@ var REPTES_DATA = [
   { num: 7,  titol: 'El més gran de tres',       arxiu: 'repte-7.html',  goalId: 'repte-7' },
   { num: 8,  titol: 'Compte enrere',             arxiu: 'repte-8.html',  goalId: 'repte-8' },
   { num: 9,  titol: 'La taula de multiplicar',   arxiu: 'repte-9.html',  goalId: 'repte-9' },
-  { num: 10, titol: 'La piràmide',               arxiu: 'repte-10.html', goalId: 'repte-10' },
-  { num: 11, titol: 'Comptador de vocals',       arxiu: 'repte-11.html', goalId: 'repte-11' },
+  { num: 10, titol: 'Comptar paraules',          arxiu: 'repte-10.html', goalId: 'repte-10' },
+  { num: 11, titol: 'La funció saluda',           arxiu: 'repte-11.html', goalId: 'repte-11' },
   { num: 12, titol: 'Paraula al revés',          arxiu: 'repte-12.html', goalId: 'repte-12' },
   { num: 13, titol: 'La mitjana',                arxiu: 'repte-13.html', goalId: 'repte-13' },
   { num: 14, titol: 'És palíndrom?',             arxiu: 'repte-14.html', goalId: 'repte-14' },

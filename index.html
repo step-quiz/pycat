@@ -52,8 +52,8 @@
      FILA 2 — Controls d'execució
      ══════════════════════════════════════════════════════ -->
 <div class="toolbar">
-  <button class="btn p" id="btn-run" onclick="handleRunClick()">▶ Executa</button>
-  <button class="btn"   id="btn-reset" onclick="resetConsole()">↺ Neteja</button>
+  <button class="btn p" id="btn-run"   onclick="handleRunClick()" aria-label="Executa el programa">▶ Executa</button>
+  <button class="btn"   id="btn-reset" onclick="resetConsole()"   aria-label="Neteja la consola">↺ Neteja</button>
 </div>
 
 
@@ -69,7 +69,8 @@
       <div class="editor-inner">
         <div  id="line-bg"        aria-hidden="true"></div>
         <pre  id="code-highlight" aria-hidden="true"></pre>
-        <textarea id="code-editor" spellcheck="false" wrap="off"></textarea>
+        <textarea id="code-editor" spellcheck="false" wrap="off"
+                  aria-label="Editor de codi Python" aria-multiline="true"></textarea>
       </div>
     </div>
   </div>
@@ -79,7 +80,7 @@
     <div class="console-header">
       <span>⬤ Consola</span>
     </div>
-    <div class="console-area">
+    <div class="console-area" role="region" aria-label="Consola de sortida" aria-live="polite">
       <div id="console-output"></div>
     </div>
   </div>

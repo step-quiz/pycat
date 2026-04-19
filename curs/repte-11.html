@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Repte 11 — Comptador de vocals | PyCat</title>
+  <title>Repte 11 — La funció saluda | PyCat</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
 </head>
@@ -20,7 +20,7 @@
     <a href="repte-1.html" class="active">Reptes</a>
     <a href="../index.html">Simulador</a>
   </nav>
-  <span class="curs-header-title">Repte 11 — Comptador de vocals</span>
+  <span class="curs-header-title">Repte 11 — La funció saluda</span>
   <div class="curs-header-actions"></div>
 </header>
 
@@ -33,46 +33,49 @@
   <main class="curs-content">
 
     <header class="chapter-header">
-      <span class="chapter-badge" style="background: #fee2e2; color: #991b1b;">⚡ Repte 11 — Difícil</span>
-      <h1>Comptador de vocals</h1>
+      <span class="chapter-badge" style="background: #fef3c7; color: #92400e;">⚡ Repte 11 — Intermedi</span>
+      <h1>La funció saluda</h1>
     </header>
 
     <section class="chapter-section">
       <h2>Objectiu</h2>
-      <p>Escriu un programa que llegeixi una paraula o frase i mostri quantes vocals conté. Compta les vocals <code>a</code>, <code>e</code>, <code>i</code>, <code>o</code>, <code>u</code> tant en minúscula com en majúscula. <strong>No comptis les vocals accentuades</strong> (<code>à</code>, <code>é</code>, etc.).</p>
+      <p>Defineix una funció <code>saluda(nom)</code> que rebi un nom com a paràmetre i <strong>retorni</strong> (no imprimeixi) el string <code>"Hola, [nom]! Benvingut/da a Python."</code>.</p>
+      <p>Després, el programa ha de llegir un nom per teclat, cridar la funció i imprimir el resultat.</p>
       <p>Exemples:</p>
-      <pre class="code-example">Entrada: hola     →  Vocals: 2
-Entrada: Python   →  Vocals: 1
-Entrada: AEIOU    →  Vocals: 5
-Entrada: xyz      →  Vocals: 0</pre>
+      <pre class="code-example">Entrada: Ada    →  Hola, Ada! Benvingut/da a Python.
+Entrada: PyCat  →  Hola, PyCat! Benvingut/da a Python.</pre>
+
+      <p>La diferència entre <code>return</code> i <code>print()</code> dins d'una funció és important: <code>return</code> <em>retorna</em> el valor perquè el codi que ha cridat la funció el pugui usar; <code>print()</code> el mostra directament però no retorna res útil.</p>
 
       <h2>Simulador</h2>
-      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diverses paraules i frases.</p>
+      <p>Escriu el teu codi i prem <strong>▶ Executa</strong>. El sistema provarà diversos noms.</p>
 
       <div class="simulador"
-           data-code="# Repte 11: Comptador de vocals
-# Llegeix un text i compta les vocals (a, e, i, o, u)
+           data-code="# Repte 11: La funció saluda
+# Defineix la funció i després llegeix un nom i imprimeix el resultat
 
-text = input(&quot;Escriu un text: &quot;)
+def saluda(nom):
+    pass  # substitueix pass pel return correcte
+
+nom = input(&quot;Com et dius? &quot;)
+print(saluda(nom))
 "
            data-tests='[
-             {"stdin":"hola","expected":"Vocals: 2"},
-             {"stdin":"Python","expected":"Vocals: 1"},
-             {"stdin":"AEIOU","expected":"Vocals: 5"},
-             {"stdin":"xyz","expected":"Vocals: 0"},
-             {"stdin":"Bona tarda","expected":"Vocals: 4"}
+             {"stdin":"Ada","expected":"Hola, Ada! Benvingut/da a Python."},
+             {"stdin":"PyCat","expected":"Hola, PyCat! Benvingut/da a Python."},
+             {"stdin":"Món","expected":"Hola, Món! Benvingut/da a Python."},
+             {"stdin":"Python","expected":"Hola, Python! Benvingut/da a Python."}
            ]'
            data-interactive="true"
            data-goal-id="repte-11"
-           data-height="360">
+           data-height="380">
       </div>
     </section>
 
     <details style="margin-top: 1.5rem;">
       <summary style="cursor:pointer; font-size:0.82rem; color:var(--muted);">💡 Pista</summary>
       <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted);">
-        Recorre el text amb <code>for c in text:</code> i comprova si <code>c.lower() in "aeiou"</code>.
-        Acumula el comptador amb una variable que comenci a 0.
+        Dins de <code>saluda</code>, usa <code>return f"Hola, {nom}! Benvingut/da a Python."</code>. Recorda que <code>return</code> envia el valor de tornada; <code>print(saluda(nom))</code> al final és qui l'imprimeix.
       </p>
     </details>
 
