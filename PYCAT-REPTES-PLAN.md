@@ -60,9 +60,7 @@ Every repte HTML follows the same skeleton. Use `repte-1.html` as the canonical 
   <nav class="curs-nav">
     <a href="capitol-1.html">Capítols</a>
     <a href="repte-1.html" class="active">Reptes</a>
-    <a href="../simulador.html">Simulador</a>
-  </nav>
-  <span class="curs-header-title">Repte N — TÍTOL</span>
+    <a href="../index.html">Simulador</a>
   <div class="curs-header-actions"></div>
 </header>
 
@@ -215,8 +213,8 @@ Three difficulty buckets, five reptes each. The progression assumes the correspo
 | 7  | El més gran de tres            | Intermedi    | 4                     |
 | 8  | Compte enrere                  | Intermedi    | 5 (`while`)           |
 | 9  | La taula de multiplicar        | Intermedi    | 6 (`for`, `range`)    |
-| 10 | La piràmide                    | Intermedi    | 6 (nested loops)      |
-| 11 | Comptador de vocals            | Difícil      | 7 (strings)           |
+| 10 | Comptar paraules               | Intermedi    | 7 (strings, `.split()`)        |
+| 11 | La funció saluda               | Difícil      | 9 (functions, `return`)        |
 | 12 | Paraula al revés               | Difícil      | 7                     |
 | 13 | La mitjana                     | Difícil      | 8 (lists)             |
 | 14 | És palíndrom?                  | Difícil      | 9 (functions)         |
@@ -295,24 +293,25 @@ Three difficulty buckets, five reptes each. The progression assumes the correspo
 - **Hint:** "Fes un `for i in range(1, 11):` i dins fes un `print(f\"{n} x {i} = {n*i}\")`."
 - **Goal-id:** `repte-9`.
 
-### Repte 10 — La piràmide
-- **Statement:** Llegeix un nombre enter `n` i dibuixa una piràmide de `*` d'alçada `n`, alineada a l'esquerra:
+### Repte 10 — Comptar paraules
+- **Statement:** Llegeix una frase i mostra quantes paraules conté (les paraules estan separades per espais). Format: `Paraules: N`.
   ```
-  Entrada: 4
-  Sortida:
-  *
-  **
-  ***
-  ****
+  Entrada: Hola món           →  Paraules: 2
+  Entrada: Python és divertit →  Paraules: 3
+  Entrada: hola               →  Paraules: 1
   ```
-- **Validation:** Mode C with ≥ 3 cases (`1`, `3`, `5`).
-- **Hint:** "Un `for` amb `range(1, n+1)` i dins `print(\"*\" * i)`."
+- **Validation:** Mode C with ≥ 5 cases (`Hola món` → `Paraules: 2`, `Python és divertit` → `Paraules: 3`, `hola` → `Paraules: 1`, `el cel és blau avui` → `Paraules: 5`, `un dos tres quatre` → `Paraules: 4`).
+- **Hint:** "`paraules = frase.split()` retorna una llista de paraules. Després `len(paraules)` et dona el nombre."
 - **Goal-id:** `repte-10`.
 
-### Repte 11 — Comptador de vocals
-- **Statement:** Llegeix una paraula o frase i mostra quantes vocals (`a e i o u`, en minúscula i majúscula, sense accents) conté. Format: `Vocals: N`.
-- **Validation:** Mode C with ≥ 4 cases (`hola` → `Vocals: 2`, `Python` → `Vocals: 1`, `AEIOU` → `Vocals: 5`, `xyz` → `Vocals: 0`).
-- **Hint:** "Recorre la paraula amb `for c in text:` i comprova si `c.lower() in \"aeiou\"`."
+### Repte 11 — La funció saluda
+- **Statement:** Defineix una funció `saluda(nom)` que rebi un nom com a paràmetre i **retorni** (no imprimeixi) el string `"Hola, [nom]! Benvingut/da a Python."`. Després el programa ha de llegir un nom per teclat, cridar la funció i imprimir el resultat.
+  ```
+  Entrada: Ada    →  Hola, Ada! Benvingut/da a Python.
+  Entrada: PyCat  →  Hola, PyCat! Benvingut/da a Python.
+  ```
+- **Validation:** Mode C with ≥ 4 cases (`Ada` → `Hola, Ada! Benvingut/da a Python.`, `PyCat` → `Hola, PyCat! Benvingut/da a Python.`, `Món` → `Hola, Món! Benvingut/da a Python.`, `Python` → `Hola, Python! Benvingut/da a Python.`).
+- **Hint:** "Dins de `saluda`, usa `return f\"Hola, {nom}! Benvingut/da a Python.\"`. Recorda que `return` envia el valor de tornada; `print(saluda(nom))` al final l'imprimeix."
 - **Goal-id:** `repte-11`.
 
 ### Repte 12 — Paraula al revés
@@ -414,7 +413,7 @@ For repte `N`:
 ## 6. Out of scope (do not write)
 
 - New capítols (the curriculum track is a separate workstream — see `PYCAT-CURRICULUM-PLAN.md`).
-- Changes to `simulador.html`, `js/pyrunner.js`, `js/main.js`, or anything outside `curs/`.
+- Changes to `index.html`, `js/pyrunner.js`, `js/main.js`, or anything outside `curs/`.
 - New CSS rules. Reuse the existing classes.
 - A reptes sub-track for "very easy" or "expert" — the 5+5+5 split is the product spec.
 - Per-repte glossari or hints beyond the single `<details>` block.

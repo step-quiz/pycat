@@ -1,4 +1,4 @@
-# PyCat — Curriculum Plan (10 Chapters)
+# PyCat — Curriculum Plan (11 Chapters)
 
 > **Audience:** This document is written for an AI assistant that will author the remaining chapters of the PyCat course. Read it in full before producing any HTML.
 
@@ -36,7 +36,8 @@ curs/
 ├── capitol-7.html      ← Treballant amb text               (DONE)
 ├── capitol-8.html      ← Llistes                          (DONE)
 ├── capitol-9.html      ← Funcions                            (DONE)
-├── capitol-10.html     ← Posant-ho tot junt                  (DONE)
+├── capitol-10.html     ← Diccionaris                         (DONE)
+├── capitol-11.html     ← Posant-ho tot junt                  (DONE)
 └── repte-1.html        ← El primer programa    (DONE — only existing repte)
 ```
 
@@ -65,9 +66,7 @@ Every chapter HTML has the same skeleton. Copy this exactly, only changing the t
   <nav class="curs-nav">
     <a href="capitol-1.html" class="active">Capítols</a>
     <a href="repte-1.html">Reptes</a>
-    <a href="../simulador.html">Simulador</a>
-  </nav>
-  <span class="curs-header-title">Capítol N — TÍTOL</span>
+    <a href="../index.html">Simulador</a>
   <div class="curs-header-actions"></div>   <!-- glossari injects itself here -->
 </header>
 
@@ -174,7 +173,8 @@ Three chapters already exist; you must write the remaining seven. The progressio
 | 7  | Treballant amb text                   | **DONE** | String indexing, slicing, methods, `len()`                  |
 | 8  | Llistes                               | **DONE** | Lists, indexing, `append`, iteration with `for x in lst`    |
 | 9  | Funcions                              | **DONE** | `def`, parameters, `return`, scope                          |
-| 10 | Posant-ho tot junt                    | **DONE** | Mini-project that combines chapters 1–9                     |
+| 10 | Diccionaris                           | **DONE** | Key-value pairs, `.keys()`, `.values()`, `.items()`, iteration |
+| 11 | Posant-ho tot junt                    | **DONE** | Mini-project that combines chapters 1–10                    |
 
 ### 3.1 Chapter-by-chapter detail
 
@@ -217,10 +217,15 @@ Each chapter must contain, in order:
 - **Sections:** Per què funcions (DRY) → `def` sense paràmetres → `def` amb paràmetres → `return` vs `print` (importantíssim, posa exemples contrastats) → diversos paràmetres → variables locals vs globals (light intro: una funció no veu les variables de fora si no se li passen) → exercici: una funció `es_primer(n)` que retorna `True`/`False`.
 - **Update glossari with:** `def`, `return`, `True`, `False`, `None`.
 
-#### Capítol 10 — Posant-ho tot junt
+#### Capítol 10 — Diccionaris
+- **Lead:** "Les llistes guarden valors ordenats per posició. Els diccionaris guarden valors per clau — com un diccionari real, on busques una paraula i trobes la definició."
+- **Sections:** Crear un diccionari i accedir-hi (`d = {"clau": valor}`, `d["clau"]`) → afegir, modificar i eliminar entrades (`d["nova"] = x`, `del d["clau"]`) → mètodes útils (`.keys()`, `.values()`, `.items()`) → recórrer un diccionari amb `for` → comprovar si una clau existeix (`"clau" in d`) → errors típics (`KeyError` en accedir a una clau inexistent) → exercici: comptar la freqüència de cada lletra d'una paraula.
+- **Update glossari with:** `{}`, `.keys()`, `.values()`, `.items()`, `KeyError`.
+
+#### Capítol 11 — Posant-ho tot junt
 - **Lead:** "Hora de combinar tot el que has après en un programa de veritat."
 - **Format:** Aquest capítol és diferent: en lloc d'introduir conceptes nous, guia el lector a través de la construcció d'un mini-programa pas a pas. Suggested project: **"Quiz de cultura general"** — el programa té una llista de preguntes-respostes, les fa en ordre aleatori, compta encerts i mostra una nota final. Cada secció afegeix una peça (les dades, el bucle principal, la funció `pregunta()`, la puntuació, el missatge final segons la nota) i conté un simulador amb la versió incremental del codi.
-- **Closing:** Una secció final "I ara què?" que apunta cap a temes que el curs no cobreix (diccionaris, fitxers, llibreries, classes) i recomana on continuar.
+- **Closing:** Una secció final "I ara què?" que apunta cap a temes que el curs no cobreix (fitxers, llibreries, classes) i recomana on continuar.
 - **No `Exercici` formal**, però sí un repte obert: "Modifica el quiz perquè...".
 
 ---
@@ -262,7 +267,7 @@ For chapter `N`:
 ## 6. Out of scope (do not write)
 
 - New reptes (the reptes track is a separate workstream).
-- Changes to `simulador.html`, `js/pyrunner.js`, `js/editor.js`, or anything outside `curs/`.
+- Changes to `index.html`, `js/pyrunner.js`, `js/editor.js`, or anything outside `curs/`.
 - New CSS rules in `curs/curs.css` unless absolutely required for a new content type — and even then, prefer reusing existing classes.
 - A dark theme for the course (the course is light-only by design).
 - Translation to other languages.
@@ -282,4 +287,5 @@ For chapter `N`:
 | 2026-04-14 | 7               | `capitol-7.html` (nou), `capitols.js` (CAPITOLS_DATA + glossari mètodes de text), `PYCAT-CURRICULUM-PLAN.md` (estat actualitzat) |
 | 2026-04-14 | 8               | `capitol-8.html` (nou), `capitols.js` (CAPITOLS_DATA + glossari secció Llistes amb `[]`, `.append()`, `.pop()`, `sum()`, `min()`, `max()`, `sorted()`), `PYCAT-CURRICULUM-PLAN.md` (estat actualitzat) |
 | 2026-04-14 | 9               | `capitol-9.html` (nou), `capitols.js` (CAPITOLS_DATA + glossari secció Funcions amb `def`, `return`, `None`, `True`, `False`), `PYCAT-CURRICULUM-PLAN.md` (estat actualitzat) |
-| 2026-04-14 | 10              | `capitol-10.html` (nou), `capitols.js` (CAPITOLS_DATA + glossari `random.shuffle()`), `PYCAT-CURRICULUM-PLAN.md` (estat actualitzat — curs complet) |
+| 2026-04-14 | 10              | `capitol-10.html` (nou — Diccionaris), `capitols.js` (CAPITOLS_DATA + glossari `{}`, `.keys()`, `.values()`, `.items()`, `KeyError`), `PYCAT-CURRICULUM-PLAN.md` (estat actualitzat) |
+| 2026-04-14 | 11              | `capitol-11.html` (nou — Posant-ho tot junt), `capitols.js` (CAPITOLS_DATA + glossari `random.shuffle()`), `PYCAT-CURRICULUM-PLAN.md` (estat actualitzat — curs complet) |
