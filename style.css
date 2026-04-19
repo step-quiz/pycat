@@ -194,6 +194,33 @@ body.light .btn.r { background: var(--error); color: #fff; }
   flex-wrap: wrap;
 }
 
+.toolbar-spacer { flex: 1; }
+
+.btn-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.btn-file:hover { color: var(--text); border-color: var(--text); }
+.btn-file svg { flex-shrink: 0; }
+
+body.embed .btn-file { display: none; }
+
+@media (max-width: 500px) {
+  .btn-file-label { display: none; }
+  .btn-file { padding: 4px 7px; }
+}
+
 
 /* ══════════════════════════════════════════════════════
    LAYOUT PRINCIPAL — Editor (esquerra) + Consola (dreta)
