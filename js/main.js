@@ -36,6 +36,9 @@
   // 0) Tema
   P.initTheme();
 
+  // 0b) Glossari
+  P.initGlossari();
+
   // 1) Editor
   P.initEditor();
   const ta = document.getElementById('code-editor');

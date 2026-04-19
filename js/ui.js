@@ -14,14 +14,6 @@
 
 function setStateUI(state) {
   P.state.currentState = state;
-  var dot = document.getElementById('state-dot');
-  var lbl = document.getElementById('state-lbl');
-  // Map internal states to display states for badge/dot
-  var displayState = state;
-  if (state === 'ran-interactive') displayState = 'done';
-  if (state === 'validating')     displayState = 'running';
-  if (dot) dot.className = displayState;
-  if (lbl) lbl.textContent = P.t('state.' + displayState);
 
   var btn = document.getElementById('btn-run');
   if (btn) {
@@ -275,10 +267,40 @@ function initTheme() {
 }
 
 
+// ── Glossari ────────────────────────────────────────────
+
+function initGlossari() {
+  var btn = document.getElementById('btn-glossari');
+  var overlay = document.getElementById('glossari-overlay');
+  if (!btn || !overlay) return;
+
+  // Injecta el contingut de glossari-data.js (carregat després)
+  function inject() {
+    if (overlay.children.length) return; // ja injectat
+    overlay.innerHTML = (typeof GLOSSARI_HTML !== 'undefined')
+      ? GLOSSARI_HTML
+      : '<div class="glossari-modal"><p>Glossari no disponible.</p></div>';
+
+    var closeBtn = overlay.querySelector('#glossari-close');
+    if (closeBtn) closeBtn.addEventListener('click', function() { overlay.classList.remove('is-open'); });
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.classList.remove('is-open'); });
+  }
+
+  btn.addEventListener('click', function() {
+    inject();
+    overlay.classList.toggle('is-open');
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') overlay.classList.remove('is-open');
+  });
+}
+
+
 // ── Exporta ──────────────────────────────────────────────
 P.setStateUI     = setStateUI;
 P.handleRunClick = handleRunClick;
 P.initTheme      = initTheme;
+P.initGlossari   = initGlossari;
 P.toggleTheme    = toggleTheme;
 P.updateThemeBtn = updateThemeBtn;
 
