@@ -1,6 +1,5 @@
 /* ════════════════════════════════════════════════════════
    style.css — PyCat
-   Derivat de KarelCat: mateixa estètica, consola en lloc de graella
 ════════════════════════════════════════════════════════ */
 
 :root {
@@ -346,7 +345,7 @@ body.light .hl-cm  { color: #9ca3af; }
 
 
 /* ══════════════════════════════════════════════════════
-   COLUMNA DRETA: CONSOLA (substitueix la graella Karel)
+   COLUMNA DRETA: CONSOLA
 ══════════════════════════════════════════════════════ */
 
 .console-col {

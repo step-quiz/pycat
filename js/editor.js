@@ -1,9 +1,6 @@
 // ════════════════════════════════════════════════════════
 // editor.js — Ressaltat sintàctic Python, numeració de línies
 //
-// Adaptat de KarelCat: mateixa mecànica (textarea + pre overlay),
-// però amb keywords de Python real en lloc de comandes Karel.
-//
 // El tokenitzador gestiona:
 //   - Strings d'una línia ('...' i "...")
 //   - Strings multilínia ('''...''' i """...""")

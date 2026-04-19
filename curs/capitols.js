@@ -222,7 +222,7 @@ function initSidebarToggle() {
 // ── Listener de feedback des dels iframes ────────────────
 
 window.addEventListener('message', function(e) {
-  // Només acceptem missatges del mateix origen (els iframes de simulador.html
+  // Només acceptem missatges del mateix origen (els iframes de index.html
   // hi viuen). Així evitem que extensions o altres frames puguin injectar
   // falsos resultats de progrés via postMessage.
   if (e.origin !== window.location.origin) return;
