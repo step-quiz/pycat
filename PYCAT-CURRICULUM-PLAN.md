@@ -110,7 +110,7 @@ Every chapter HTML has the same skeleton. Copy this exactly, only changing the t
 
 ### 2.3 The `<div class="simulador">` runnable widget
 
-This is the heart of every page. It becomes an `<iframe>` to `simulador.html` that runs Python in Pyodide. **Available data attributes** (all optional except `data-code`):
+This is the heart of every page. It becomes an `<iframe>` to `index.html` that runs Python in Pyodide. **Available data attributes** (all optional except `data-code`):
 
 | Attribute       | Purpose                                                                 |
 |-----------------|-------------------------------------------------------------------------|
