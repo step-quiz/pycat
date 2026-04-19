@@ -42,17 +42,15 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 
 ---
 
-## Task 8 — Progress Tracking for Capítol 2 and Capítol 10
+## Task 8 — Progress Tracking for Capítol 11
 
 **Priority: LOW**
 
-**What:** Capítol 2 (Variables) and Capítol 10 (Posant-ho tot junt) currently have no `data-goal-id` and therefore no progress tracking.
+**What:** Capítol 11 (Posant-ho tot junt) currently has no `data-goal-id` (`goalId: null` in `capitols.js`) and therefore no progress tracking.
 
-**For Capítol 2:** The exercise asks the student to "put your name" — it's open-ended by design. Options:
-- Add a `data-testcode` that checks `type(nom) == str and len(nom) > 0` or similar lightweight validation.
-- Or accept that chapter 2 has no trackable exercise and leave it as-is.
+> **Note:** Capítol 2 already has `data-goal-id="cap-2-ex"` in the HTML and `goalId: 'cap-2-ex'` in `capitols.js` — that part is resolved.
 
-**For Capítol 10:** This is a project chapter. It could have a `data-goal-id` tied to a specific exercise within it, or a "mark as done" button.
+**For Capítol 11:** This is a project chapter. It could have a `data-goal-id` tied to a specific exercise within it, or a \"mark as done\" button.
 
 ---
 

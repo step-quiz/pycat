@@ -2,7 +2,18 @@
 
 **Seqüela independent de KarelCat per practicar Python real al navegador**
 
-*Document d'arquitectura i pla de desenvolupament*
+---
+
+> ⚠️ **DOCUMENT DE DISSENY ORIGINAL — pot no reflectir l'estat actual del codi**
+>
+> Aquest document va ser escrit com a pla inicial del projecte i no s'ha actualitzat sistemàticament. Conté informació desactualitzada: fitxers que no existeixen, noms d'atributs incorrectes i un pla de fases que ja s'ha completat.
+>
+> Per a l'estat real del projecte, consulteu:
+> - **`README.md`** — estructura de fitxers actual i com servir el projecte
+> - **`TODO.md`** — tasques completades i pendents
+> - **El codi font** — és la font de veritat
+>
+> Les seccions d'aquest document que segueixen sent útils: visió general (§1), arquitectura del Web Worker (§2.2), disseny de la consola (§2.3), i consideracions tècniques (§4).
 
 ---
 
@@ -202,19 +213,19 @@ La validació substitueix la comparació de CSVs per **comparació de sortida** 
 ```html
 <div class="simulador"
      data-code="# Escriu el teu codi aquí"
-     data-expected-output="Hola, món!"
+     data-expected="Hola, món!"
      data-height="300">
 </div>
 ```
 
-El sistema executa el codi de l'alumne i compara stdout amb `data-expected-output`.
+El sistema executa el codi de l'alumne i compara stdout amb `data-expected`.
 
 **Tipus 2 — Comparació amb múltiples inputs (robust)**
 
 ```html
 <div class="simulador"
      data-code="n = int(input())\nprint(n * 2)"
-     data-test-cases='[
+     data-tests='[
        {"input": "5", "expected": "10"},
        {"input": "0", "expected": "0"},
        {"input": "-3", "expected": "-6"}
@@ -230,7 +241,7 @@ El sistema executa el codi amb cada input i verifica totes les sortides.
 ```html
 <div class="simulador"
      data-code="def suma(a, b):\n    pass"
-     data-test-code="
+     data-testcode="
 assert suma(2, 3) == 5, 'suma(2,3) hauria de ser 5'
 assert suma(0, 0) == 0, 'suma(0,0) hauria de ser 0'
 assert suma(-1, 1) == 0, 'suma(-1,1) hauria de ser 0'
@@ -400,31 +411,32 @@ Pyodide pesa ~12MB la primera càrrega. Estratègies:
 
 ## 5. Pla de desenvolupament
 
-### Fase 1 — Esquelet (1-2 setmanes)
-- [ ] Crear l'estructura de fitxers base
-- [ ] Copiar i adaptar CSS, nav, footer
-- [ ] Implementar `pyrunner.js` (Web Worker + Pyodide)
-- [ ] Implementar `console.js` (panell de sortida)
-- [ ] Crear `simulador.html` funcional amb editor + consola
-- [ ] Loading screen per a Pyodide
+> ✅ **Totes les fases estan implementades.** El que segueix era el pla original; consulta `TODO.md` per a les tasques actuals i l'historial de tasques completades.
 
-### Fase 2 — Validació (1 setmana)
-- [ ] Implementar `validator.js` (stdout comparison)
-- [ ] Implementar test cases múltiples
-- [ ] Comunicació iframe ↔ pare (postMessage)
-- [ ] Feedback visual (✓ / ✗)
+### Fase 1 — Esquelet ✅
+- Estructura de fitxers base
+- CSS, nav adaptat
+- `pyrunner.js` + `pyworker.js` (Web Worker + Pyodide)
+- `console.js` (panell de sortida)
+- `index.html` funcional amb editor + consola
+- Loading screen per a Pyodide
 
-### Fase 3 — Curs (3-4 setmanes)
-- [ ] Escriure capítols 1-12
-- [ ] Crear 15-20 reptes amb test cases
-- [ ] Integrar simuladors incrustats als capítols
-- [ ] Sistema de progrés
+### Fase 2 — Validació ✅
+- Validació de stdout (`data-expected`), test cases múltiples (`data-tests`), i tests unitaris (`data-testcode`)
+- Comunicació iframe ↔ pare (postMessage)
+- Feedback visual (✓ / ✗)
 
-### Fase 4 — Polish (1 setmana)
-- [ ] Teclat virtual mòbil adaptat
-- [ ] Tema clar/fosc
-- [ ] Proves en múltiples navegadors
-- [ ] Documentació
+### Fase 3 — Curs ✅
+- 11 capítols escrits
+- 15 reptes amb test cases
+- Simuladors incrustats als capítols
+- Sistema de progrés amb checkmarks a la barra lateral
+
+### Fase 4 — Polish ✅
+- Teclat virtual mòbil adaptat (`kbd-accessory.js`)
+- Tema clar/fosc
+- `input()` interactiu via SharedArrayBuffer + fallback stdin
+- Sistema i18n (ca/es/en) amb selector de llengua
 
 ---
 
