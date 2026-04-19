@@ -36,9 +36,6 @@
   // 0) Tema
   P.initTheme();
 
-  // 0b) Selector d'idioma
-  P.initLangSelector();
-
   // 1) Editor
   P.initEditor();
   const ta = document.getElementById('code-editor');

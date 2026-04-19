@@ -6,9 +6,6 @@
 // ════════════════════════════════════════════════════════
 
 P.state = {
-  // Idioma de la interfície
-  uiLang:       'ca',
-
   // Estat de la UI
   currentState: 'idle',   // idle | loading | running | done | error
 
