@@ -399,6 +399,51 @@ body.embed { font-size: 12px; }
 
 
 /* ══════════════════════════════════════════════════════
+   AUTOCOMPLETAT
+══════════════════════════════════════════════════════ */
+
+.autocomplete-dropdown {
+  display: none;
+  position: fixed;
+  z-index: 500;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.5);
+  min-width: 170px;
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.autocomplete-dropdown.visible { display: block; }
+
+.ac-item {
+  padding: 5px 12px;
+  cursor: pointer;
+  font-size: var(--ed-font-size);
+  font-family: var(--mono);
+  color: var(--text);
+  white-space: nowrap;
+  line-height: 1.6;
+}
+.ac-item:hover,
+.ac-item.selected {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+/* Keyword = morat, builtin = blau */
+.ac-item[data-kind="kw"]      { color: #c084fc; }
+.ac-item[data-kind="builtin"] { color: #60a5fa; }
+.ac-item.selected,
+.ac-item:hover                { background: var(--accent-dim); }
+
+body.light .autocomplete-dropdown { box-shadow: 0 4px 14px rgba(0,0,0,.15); background: #ffffff; border-color: #d0d0d0; }
+body.light .ac-item[data-kind="kw"]      { color: #7c3aed; }
+body.light .ac-item[data-kind="builtin"] { color: #2563eb; }
+
+
+/* ══════════════════════════════════════════════════════
    RESPONSIVE — Mòbil
 ══════════════════════════════════════════════════════ */
 
