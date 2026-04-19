@@ -177,7 +177,7 @@ function _onTimeout() {
 
 // ── Botó "Torna a provar" per errors de càrrega ────────
 function _showRetryButton() {
-  var consol = document.getElementById('console');
+  var consol = document.getElementById('console-output');
   if (!consol) return;
   var btn = document.createElement('button');
   btn.textContent = P.t('ui.retry');
