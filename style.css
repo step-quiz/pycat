@@ -122,29 +122,23 @@ body.embed .topbar-nav { display: none; }
   margin-left: auto;
 }
 
-/* Badge d'estat */
-#state-badge {
+/* Botó glossari */
+.btn-glossari {
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-size: 0.68rem;
-  letter-spacing: 0.5px;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
   color: var(--muted);
-  white-space: nowrap;
-}
-#state-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--muted);
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
   flex-shrink: 0;
-  transition: background 0.25s, box-shadow 0.25s;
 }
-#state-dot.idle    { background: var(--muted); }
-#state-dot.loading { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; animation: pulse-dot 1.2s ease-in-out infinite; }
-#state-dot.running { background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: pulse-dot 1s ease-in-out infinite; }
-#state-dot.done    { background: var(--ok); box-shadow: 0 0 8px var(--ok); }
-#state-dot.error   { background: var(--error); box-shadow: 0 0 8px var(--error); }
-@keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+.btn-glossari:hover { color: var(--text); border-color: var(--text); }
+body.embed .btn-glossari { display: none; }
 
 
 /* ══════════════════════════════════════════════════════
@@ -376,6 +370,146 @@ body.embed { font-size: 12px; }
 
 
 /* ══════════════════════════════════════════════════════
+   GLOSSARI (modal)
+══════════════════════════════════════════════════════ */
+
+.glossari-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: rgba(0,0,0,0.45);
+  justify-content: center;
+  align-items: center;
+}
+.glossari-overlay.is-open { display: flex; }
+
+.glossari-modal {
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  width: min(540px, 92vw);
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.glossari-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid #e5e5e5;
+  flex-shrink: 0;
+}
+
+.glossari-title {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: 0.5px;
+}
+
+.glossari-close {
+  background: none;
+  border: 1px solid #d0d0d0;
+  color: #6b7280;
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  transition: color 0.15s, border-color 0.15s;
+}
+.glossari-close:hover { color: #1a1a1a; border-color: #1a1a1a; }
+
+.glossari-body {
+  padding: 16px 18px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.glossari-section { margin-bottom: 18px; }
+.glossari-section:last-child { margin-bottom: 0; }
+
+.glossari-section h3 {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #1a1a1a;
+  margin: 0 0 6px;
+}
+
+.glossari-hint {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: #6b7280;
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+.glossari-hint code {
+  color: #2563eb;
+  font-weight: 700;
+  background: none;
+  padding: 0;
+}
+
+.glossari-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 14px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  line-height: 1.7;
+}
+.glossari-grid > code {
+  color: #2563eb;
+  white-space: nowrap;
+  background: none;
+  padding: 0;
+}
+.glossari-grid > span { color: #4b5563; }
+.glossari-grid > span code {
+  color: #2563eb;
+  background: none;
+  padding: 0;
+  font-size: 0.95em;
+}
+
+.glossari-example {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  line-height: 1.6;
+  color: #1a1a1a;
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin: 6px 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.glossari-rules .glossari-rule {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  color: #1a1a1a;
+  line-height: 1.8;
+}
+.glossari-rules .glossari-rule code {
+  color: #2563eb;
+  font-weight: 700;
+  background: none;
+  padding: 0;
+}
+
+
+/* ══════════════════════════════════════════════════════
    AUTOCOMPLETAT
 ══════════════════════════════════════════════════════ */
 
@@ -430,6 +564,17 @@ body.light .ac-item[data-kind="builtin"] { color: #2563eb; }
     grid-template-rows: 1fr 1fr;
   }
   .code-col { border-right: none; border-bottom: 1px solid var(--border); }
+  .glossari-overlay { align-items: stretch; overflow: hidden; }
+  .glossari-modal {
+    width: 100vw; max-height: 100dvh; max-height: 100vh;
+    height: 100%; border-radius: 0; border: none; overflow: hidden;
+  }
+  .glossari-body {
+    flex: 1 1 0; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain; touch-action: pan-y; padding: 14px 16px 24px;
+  }
+  .glossari-grid { font-size: 0.63rem; gap: 2px 10px; }
+  .glossari-example { font-size: 0.62rem; padding: 6px 10px; }
 }
 
 @media (max-width: 400px) {

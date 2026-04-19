@@ -34,10 +34,9 @@
   </nav>
 
   <div class="topbar-actions">
-    <div id="state-badge" aria-live="polite">
-      <div id="state-dot"></div>
-      <span id="state-lbl">carregant…</span>
-    </div>
+    <button id="btn-glossari" class="btn-glossari" type="button" aria-label="Glossari">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    </button>
   </div>
 
   <button id="btn-theme"
@@ -90,6 +89,12 @@
 
 
 <!-- ══════════════════════════════════════════════════════
+     Glossari (modal)
+     ══════════════════════════════════════════════════════ -->
+<div class="glossari-overlay" id="glossari-overlay"></div>
+
+
+<!-- ══════════════════════════════════════════════════════
      Scripts — Ordre de càrrega
      ══════════════════════════════════════════════════════ -->
 <script src="js/constants.js"></script>
@@ -102,6 +107,7 @@
 <script src="js/kbd-accessory.js"></script>
 <script src="js/main.js"></script>
 <script src="js/sw-register.js"></script>
+<script src="curs/glossari-data.js"></script>
 
 </body>
 </html>
