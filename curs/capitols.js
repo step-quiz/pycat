@@ -49,7 +49,7 @@ var REPTES_DATA = [
   { num: 6,  titol: 'Parell o senar',            arxiu: 'repte-6.html',  goalId: 'repte-6' },
   { num: 7,  titol: 'El més gran de tres',       arxiu: 'repte-7.html',  goalId: 'repte-7' },
   { num: 8,  titol: 'Compte enrere',             arxiu: 'repte-8.html',  goalId: 'repte-8' },
-  { num: 9,  titol: 'Taula de multiplicar',   arxiu: 'repte-9.html',  goalId: 'repte-9' },
+  { num: 9,  titol: 'Taula multiplicar',   arxiu: 'repte-9.html',  goalId: 'repte-9' },
   { num: 10, titol: 'Comptar paraules',          arxiu: 'repte-10.html', goalId: 'repte-10' },
   { num: 11, titol: 'La funció saluda',           arxiu: 'repte-11.html', goalId: 'repte-11' },
   { num: 12, titol: 'Paraula al revés',          arxiu: 'repte-12.html', goalId: 'repte-12' },
