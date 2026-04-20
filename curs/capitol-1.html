@@ -39,7 +39,7 @@
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 1</span>
         <h1>Hola, Python!</h1>
-        <p class="chapter-lead">A KarelCat vas aprendre a pensar com un programador: descomposar problemes, repetir accions, prendre decisions i crear procediments. Ara faràs exactament el mateix — però amb <strong>Python real</strong>. El teu programa ja no mourà en Karel: <strong>parlarà amb text</strong>.</p>
+        <p class="chapter-lead">En aquest curs aprendràs a escriure codi <strong>Python real</strong>.</p>
       </header>
 
 
@@ -47,9 +47,9 @@
            SECCIÓ 1 — print()
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Escriure a la consola: <code>print()</code></h2>
+        <h2><code>print()</code></h2>
 
-        <p><code>print()</code> és la instrucció més bàsica de Python. Rep un text entre cometes i el mostra a la consola. A KarelCat, la instrucció bàsica era <code>move()</code> — aquí és <code>print()</code>.</p>
+        <p><code>print()</code> és la instrucció més bàsica de Python. Rep un text entre cometes i el mostra a la consola.</p>
 
         <p>Prem <strong>▶ Executa</strong> i observa què apareix a la consola:</p>
 
@@ -59,7 +59,7 @@
              data-height="220">
         </div>
 
-        <p>La consola mostra <code>Hola, món!</code> — exactament el text que hi havia dins de les cometes. El text que va entre cometes s'anomena <strong>string</strong> (cadena de caràcters).</p>
+        <p>La consola mostra <code>Hola, món!</code> — exactament el text que hi havia dins de les cometes. El text que va entre cometes s'anomena <strong>string</strong> (és a dir, cadena de caràcters).</p>
       </section>
 
 
@@ -80,7 +80,7 @@ print(&apos;Hola amb cometes simples&apos;)'
              data-height="220">
         </div>
 
-        <p>Una regla important: si el teu text conté una apòstrof (com a «m'agrada»), fes servir cometes dobles per envoltar-lo. Així Python no es confon:</p>
+        <p>Una regla important: si el teu text conté una apòstrof (com a «m'agrada»), fes servir cometes dobles per envoltar-lo. Així Python comprèn bé la sintaxi.</p>
 
         <div class="simulador"
              data-code='print("M&apos;agrada programar!")'
@@ -96,7 +96,7 @@ print(&apos;Hola amb cometes simples&apos;)'
       <section class="chapter-section">
         <h2>Seqüència: un <code>print()</code> rere l'altre</h2>
 
-        <p>Igual que a KarelCat encadenaves <code>move()</code> rere <code>move()</code>, aquí pots encadenar diversos <code>print()</code>. Python els executa en ordre, de dalt a baix. Cada <code>print()</code> escriu en una línia nova.</p>
+        <p>Pots encadenar diversos <code>print()</code>. Python els executa en ordre, de dalt a baix. Cada <code>print()</code> escriu en una línia nova.</p>
 
         <div class="simulador"
              data-code='print("Primera línia")
@@ -106,7 +106,7 @@ print("Tercera línia")'
              data-height="240">
         </div>
 
-        <p>L'ordre importa — igual que a Karel, la seqüència d'instruccions determina el resultat. Si canvies l'ordre dels <code>print()</code>, canvia l'ordre de les línies a la consola.</p>
+        <p>L'ordre importa, és a dir, que la seqüència d'instruccions determina el resultat. Si canvies l'ordre dels <code>print()</code>, canvia l'ordre de les línies a la consola.</p>
       </section>
 
 
@@ -116,7 +116,7 @@ print("Tercera línia")'
       <section class="chapter-section">
         <h2>Comentaris: <code>#</code></h2>
 
-        <p>A KarelCat ja feies servir comentaris amb <code>#</code>. A Python funcionen exactament igual: tot el que va després d'un <code>#</code> és ignorat pel programa. Els comentaris són notes per a tu (i per a qui llegeixi el teu codi).</p>
+        <p>Tot el que va després d'un <code>#</code> és ignorat pel programa. Els comentaris són notes per a tu (i per a qui llegeixi el teu codi).</p>
 
         <div class="simulador"
              data-code='# Això és un comentari, Python ho ignora
@@ -136,7 +136,7 @@ print("Això sí que es mostra")
       <section class="chapter-section">
         <h2>Els errors no són fracassos</h2>
 
-        <p>Quan escrius codi incorrecte, Python s'atura i mostra un missatge d'error a la consola. Igual que a KarelCat, l'error indica <em>exactament</em> què ha passat. Es llegeix, es corregeix i es torna a provar.</p>
+        <p>Quan escrius codi incorrecte, Python s'atura i mostra un missatge d'error a la consola. L'error indica <em>exactament</em> què ha passat. Què cal fer? Es llegeix, es corregeix i es torna a provar.</p>
 
         <p>L'exemple següent té un error deliberat — falta una cometa de tancament. Executa'l i observa el missatge d'error:</p>
 
@@ -156,7 +156,7 @@ print("Això sí que es mostra")
       <section class="chapter-section">
         <h2>Més usos de <code>print()</code></h2>
 
-        <p><code>print()</code> pot mostrar moltes coses, no només text. Pot mostrar números directament — sense cometes:</p>
+        <p><code>print()</code> pot mostrar moltes coses, no només text. Pot mostrar nombres directament, és a dir, no cal fer ús de les cometes.</p>
 
         <div class="simulador"
              data-code='print(42)
@@ -168,7 +168,7 @@ print("La resposta és", 42)'
 
         <p>Fixa't en la tercera línia: si passes diversos valors a <code>print()</code> separats per comes, Python els mostra tots en la mateixa línia, amb un espai entre ells.</p>
 
-        <p>A més, <code>print()</code> sense cap argument imprimeix una línia buida — útil per separar visualment la sortida:</p>
+        <p>A més, <code>print()</code> sense cap argument imprimeix una línia buida. Això és útil per a separar visualment la sortida:</p>
 
         <div class="simulador"
              data-code='print("Bloc 1")
