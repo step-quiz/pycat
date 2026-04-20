@@ -105,21 +105,6 @@ body {
 }
 .btn-glossari:hover { color: var(--text); border-color: var(--text); }
 
-/* Botó de tema (sol/lluna) */
-.btn-theme {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  padding: 5px 8px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface);
-  color: var(--text);
-  cursor: pointer;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-}
-
 
 /* ══════════════════════════════════════════════════════
    LAYOUT: SIDEBAR + CONTINGUT

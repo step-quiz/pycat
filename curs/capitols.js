@@ -324,46 +324,8 @@ function initGlossariCurs() {
 }
 
 
-// ── Tema clar/fosc (pàgines del curs) ───────────────────
-
-var ICON_SUN  = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
-var ICON_MOON = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-
-function initCursTheme() {
-  var header = document.querySelector('.topbar');
-  if (!header) return;
-
-  // Crea el botó de tema
-  var btn = document.createElement('button');
-  btn.id = 'btn-theme';
-  btn.className = 'btn btn-theme';
-  btn.type = 'button';
-  btn.setAttribute('aria-label', 'Canvia el tema');
-  header.appendChild(btn);
-
-  // Aplica el tema desat
-  var saved = null;
-  try { saved = localStorage.getItem('pycat-theme'); } catch(_) {}
-  if (saved !== 'dark') document.body.classList.add('light');
-
-  function update() {
-    var isLight = document.body.classList.contains('light');
-    btn.innerHTML = isLight ? ICON_MOON : ICON_SUN;
-    btn.title     = isLight ? 'Mode fosc' : 'Mode clar';
-  }
-
-  btn.addEventListener('click', function() {
-    var isLight = document.body.classList.toggle('light');
-    try { localStorage.setItem('pycat-theme', isLight ? 'light' : 'dark'); } catch(_) {}
-    update();
-  });
-
-  update();
-}
-
 // Auto-init (capitols.js es carrega després del DOM)
 initGlossariCurs();
-initCursTheme();
 
 
 // ── Exporta ──────────────────────────────────────────────
@@ -373,7 +335,6 @@ window.renderReptesSidebar = renderReptesSidebar;
 window.renderSimuladors    = renderSimuladors;
 window.initSidebarToggle   = initSidebarToggle;
 window.initGlossariCurs    = initGlossariCurs;
-window.initCursTheme       = initCursTheme;
 window.getProgress         = getProgress;
 window.saveGoalCompleted   = saveGoalCompleted;
 window.isGoalCompleted     = isGoalCompleted;
