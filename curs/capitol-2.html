@@ -58,7 +58,7 @@ print(missatge)'
              data-height="220">
         </div>
 
-        <p>El signe <code>=</code> en programació no vol dir «és igual a» — vol dir <strong>«guarda aquest valor amb aquest nom»</strong>. Primer es calcula el que hi ha a la dreta del <code>=</code>, i després es guarda amb el nom de l'esquerra.</p>
+        <p>El signe <code>=</code> en programació no vol dir «és igual a», sinó que vol dir <strong>«guarda aquest valor amb aquest nom»</strong>. Primer es calcula el que hi ha a la dreta del <code>=</code>, i després es guarda amb el nom de l'esquerra.</p>
       </section>
 
 
@@ -73,10 +73,10 @@ print(missatge)'
           <li>Només pot contenir lletres, números i guions baixos (<code>_</code>).</li>
           <li>No pot començar per un número.</li>
           <li>No pot ser una paraula reservada de Python (com <code>if</code>, <code>for</code>, <code>print</code>).</li>
-          <li>Les majúscules i minúscules importen: <code>Nom</code> i <code>nom</code> són variables diferents.</li>
+          <li>Les majúscules i minúscules es tenen en compte. Per exemple, <code>Nom</code> i <code>nom</code> són variables diferents.</li>
         </ul>
 
-        <p>Per convenció, els noms de variables en Python s'escriuen en minúscules, amb guions baixos si tenen diversos mots: <code>nom_alumne</code>, <code>edat_maxima</code>, <code>total_punts</code>. Aquesta convenció s'anomena <em>snake_case</em>.</p>
+        <p>Per convenció, els noms de variables en Python s'escriuen en minúscules, amb guions baixos si tenen diversos mots: <code>nom_alumne</code>, <code>edat_maxima</code>, <code>total_punts</code>. Aquesta convenció s'anomena <em>snake_case</em> i és un estàndard mundial.</p>
 
         <div class="simulador"
              data-code='nom = "Maria"
@@ -117,7 +117,7 @@ print(type(True))'
              data-height="260">
         </div>
 
-        <p>De moment, els tipus que més faràs servir són <code>int</code> i <code>str</code>. Els altres apareixeran aviat.</p>
+        <p>De moment, els tipus que més faràs servir són enters i cadenes de caràcters:  <code>int</code> i <code>str</code>.</p>
       </section>
 
 
@@ -127,7 +127,7 @@ print(type(True))'
       <section class="chapter-section">
         <h2>Les variables poden canviar</h2>
 
-        <p>Una variable es diu «variable» precisament perquè el seu valor pot <strong>variar</strong>. Pots assignar-li un nou valor en qualsevol moment — el valor anterior es perd:</p>
+        <p>Una variable es diu «variable» precisament perquè el seu valor pot <strong>variar</strong>. Pots assignar-li un nou valor en qualsevol moment — el valor anterior serà subtituït.</p>
 
         <div class="simulador"
              data-code='x = 10
@@ -140,7 +140,7 @@ print("I ara x val", x)'
              data-height="280">
         </div>
 
-        <p>L'última línia és especialment important: <code>x = x + 5</code>. Primer calcula <code>x + 5</code> (que és <code>25 + 5 = 30</code>), i després guarda el resultat a <code>x</code>. No és una equació matemàtica — és una instrucció de «calcula i guarda».</p>
+        <p>L'última línia és especialment important: <code>x = x + 5</code>. Primer calcula <code>x + 5</code> (que és <code>25 + 5 = 30</code>), i després guarda el resultat a <code>x</code>. No és una equació matemàtica, sinó que és una assignació «calcula i desa».</p>
       </section>
 
 
@@ -160,7 +160,7 @@ print(f"{nom} té {edat} anys")'
              data-height="230">
         </div>
 
-        <p>Compara les dues maneres:</p>
+        <p>Compara els dos mètodes:</p>
         <pre class="code-example"># Sense f-string (més confús)
 print(nom, "té", edat, "anys")
 
@@ -189,7 +189,7 @@ print(f"Un terç és aproximadament {resultat:.2f}")'
              data-height="250">
         </div>
 
-        <p>El <code>:.2f</code> es llegeix com «format de coma flotant amb 2 decimals». El número s'arrodoneix automàticament si cal.</p>
+        <p>El <code>:.2f</code> es llegeix com «format de coma flotant amb 2 decimals». El número s'arrodoneix automàticament si cal. Tingues en compte que, encara que diguem coma flotant, en Python s'usa el punt decimal en lloc de la coma decimal.</p>
       </section>
 
 
@@ -243,8 +243,8 @@ print(missatge)'
       <section class="chapter-section">
         <h2>Resum</h2>
         <ul>
-          <li>Una <strong>variable</strong> guarda un valor: <code>x = 42</code>.</li>
-          <li>El signe <code>=</code> vol dir «guarda», no «és igual a».</li>
+          <li>Una <strong>variable</strong> desa un valor: <code>x = 42</code>.</li>
+          <li>El signe <code>=</code> vol dir «desa», no «és igual a».</li>
           <li>Python té diversos <strong>tipus</strong>: <code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>.</li>
           <li>Les <strong>f-strings</strong> permeten barrejar text i variables: <code>f"Hola, {nom}"</code>. Amb <code>:.2f</code> pots controlar els decimals: <code>f"{preu:.2f} €"</code>.</li>
           <li>Les variables poden canviar de valor: <code>x = x + 1</code>.</li>
