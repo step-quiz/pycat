@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítol 12 — Pong: el videojoc | PyCat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="curs.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
+  <div class="logo">
+    <span class="logo-icon"></span>
+    <span>PyCat</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="capitol-1.html" class="topbar-nav-link active">Capítols</a>
+    <a href="repte-1.html" class="topbar-nav-link">Reptes</a>
+    <a href="../index.html" class="topbar-nav-link">Simulador</a>
+  </nav>
+  <div class="topbar-actions"></div>
+</header>
+
+<div class="curs-layout">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
+    <div id="sidebar-nav"></div>
+  </nav>
+
+  <main class="curs-content">
+    <div class="chapter-content-inner">
+
+
+      <!-- ─────────────────────────────────────────
+           CAPÇALERA
+           ───────────────────────────────────────── -->
+      <header class="chapter-header">
+        <span class="chapter-badge">Capítol 12</span>
+        <h1>Pong: el videojoc</h1>
+        <p class="chapter-lead">Programarem el mitic videojoc Pong (Atari, 1972) en Python pur, amb text i consola. Tu contra la maquina!</p>
+      </header>
+
+
+      <!-- ─────────────────────────────────────────
+           INTRODUCCIÓ
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Un joc historic</h2>
+
+        <p><strong>Pong</strong> va ser un dels primers videojocs de la historia. Creat per Atari el 1972, simulava una partida de tennis de taula: dues pales, una bola que rebota i un marcador. Simple, addictiu i revolucionari.</p>
+
+        <p>En aquest capitol construirem la nostra propia versio de Pong amb Python. Com que el simulador de PyCat es una consola de text, el nostre joc sera <strong>per torns</strong>: a cada torn veureu el camp, moureu la pala i la bola avancara. No us preocupeu: es igualment divertit!</p>
+
+        <p>El joc fara servir conceptes que ja coneixeu: funcions (<code>def</code>), bucles (<code>while</code>), condicionals (<code>if</code>), llistes i el modul <code>random</code>. No hi ha res nou: es pura diversio aplicada.</p>
+
+        <p>Construirem el joc pas a pas, com al capitol anterior:</p>
+
+        <ul>
+          <li>El <strong>camp de joc</strong>, dibuixat amb <code>print()</code>.</li>
+          <li>La <strong>bola</strong> que es mou i rebota contra les parets.</li>
+          <li>Les <strong>pales</strong> del jugador i de la maquina.</li>
+          <li>El <strong>bucle principal</strong> que ho posa tot en marxa.</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 1 — El camp de joc
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Peca 1: el camp de joc</h2>
+
+        <p>El camp es una graella de text. Cada fila es una linia que imprimim amb <code>print()</code>. Les vores son <code>+</code>, <code>-</code> i <code>|</code>, i l'interior son espais en blanc:</p>
+
+        <div class="simulador"
+             data-code='AMPLE = 30
+ALT = 10
+
+def dibuixa_camp():
+    # Vora superior
+    print("+" + "-" * AMPLE + "+")
+    # Files interiors (de moment buides)
+    for fila in range(ALT):
+        print("|" + " " * AMPLE + "|")
+    # Vora inferior
+    print("+" + "-" * AMPLE + "+")
+
+dibuixa_camp()'
+             data-readonly="true"
+             data-height="300">
+        </div>
+
+        <p>Les constants <code>AMPLE</code> i <code>ALT</code> defineixen la mida del camp. El <code>"-" * AMPLE</code> repeteix el caracter <code>-</code> tantes vegades com l'amplada. Dins del bucle <code>for</code>, cada fila es una linia amb espais.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 2 — La bola
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Peca 2: la bola</h2>
+
+        <p>La bola te una posicio (<code>bx</code>, <code>by</code>) i una direccio (<code>bdx</code>, <code>bdy</code>). A cada torn, sumem la direccio a la posicio. Si la bola toca la paret de dalt o de baix, invertim la direccio vertical:</p>
+
+        <div class="simulador"
+             data-code='AMPLE = 30
+ALT = 10
+
+# Posicio inicial de la bola (al centre)
+bx = AMPLE // 2
+by = ALT // 2
+# Direccio: 1 = dreta/avall, -1 = esquerra/amunt
+bdx = 1
+bdy = 1
+
+def dibuixa_camp():
+    print("+" + "-" * AMPLE + "+")
+    for fila in range(ALT):
+        linia = ""
+        for col in range(AMPLE):
+            if col == bx and fila == by:
+                linia += "o"
+            else:
+                linia += " "
+        print("|" + linia + "|")
+    print("+" + "-" * AMPLE + "+")
+
+def mou_bola():
+    global bx, by, bdx, bdy
+    bx += bdx
+    by += bdy
+    # Rebot a dalt i a baix
+    if by <= 0:
+        by = 0
+        bdy = 1
+    elif by >= ALT - 1:
+        by = ALT - 1
+        bdy = -1
+
+# Simulem 5 torns
+for torn in range(5):
+    print("--- Torn", torn + 1, "---")
+    dibuixa_camp()
+    mou_bola()
+    print()'
+             data-readonly="true"
+             data-height="500">
+        </div>
+
+        <p>Fixa't en la paraula clau <code>global</code>. La necessitem perque la funcio <code>mou_bola()</code> modifica variables que estan definides fora d'ella. Sense <code>global</code>, Python crearia variables locals noves en lloc de canviar les originals.</p>
+
+        <p>El doble bucle <code>for fila / for col</code> recorre cada casella del camp. Si la casella coincideix amb la posicio de la bola, imprimim <code>o</code>; si no, un espai.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 3 — Les pales
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Peca 3: les pales</h2>
+
+        <p>Afegim dues pales verticals: la del jugador a l'esquerra (columna 1) i la de la maquina a la dreta (columna 28). Cada pala ocupa 3 caselles d'alcada:</p>
+
+        <div class="simulador"
+             data-code='AMPLE = 30
+ALT = 10
+MIDA_PALA = 3
+
+bx = AMPLE // 2
+by = ALT // 2
+
+# Posicio vertical de cada pala (fila on comenca)
+jugador_y = ALT // 2 - MIDA_PALA // 2
+maquina_y = ALT // 2 - MIDA_PALA // 2
+
+def dibuixa_camp():
+    print("+" + "-" * AMPLE + "+")
+    for fila in range(ALT):
+        linia = ""
+        for col in range(AMPLE):
+            # Pala del jugador (columna 1)
+            if col == 1 and jugador_y <= fila < jugador_y + MIDA_PALA:
+                linia += "#"
+            # Pala de la maquina (columna AMPLE-2)
+            elif col == AMPLE - 2 and maquina_y <= fila < maquina_y + MIDA_PALA:
+                linia += "#"
+            # Bola
+            elif col == bx and fila == by:
+                linia += "o"
+            else:
+                linia += " "
+        print("|" + linia + "|")
+    print("+" + "-" * AMPLE + "+")
+
+dibuixa_camp()'
+             data-readonly="true"
+             data-height="420">
+        </div>
+
+        <p>La condicio <code>jugador_y &lt;= fila &lt; jugador_y + MIDA_PALA</code> comprova si la fila actual esta dins del rang de la pala. Per exemple, si <code>jugador_y</code> es 3 i <code>MIDA_PALA</code> es 3, la pala ocupa les files 3, 4 i 5. Aquesta comparacio encadenada (<code>a &lt;= b &lt; c</code>) es una caracteristica elegant de Python.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 4 — Col·lisions i puntuació
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Peca 4: rebots, punts i la maquina</h2>
+
+        <p>Ara la part mes interessant. Quan la bola arriba a la columna de la pala, comprovem si la pala la bloqueja. Si si, rebota. Si no, l'altre jugador marca un punt i la bola torna al centre:</p>
+
+        <div class="simulador"
+             data-code='import random
+
+AMPLE = 30
+ALT = 10
+MIDA_PALA = 3
+
+bx = AMPLE // 2
+by = ALT // 2
+bdx = 1
+bdy = random.choice([-1, 1])
+
+jugador_y = ALT // 2 - MIDA_PALA // 2
+maquina_y = ALT // 2 - MIDA_PALA // 2
+punts_j = 0
+punts_m = 0
+
+def mou_bola():
+    global bx, by, bdx, bdy, punts_j, punts_m
+    bx += bdx
+    by += bdy
+    # Rebot dalt/baix
+    if by <= 0:
+        by = 0
+        bdy = 1
+    elif by >= ALT - 1:
+        by = ALT - 1
+        bdy = -1
+    # Rebot pala jugador
+    if bx == 2 and jugador_y <= by < jugador_y + MIDA_PALA:
+        bdx = 1
+    # Rebot pala maquina
+    elif bx == AMPLE - 3 and maquina_y <= by < maquina_y + MIDA_PALA:
+        bdx = -1
+    # Punt per la maquina (bola surt per l esquerra)
+    if bx <= 0:
+        punts_m += 1
+        bx = AMPLE // 2
+        by = ALT // 2
+        bdx = 1
+        bdy = random.choice([-1, 1])
+    # Punt pel jugador (bola surt per la dreta)
+    elif bx >= AMPLE - 1:
+        punts_j += 1
+        bx = AMPLE // 2
+        by = ALT // 2
+        bdx = -1
+        bdy = random.choice([-1, 1])
+
+def mou_maquina():
+    global maquina_y
+    centre = maquina_y + MIDA_PALA // 2
+    if centre < by and maquina_y + MIDA_PALA < ALT:
+        maquina_y += 1
+    elif centre > by and maquina_y > 0:
+        maquina_y -= 1
+
+# Provem 3 torns sense dibuixar
+for i in range(3):
+    mou_bola()
+    mou_maquina()
+print("Bola a:", bx, by)
+print("Pala maquina a fila:", maquina_y)
+print("Punts - Jugador:", punts_j, " Maquina:", punts_m)'
+             data-readonly="true"
+             data-height="500">
+        </div>
+
+        <p>La funcio <code>mou_maquina()</code> es molt senzilla: calcula el centre de la pala i la mou cap on es la bola. Es una intel·ligencia artificial basica, pero funciona prou be!</p>
+
+        <p>Fixa't que la bola rebota quan <code>bx == 2</code> (just davant de la pala del jugador) i quan <code>bx == AMPLE - 3</code> (just davant de la pala de la maquina). Aixo es perque les pales estan a les columnes 1 i 28.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           SECCIÓ 5 — El joc complet
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>El joc complet</h2>
+
+        <p>Ara ho juntem tot amb un bucle <code>while</code> que continua fins que algu arriba a 3 punts. A cada torn, el joc dibuixa el camp, demana al jugador si vol moure la pala i avanca la bola. Prem <code>w</code> per pujar, <code>s</code> per baixar, o simplement <code>Enter</code> per quedar-te quiet. A jugar!</p>
+
+        <div class="simulador"
+             data-code='import random
+
+# ── Configuracio ──────────────────────────
+AMPLE = 30
+ALT = 10
+MIDA_PALA = 3
+PUNTS_PER_GUANYAR = 3
+
+# ── Estat inicial ─────────────────────────
+bx = AMPLE // 2
+by = ALT // 2
+bdx = random.choice([-1, 1])
+bdy = random.choice([-1, 1])
+jugador_y = ALT // 2 - MIDA_PALA // 2
+maquina_y = ALT // 2 - MIDA_PALA // 2
+punts_j = 0
+punts_m = 0
+
+# ── Funcions ──────────────────────────────
+def dibuixa_camp():
+    print("+" + "-" * AMPLE + "+")
+    for fila in range(ALT):
+        linia = ""
+        for col in range(AMPLE):
+            if col == 1 and jugador_y <= fila < jugador_y + MIDA_PALA:
+                linia += "#"
+            elif col == AMPLE - 2 and maquina_y <= fila < maquina_y + MIDA_PALA:
+                linia += "#"
+            elif col == bx and fila == by:
+                linia += "o"
+            else:
+                linia += " "
+        print("|" + linia + "|")
+    print("+" + "-" * AMPLE + "+")
+    print("  Jugador:", punts_j, "  Maquina:", punts_m)
+
+def mou_bola():
+    global bx, by, bdx, bdy, punts_j, punts_m
+    bx += bdx
+    by += bdy
+    if by <= 0:
+        by = 0
+        bdy = 1
+    elif by >= ALT - 1:
+        by = ALT - 1
+        bdy = -1
+    if bx == 2 and jugador_y <= by < jugador_y + MIDA_PALA:
+        bdx = 1
+    elif bx == AMPLE - 3 and maquina_y <= by < maquina_y + MIDA_PALA:
+        bdx = -1
+    if bx <= 0:
+        punts_m += 1
+        bx = AMPLE // 2
+        by = ALT // 2
+        bdx = 1
+        bdy = random.choice([-1, 1])
+    elif bx >= AMPLE - 1:
+        punts_j += 1
+        bx = AMPLE // 2
+        by = ALT // 2
+        bdx = -1
+        bdy = random.choice([-1, 1])
+
+def mou_maquina():
+    global maquina_y
+    centre = maquina_y + MIDA_PALA // 2
+    if centre < by and maquina_y + MIDA_PALA < ALT:
+        maquina_y += 1
+    elif centre > by and maquina_y > 0:
+        maquina_y -= 1
+
+# ── Bucle principal ───────────────────────
+print("=== PONG ===")
+print("w = amunt, s = avall, Enter = quiet")
+print()
+
+while punts_j < PUNTS_PER_GUANYAR and punts_m < PUNTS_PER_GUANYAR:
+    dibuixa_camp()
+    tecla = input("Mou (w/s): ")
+    if tecla == "w" and jugador_y > 0:
+        jugador_y -= 1
+    elif tecla == "s" and jugador_y + MIDA_PALA < ALT:
+        jugador_y += 1
+    mou_bola()
+    mou_maquina()
+    print()
+
+dibuixa_camp()
+print()
+if punts_j >= PUNTS_PER_GUANYAR:
+    print("Has guanyat! Felicitats!")
+else:
+    print("Ha guanyat la maquina. Torna-ho a provar!")'
+             data-interactive="true"
+             data-height="550">
+        </div>
+
+        <p>El bucle <code>while punts_j &lt; PUNTS_PER_GUANYAR and punts_m &lt; PUNTS_PER_GUANYAR</code> continua mentre cap dels dos arribi a 3 punts. A dins, dibuixem, llegim la tecla, movem la bola i movem la maquina. Es el cicle classic d'un videojoc: <strong>dibuixar → llegir entrada → actualitzar estat</strong>.</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           QUÈ HEM FET SERVIR
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Que hem fet servir?</h2>
+
+        <p>Repassa tot el que apareix en aquest petit joc:</p>
+
+        <ul>
+          <li><strong>Variables i constants</strong> (cap. 2): <code>AMPLE</code>, <code>ALT</code>, <code>bx</code>, <code>by</code>, <code>punts_j</code>...</li>
+          <li><strong>Condicionals</strong> (cap. 4): <code>if</code>, <code>elif</code>, <code>else</code> per detectar rebots, punts i moviments.</li>
+          <li><strong>Bucle <code>while</code></strong> (cap. 5): el bucle principal del joc, que continua fins que algu guanya.</li>
+          <li><strong>Bucle <code>for</code></strong> (cap. 6): per recorrer les files i columnes del camp.</li>
+          <li><strong>Funcions</strong> (cap. 9): <code>dibuixa_camp()</code>, <code>mou_bola()</code>, <code>mou_maquina()</code> — cada peca amb el seu nom.</li>
+          <li><strong><code>random</code></strong> (cap. 11): per decidir la direccio inicial de la bola.</li>
+          <li><strong><code>input()</code></strong> (cap. 3): per llegir els moviments del jugador.</li>
+        </ul>
+
+        <p>Tot el curs en un sol programa de menys de 80 linies!</p>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           REPTE OBERT
+           ───────────────────────────────────────── -->
+      <section class="chapter-section chapter-exercise">
+        <h2>Repte obert</h2>
+
+        <p>El joc funciona, pero pots millorar-lo. Aqui tens algunes idees:</p>
+
+        <ul>
+          <li><strong>Canvia la velocitat de la bola.</strong> Fes que la bola avanci 2 caselles per torn en lloc d'1 (modifica <code>bdx</code> i <code>bdy</code>).</li>
+          <li><strong>Fes la maquina mes beneita.</strong> Afegeix un <code>random.random() > 0.3</code> perque la maquina de vegades no es mogui.</li>
+          <li><strong>Pales mes grans o mes petites.</strong> Canvia <code>MIDA_PALA</code> a 2 (mes dificil) o 4 (mes facil).</li>
+          <li><strong>Mostra un missatge quan es marca un punt.</strong> Afegeix un <code>print("GOL!")</code> dins de <code>mou_bola()</code> quan la bola surt del camp.</li>
+          <li><strong>Afegeix una linia central.</strong> Dibuixa un <code>:</code> a la columna <code>AMPLE // 2</code> per simular la linia divisoria del camp de Pong original.</li>
+        </ul>
+
+        <div class="simulador"
+             data-code='import random
+
+# ── Copia el joc complet i modifica-l! ────
+AMPLE = 30
+ALT = 10
+MIDA_PALA = 3
+PUNTS_PER_GUANYAR = 3
+
+bx = AMPLE // 2
+by = ALT // 2
+bdx = random.choice([-1, 1])
+bdy = random.choice([-1, 1])
+jugador_y = ALT // 2 - MIDA_PALA // 2
+maquina_y = ALT // 2 - MIDA_PALA // 2
+punts_j = 0
+punts_m = 0
+
+def dibuixa_camp():
+    print("+" + "-" * AMPLE + "+")
+    for fila in range(ALT):
+        linia = ""
+        for col in range(AMPLE):
+            if col == 1 and jugador_y <= fila < jugador_y + MIDA_PALA:
+                linia += "#"
+            elif col == AMPLE - 2 and maquina_y <= fila < maquina_y + MIDA_PALA:
+                linia += "#"
+            elif col == bx and fila == by:
+                linia += "o"
+            else:
+                linia += " "
+        print("|" + linia + "|")
+    print("+" + "-" * AMPLE + "+")
+    print("  Jugador:", punts_j, "  Maquina:", punts_m)
+
+def mou_bola():
+    global bx, by, bdx, bdy, punts_j, punts_m
+    bx += bdx
+    by += bdy
+    if by <= 0:
+        by = 0
+        bdy = 1
+    elif by >= ALT - 1:
+        by = ALT - 1
+        bdy = -1
+    if bx == 2 and jugador_y <= by < jugador_y + MIDA_PALA:
+        bdx = 1
+    elif bx == AMPLE - 3 and maquina_y <= by < maquina_y + MIDA_PALA:
+        bdx = -1
+    if bx <= 0:
+        punts_m += 1
+        bx = AMPLE // 2
+        by = ALT // 2
+        bdx = 1
+        bdy = random.choice([-1, 1])
+    elif bx >= AMPLE - 1:
+        punts_j += 1
+        bx = AMPLE // 2
+        by = ALT // 2
+        bdx = -1
+        bdy = random.choice([-1, 1])
+
+def mou_maquina():
+    global maquina_y
+    centre = maquina_y + MIDA_PALA // 2
+    if centre < by and maquina_y + MIDA_PALA < ALT:
+        maquina_y += 1
+    elif centre > by and maquina_y > 0:
+        maquina_y -= 1
+
+print("=== PONG ===")
+print("w = amunt, s = avall, Enter = quiet")
+print()
+
+while punts_j < PUNTS_PER_GUANYAR and punts_m < PUNTS_PER_GUANYAR:
+    dibuixa_camp()
+    tecla = input("Mou (w/s): ")
+    if tecla == "w" and jugador_y > 0:
+        jugador_y -= 1
+    elif tecla == "s" and jugador_y + MIDA_PALA < ALT:
+        jugador_y += 1
+    mou_bola()
+    mou_maquina()
+    print()
+
+dibuixa_camp()
+print()
+if punts_j >= PUNTS_PER_GUANYAR:
+    print("Has guanyat! Felicitats!")
+else:
+    print("Ha guanyat la maquina. Torna-ho a provar!")'
+             data-interactive="true"
+             data-height="550">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           RESUM
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Resum</h2>
+        <ul>
+          <li>Un videojoc, per senzill que sigui, segueix el cicle <strong>dibuixar → llegir entrada → actualitzar estat</strong> dins d'un bucle principal.</li>
+          <li>Representem el camp de joc com una graella de text, recorrent-la amb dos bucles <code>for</code> (files i columnes).</li>
+          <li>La paraula clau <code>global</code> permet que una funcio modifiqui variables definides fora d'ella.</li>
+          <li>La intel·ligencia artificial de la maquina es una sola regla: moure la pala cap on es la bola. Sovint, les solucions mes simples funcionen sorprenentment be.</li>
+          <li>Amb menys de 80 linies de Python pots fer un joc complet. La programacio es una eina creativa: fes-la servir per construir coses que t'agradin!</li>
+        </ul>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           NAVEGACIÓ
+           ───────────────────────────────────────── -->
+      <nav class="chapter-nav" aria-label="Navegació entre capítols">
+        <a href="capitol-11.html" class="btn-nav btn-nav--prev">&larr; Capitol anterior</a>
+        <a href="index.html" class="btn-nav btn-nav--next">Tornar a l'index &rarr;</a>
+      </nav>
+
+
+    </div>
+  </main>
+</div>
+
+<script src="glossari-data.js"></script>
+<script src="capitols.js"></script>
+<script>
+  injectCursLogo();
+  renderSidebar(12);
+  renderSimuladors();
+  initSidebarToggle();
+</script>
+
+<script src="../footer.js"></script>
+</body>
+</html>
