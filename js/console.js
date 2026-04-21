@@ -23,7 +23,7 @@ function consolePush(text, type) {
   if (!el) return;
   const line = document.createElement('div');
   line.className = 'con-line ' + (type || 'out');
-  line.textContent = text;
+  line.textContent = text || '\u00a0'; // línia en blanc: &nbsp; per tenir alçada visible
   el.appendChild(line);
   el.scrollTop = el.scrollHeight;
 }
