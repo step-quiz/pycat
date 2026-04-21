@@ -163,11 +163,25 @@ body {
 
 .curs-content {
   padding: 2rem 3rem;
-  max-width: 800px;
   overflow-y: auto;
 }
 
-.chapter-header {
+.chapter-content-inner {
+  /* Els elements de text queden estrets (llegibilitat), els simuladors no. */
+}
+
+/* ── Text: amplada màxima per llegibilitat ───────────── */
+.chapter-header,
+.chapter-nav,
+.chapter-section > h2,
+.chapter-section > p,
+.chapter-section > ul,
+.chapter-section > ol,
+.chapter-section > pre {
+  max-width: 760px;
+}
+
+
   margin-bottom: 2rem;
 }
 .chapter-badge {
