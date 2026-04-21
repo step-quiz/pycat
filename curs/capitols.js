@@ -37,7 +37,7 @@ var CAPITOLS_DATA = [
   { num: 9,  titol: 'Funcions',                    arxiu: 'capitol-9.html',  goalId: 'cap-9-ex' },
   { num: 10, titol: 'Diccionaris',                 arxiu: 'capitol-10.html', goalId: 'cap-10-ex' },
   { num: 11, titol: 'Posant-ho tot junt',          arxiu: 'capitol-11.html', goalId: null },
-  { num: 12, titol: 'Pong: el videojoc',            arxiu: 'capitol-12.html', goalId: null },
+  { num: 12, titol: '4 en ratlla',                  arxiu: 'capitol-12.html', goalId: null },
   // ...afegir capítols aquí
 ];
 
