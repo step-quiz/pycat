@@ -309,6 +309,12 @@ HUMA = "\u25cf"
 MAQUINA = "\u25cb"
 DIAMANT_HUMA = "\u25c6"      # Guanyador huma
 DIAMANT_MAQUINA = "\u25c7"   # Guanyador maquina
+BOX_TL = "\u2554"            # Cantonada superior esquerra ╔
+BOX_TR = "\u2557"            # Cantonada superior dreta    ╗
+BOX_BL = "\u255a"            # Cantonada inferior esquerra ╚
+BOX_BR = "\u255d"            # Cantonada inferior dreta    ╝
+BOX_H  = "\u2550"            # Linia horitzontal           ═
+BOX_V  = "\u2551"            # Linia vertical              ║
 
 # ── Tauler ────────────────────────────────
 tauler = []
@@ -318,13 +324,13 @@ for f in range(FILES):
 # ── Dibuixar ──────────────────────────────
 def dibuixa():
     print()
-    print("\u2554" + "\u2550" * (COLS * 2 + 1) + "\u2557")
+    print(BOX_TL + BOX_H * (COLS * 2 + 1) + BOX_TR)
     for fila in range(FILES):
         linia = ""
         for col in range(COLS):
             linia += " " + tauler[fila][col]
-        print("\u2551" + linia + " \u2551")
-    print("\u255a" + "\u2550" * (COLS * 2 + 1) + "\u255d")
+        print(BOX_V + linia + " " + BOX_V)
+    print(BOX_BL + BOX_H * (COLS * 2 + 1) + BOX_BR)
     nums = ""
     for col in range(COLS):
         nums += " " + str(col + 1)
@@ -453,9 +459,7 @@ dibuixa()
 
 # ── Bucle principal ───────────────────────
 while True:
-    print("_______________")
-    for i in range(5):
-          print()
+    print("\n" * 4)
     if torn_huma:
         while True:
             entrada = input("Columna (1-7): ")
@@ -547,6 +551,12 @@ HUMA = "\u25cf"
 MAQUINA = "\u25cb"
 DIAMANT_HUMA = "\u25c6"      # Guanyador huma
 DIAMANT_MAQUINA = "\u25c7"   # Guanyador maquina
+BOX_TL = "\u2554"            # Cantonada superior esquerra ╔
+BOX_TR = "\u2557"            # Cantonada superior dreta    ╗
+BOX_BL = "\u255a"            # Cantonada inferior esquerra ╚
+BOX_BR = "\u255d"            # Cantonada inferior dreta    ╝
+BOX_H  = "\u2550"            # Linia horitzontal           ═
+BOX_V  = "\u2551"            # Linia vertical              ║
 
 tauler = []
 for f in range(FILES):
@@ -554,13 +564,13 @@ for f in range(FILES):
 
 def dibuixa():
     print()
-    print("\u2554" + "\u2550" * (COLS * 2 + 1) + "\u2557")
+    print(BOX_TL + BOX_H * (COLS * 2 + 1) + BOX_TR)
     for fila in range(FILES):
         linia = ""
         for col in range(COLS):
             linia += " " + tauler[fila][col]
-        print("\u2551" + linia + " \u2551")
-    print("\u255a" + "\u2550" * (COLS * 2 + 1) + "\u255d")
+        print(BOX_V + linia + " " + BOX_V)
+    print(BOX_BL + BOX_H * (COLS * 2 + 1) + BOX_BR)
     nums = ""
     for col in range(COLS):
         nums += " " + str(col + 1)
@@ -679,7 +689,7 @@ if not torn_huma:
 dibuixa()
 
 while True:
-    print("_______________")
+    print("\n" * 4)
     if torn_huma:
         while True:
             entrada = input("Columna (1-7): ")
