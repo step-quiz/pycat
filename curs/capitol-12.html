@@ -307,6 +307,8 @@ COLS = 7
 BUIT = "\u00b7"
 HUMA = "\u25cf"
 MAQUINA = "\u25cb"
+DIAMANT_HUMA = "\u25c6"      # Guanyador huma
+DIAMANT_MAQUINA = "\u25c7"   # Guanyador maquina
 
 # ── Tauler ────────────────────────────────
 tauler = []
@@ -364,24 +366,61 @@ def ha_guanyat(fila, col, fitxa):
             return True
     return False
 
+def troba_guanyadors(fila, col, fitxa):
+    # Retorna les posicions de les 4 fitxes guanyadores
+    direccions = [[0, 1], [1, 0], [1, 1], [1, -1]]
+    for d in direccions:
+        df = d[0]
+        dc = d[1]
+        posicions = [(fila, col)]
+        f = fila + df
+        c = col + dc
+        while 0 <= f < FILES and 0 <= c < COLS and tauler[f][c] == fitxa:
+            posicions.append((f, c))
+            f += df
+            c += dc
+        f = fila - df
+        c = col - dc
+        while 0 <= f < FILES and 0 <= c < COLS and tauler[f][c] == fitxa:
+            posicions.append((f, c))
+            f -= df
+            c -= dc
+        if len(posicions) >= 4:
+            return posicions
+    return []
+
+def marca_guanyadors(posicions, diamant):
+    for (f, c) in posicions:
+        tauler[f][c] = diamant
+
 # ── Intel·ligencia de la maquina ──────────
-def torn_maquina():
-    for col in range(COLS):
-        fila = fila_lliure(col)
-        if fila >= 0:
-            tauler[fila][col] = MAQUINA
-            if ha_guanyat(fila, col, MAQUINA):
-                return fila, col
-            tauler[fila][col] = BUIT
-    for col in range(COLS):
-        fila = fila_lliure(col)
-        if fila >= 0:
-            tauler[fila][col] = HUMA
-            if ha_guanyat(fila, col, HUMA):
+def torn_maquina(facil):
+    # 1. Puc guanyar? (en facil, de vegades ho ignora)
+    if not facil or random.random() > 0.3:
+        for col in range(COLS):
+            fila = fila_lliure(col)
+            if fila >= 0:
+                tauler[fila][col] = MAQUINA
+                if ha_guanyat(fila, col, MAQUINA):
+                    return fila, col
                 tauler[fila][col] = BUIT
-                fila2 = deixa_fitxa(col, MAQUINA)
-                return fila2, col
-            tauler[fila][col] = BUIT
+    # 2. He de bloquejar? (en facil, sovint no ho fa)
+    if not facil or random.random() > 0.6:
+        for col in range(COLS):
+            fila = fila_lliure(col)
+            if fila >= 0:
+                tauler[fila][col] = HUMA
+                if ha_guanyat(fila, col, HUMA):
+                    tauler[fila][col] = BUIT
+                    fila2 = deixa_fitxa(col, MAQUINA)
+                    return fila2, col
+                tauler[fila][col] = BUIT
+    # 3. Tria columna
+    if facil:
+        cols_lliures = [c for c in range(COLS) if fila_lliure(c) >= 0]
+        col = random.choice(cols_lliures)
+        fila = deixa_fitxa(col, MAQUINA)
+        return fila, col
     preferides = [3, 2, 4, 1, 5, 0, 6]
     for col in preferides:
         fila = fila_lliure(col)
@@ -397,21 +436,24 @@ def tauler_ple():
             return False
     return True
 
-# ── Bucle principal ───────────────────────
+# ── Inici ─────────────────────────────────
 print("=== 4 EN RATLLA ===")
 print("Tu ets " + HUMA + "   La maquina es " + MAQUINA)
+print()
+nivell = input("Nivell: 1.facil / 2.dificil: ")
+facil = (nivell == "1")
 
-# Qui comenca? Aleatori!
 torn_huma = random.choice([True, False])
 if not torn_huma:
     print("Comenca la maquina!")
-    fm, cm = torn_maquina()
+    fm, cm = torn_maquina(facil)
 
 dibuixa()
 
+# ── Bucle principal ───────────────────────
 while True:
+    print("_______________")
     if torn_huma:
-        # Torn del jugador
         while True:
             entrada = input("Columna (1-7): ")
             if entrada in ["1","2","3","4","5","6","7"]:
@@ -423,18 +465,23 @@ while True:
             else:
                 print("Escriu un numero de l&apos;1 al 7.")
         fila = deixa_fitxa(col, HUMA)
-        dibuixa()
         if ha_guanyat(fila, col, HUMA):
+            posicions = troba_guanyadors(fila, col, HUMA)
+            marca_guanyadors(posicions, DIAMANT_HUMA)
+            dibuixa()
             print("Has guanyat! Felicitats!")
             break
-    else:
-        # Torn de la maquina
-        print("La maquina juga...")
-        fm, cm = torn_maquina()
         dibuixa()
+    else:
+        print("La maquina juga...")
+        fm, cm = torn_maquina(facil)
         if ha_guanyat(fm, cm, MAQUINA):
+            posicions = troba_guanyadors(fm, cm, MAQUINA)
+            marca_guanyadors(posicions, DIAMANT_MAQUINA)
+            dibuixa()
             print("Ha guanyat la maquina!")
             break
+        dibuixa()
 
     if tauler_ple():
         print("Empat! Tauler ple.")
@@ -442,7 +489,7 @@ while True:
 
     torn_huma = not torn_huma'
              data-interactive="true"
-             data-height="580">
+             data-height="640">
         </div>
 
         <p>El bucle principal alterna entre el torn huma i el torn de la maquina amb la variable <code>torn_huma</code>. Despres de cada jugada, comprovem si el jugador ha guanyat o si el tauler es ple. <code>random.choice([True, False])</code> decideix aleatoriament qui comenca la partida.</p>
@@ -495,6 +542,8 @@ COLS = 7
 BUIT = "\u00b7"
 HUMA = "\u25cf"
 MAQUINA = "\u25cb"
+DIAMANT_HUMA = "\u25c6"      # Guanyador huma
+DIAMANT_MAQUINA = "\u25c7"   # Guanyador maquina
 
 tauler = []
 for f in range(FILES):
@@ -548,23 +597,56 @@ def ha_guanyat(fila, col, fitxa):
             return True
     return False
 
-def torn_maquina():
-    for col in range(COLS):
-        fila = fila_lliure(col)
-        if fila >= 0:
-            tauler[fila][col] = MAQUINA
-            if ha_guanyat(fila, col, MAQUINA):
-                return fila, col
-            tauler[fila][col] = BUIT
-    for col in range(COLS):
-        fila = fila_lliure(col)
-        if fila >= 0:
-            tauler[fila][col] = HUMA
-            if ha_guanyat(fila, col, HUMA):
+def troba_guanyadors(fila, col, fitxa):
+    direccions = [[0, 1], [1, 0], [1, 1], [1, -1]]
+    for d in direccions:
+        df = d[0]
+        dc = d[1]
+        posicions = [(fila, col)]
+        f = fila + df
+        c = col + dc
+        while 0 <= f < FILES and 0 <= c < COLS and tauler[f][c] == fitxa:
+            posicions.append((f, c))
+            f += df
+            c += dc
+        f = fila - df
+        c = col - dc
+        while 0 <= f < FILES and 0 <= c < COLS and tauler[f][c] == fitxa:
+            posicions.append((f, c))
+            f -= df
+            c -= dc
+        if len(posicions) >= 4:
+            return posicions
+    return []
+
+def marca_guanyadors(posicions, diamant):
+    for (f, c) in posicions:
+        tauler[f][c] = diamant
+
+def torn_maquina(facil):
+    if not facil or random.random() > 0.3:
+        for col in range(COLS):
+            fila = fila_lliure(col)
+            if fila >= 0:
+                tauler[fila][col] = MAQUINA
+                if ha_guanyat(fila, col, MAQUINA):
+                    return fila, col
                 tauler[fila][col] = BUIT
-                fila2 = deixa_fitxa(col, MAQUINA)
-                return fila2, col
-            tauler[fila][col] = BUIT
+    if not facil or random.random() > 0.6:
+        for col in range(COLS):
+            fila = fila_lliure(col)
+            if fila >= 0:
+                tauler[fila][col] = HUMA
+                if ha_guanyat(fila, col, HUMA):
+                    tauler[fila][col] = BUIT
+                    fila2 = deixa_fitxa(col, MAQUINA)
+                    return fila2, col
+                tauler[fila][col] = BUIT
+    if facil:
+        cols_lliures = [c for c in range(COLS) if fila_lliure(c) >= 0]
+        col = random.choice(cols_lliures)
+        fila = deixa_fitxa(col, MAQUINA)
+        return fila, col
     preferides = [3, 2, 4, 1, 5, 0, 6]
     for col in preferides:
         fila = fila_lliure(col)
@@ -581,15 +663,19 @@ def tauler_ple():
 
 print("=== 4 EN RATLLA ===")
 print("Tu ets " + HUMA + "   La maquina es " + MAQUINA)
+print()
+nivell = input("Nivell: 1.facil / 2.dificil: ")
+facil = (nivell == "1")
 
 torn_huma = random.choice([True, False])
 if not torn_huma:
     print("Comenca la maquina!")
-    fm, cm = torn_maquina()
+    fm, cm = torn_maquina(facil)
 
 dibuixa()
 
 while True:
+    print("_______________")
     if torn_huma:
         while True:
             entrada = input("Columna (1-7): ")
@@ -602,17 +688,23 @@ while True:
             else:
                 print("Escriu un numero de l&apos;1 al 7.")
         fila = deixa_fitxa(col, HUMA)
-        dibuixa()
         if ha_guanyat(fila, col, HUMA):
+            posicions = troba_guanyadors(fila, col, HUMA)
+            marca_guanyadors(posicions, DIAMANT_HUMA)
+            dibuixa()
             print("Has guanyat! Felicitats!")
             break
+        dibuixa()
     else:
         print("La maquina juga...")
-        fm, cm = torn_maquina()
-        dibuixa()
+        fm, cm = torn_maquina(facil)
         if ha_guanyat(fm, cm, MAQUINA):
+            posicions = troba_guanyadors(fm, cm, MAQUINA)
+            marca_guanyadors(posicions, DIAMANT_MAQUINA)
+            dibuixa()
             print("Ha guanyat la maquina!")
             break
+        dibuixa()
 
     if tauler_ple():
         print("Empat! Tauler ple.")
@@ -620,7 +712,7 @@ while True:
 
     torn_huma = not torn_huma'
              data-interactive="true"
-             data-height="580">
+             data-height="640">
         </div>
       </section>
 
