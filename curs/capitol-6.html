@@ -195,7 +195,7 @@ for i in range(1, 6):
 
         <p>Aquests són els errors més habituals en programes que contenen les instruccions <code>for</code></p>
 
-        <p><strong>1. Límit de <code>range</code></strong>: <code>range(n)</code> va de 0 a <code>n-1</code>, i que <code>range(x , y)</code> va de <em>x</em> a <em>y-1</em>:</p>
+        <p><strong>1. Límits</strong>: <code>range(n)</code> va de 0 a <code>n-1</code>, i <code>range(x , y)</code> va de <em>x</em> a <em>y-1</em>:</p>
 
         <div class="simulador"
              data-code='# Volíem imprimir de l&apos;1 al 5, però només arriba a 4.
@@ -229,11 +229,10 @@ for i in range(1, 6):
              data-height="240">
         </div>
 
-        <p><strong>3. Escriure <code>for i in range(5)</code> i oblidar els dos punts al final <code>for i in range(5):</code></strong>:</p>
+        <p><strong>3. Has d'escriure <code>for i in range(5)</code> afegint els dos punts al final, d'aquesta manera <code>for i in range(5):</code></strong>:</p>
 
         <div class="simulador"
-             data-code='for i in range(5)
-    print(i)'
+             data-code=''
              data-readonly="true"
              data-height="200">
         </div>
@@ -247,7 +246,7 @@ for i in range(1, 6):
         <h2>Exercici</h2>
 
         <div class="exercise-enunciat">
-          Escriu un programa que llegeixi un nombre enter <strong>N</strong> i imprimeixi un triangle de asteriscs (<code>*</code>) d'alçada N. La primera línia té 1 asterisc, la segona en té 2, i així fins a la fila N.
+          Escriu un programa que llegeixi un nombre enter <strong>N</strong> i que imprimeixi un triangle de asteriscs (<code>*</code>) d'alçada N. La primera línia té 1 asterisc, la segona en té 2, i així fins a la fila N.
         </div>
 
         <p>Per exemple, amb <code>N = 4</code> la sortida ha de ser:</p>
@@ -279,11 +278,11 @@ for i in range(1, 6):
       <section class="chapter-section">
         <h2>Resum</h2>
         <ul>
-          <li><code>for i in range(n):</code> repeteix el bloc <code>n</code> vegades, amb <code>i</code> prenent valors <code>0, 1, …, n-1</code>.</li>
-          <li><code>range(inici, fi)</code> genera valors des de <code>inici</code> fins a <code>fi-1</code> (la fi no s'inclou mai).</li>
-          <li><code>range(inici, fi, pas)</code> avança de <code>pas</code> en <code>pas</code>; el pas pot ser negatiu per comptar enrere.</li>
+          <li><code>for i in range(n):</code> repeteix el bloc <code>n</code> vegades, amb <code>i</code> prenent els valors <code>0, 1, …, n-1</code>.</li>
+          <li><code>range(x, y)</code> genera valors des de <code>x</code> fins a <code>y-1</code>.</li>
+          <li><code>range(x, y, pas)</code> avança de <code>pas</code> en <code>pas</code>; el pas pot ser negatiu i així podem comptar enrere.</li>
           <li>Les <strong>iteracions enniuades</strong> posen un <code>for</code> dins d'un altre: el bucle interior s'executa complet per cada iteració de l'exterior.</li>
-          <li>Usa <code>for</code> quan saps quantes repeticions vols; usa <code>while</code> quan la condició depèn d'un valor variable.</li>
+          <li>Usa <code>for</code> quan saps quantes repeticions vols; usa <code>while</code> quan el nombre de repeticions depen d'un valor que pot variar.</li>
           <li>No modifiquis la variable de control (<code>i</code>) dins de la instrucció  <code>for</code>; usa <code>continue</code> per saltar iteracions.</li>
         </ul>
       </section>
