@@ -211,9 +211,9 @@ print(nova)'
         <div class="simulador"
              data-code='frase = "poma pera plàtan maduixa"
 fruites = frase.split()
-print(fruites)        # ["poma", "pera", "plàtan", "maduixa"]
-print(fruites[0])     # poma
-print(len(fruites))   # 4'
+print(fruites)
+print(fruites[0])
+print(len(fruites))'
              data-readonly="true"
              data-height="260">
         </div>
@@ -224,18 +224,15 @@ print(len(fruites))   # 4'
            SECCIÓ 5 — Comprovacions: in, startswith, endswith
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Comprovar si un text conté alguna cosa</h2>
+        <h2>Comprovar si un text conté, a dins, una informació que nosaltres proporcionem</h2>
 
         <p>L'operador <code>in</code> comprova si una subcadena és dins d'un text. Retorna <code>True</code> o <code>False</code>:</p>
 
         <div class="simulador"
              data-code='frase = "M agrada la programació"
-print("programació" in frase)   # True
-print("Java" in frase)          # False
-
-# Combinat amb if:
-if "Python" not in frase:
-    print("No parla de Python!")'
+print("programació" in frase)   # en aquest cas, retornarà True
+print("Java" in frase)          # en aquest cas, retornarà False
+'
              data-readonly="true"
              data-height="270">
         </div>
@@ -258,7 +255,7 @@ if fitxer.startswith("informe"):
            SECCIÓ 6 — Recórrer un text amb for
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Recórrer un text amb <code>for</code></h2>
+        <h2>Recórrer la informació d'un text fent servir la instrucció <code>for</code></h2>
 
         <p>Pots iterar directament sobre els caràcters d'un text amb <code>for c in text:</code>, igual que faries amb una llista de nombres:</p>
 
@@ -270,7 +267,7 @@ for c in paraula:
              data-height="230">
         </div>
 
-        <p>Combinant el <code>for</code> amb un condicional, pots filtrar o comptar caràcters concrets. Per exemple, comptar quants espais té una frase:</p>
+        <p>En aquest exemple que veuràs, comptarem quants espais té una frase:</p>
 
         <div class="simulador"
              data-code='frase = "El cel és blau i clar"
