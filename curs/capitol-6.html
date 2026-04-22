@@ -154,19 +154,19 @@ for fila in range(1, 4):
            SECCIÓ 4 — for vs while
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Quan fer servir <code>for</code> i quan <code>while</code>?</h2>
+        <h2>Quan fem servir la instrucció <code>for</code> en lloc de <code>while</code>?</h2>
 
-        <p>La regla pràctica és senzilla:</p>
+        <p>Aquesta indicació resulta clarificadora:</p>
 
         <ul>
-          <li>Usa <strong><code>for</code></strong> quan saps d'antuvi quantes vegades vols repetir, o quan recorres una seqüència de valors.</li>
-          <li>Usa <strong><code>while</code></strong> quan el nombre de repeticions depèn d'una condició que pot canviar durant l'execució (per exemple, la resposta de l'usuari).</li>
+          <li>Fes servir la instrucció<strong><code>for</code></strong> quan ja saps quantes vegades vols repetir, o bé quan recorres una seqüència coneguda de valors.</li>
+          <li>Fes servir la instrucció<strong><code>while</code></strong> quan el nombre de repeticions depèn d'una condició que pot canviar durant l'execució.</li>
         </ul>
 
-        <p>Compara els dos codis que fan exactament el mateix:</p>
+        <p>Compara aquests dos codis, que fan exactament el mateix:</p>
 
         <div class="simulador"
-             data-code='# Amb while: has de gestionar tu el comptador
+             data-code='# while: has de gestionar tu el comptador
 i = 1
 while i <= 5:
     print("Iteració", i)
@@ -176,14 +176,14 @@ while i <= 5:
         </div>
 
         <div class="simulador"
-             data-code='# Amb for: més curt i més llegible
+             data-code='# for: més llegible
 for i in range(1, 6):
     print("Iteració", i)'
              data-readonly="true"
              data-height="200">
         </div>
 
-        <p>El <code>for</code> és l'eina adequada per al primer cas. Reserva el <code>while</code> per quan la condició és variable o desconeguda.</p>
+        
       </section>
 
 
@@ -191,11 +191,11 @@ for i in range(1, 6):
            SECCIÓ 5 — Errors típics
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Errors típics</h2>
+        <h2>Errors de sintaxi o d'execució</h2>
 
-        <p>Aquests són els errors més habituals en els primers programes amb <code>for</code> i <code>range</code>.</p>
+        <p>Aquests són els errors més habituals en programes que contenen les instruccions <code>for</code></p>
 
-        <p><strong>1. Off-by-one: confondre el límit de <code>range</code></strong> — recorda que <code>range(n)</code> va de 0 fins a <code>n-1</code>, i que el segon argument de <code>range(a, b)</code> no s'inclou mai:</p>
+        <p><strong>1. Límit de <code>range</code></strong> — recorda que <code>range(n)</code> va de 0 fins a <code>n-1</code>, i que <code>range(a, b)</code> va de <em>a</em> fins <em>b-1</em>:</p>
 
         <div class="simulador"
              data-code='# Volem imprimir de l1 al 5, però surt malament
