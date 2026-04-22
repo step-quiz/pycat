@@ -39,7 +39,10 @@
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 7</span>
         <h1>Treballant amb text</h1>
-        <p class="chapter-lead">Els textos no són una caixa tancada: pots mirar-ne caràcters, tallar-los i transformar-los.</p>
+        <p class="chapter-lead">
+          Una cadena de text (en anglès, <em>string</em>) és una seqüència de caràcters
+          Aprendràs a tallar un text i a transformar-lo. També sabràs com accedir als caràcters que el formen.
+        </p>
       </header>
 
 
@@ -47,9 +50,9 @@
            SECCIÓ 1 — Indexació
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Accedir a un caràcter: indexació</h2>
+        <h2>Com podem accedir a un caràcter</h2>
 
-        <p>Una cadena de text (en anglès, <em>string</em>) és una seqüència de caràcters. Pots agafar un caràcter concret escrivint el seu <strong>índex</strong> entre claudàtors <code>[ ]</code>. El primer caràcter sempre té índex <code>0</code>:</p>
+        <p>Pots agafar un caràcter concret escrivint el seu <strong>índex</strong> entre claudàtors <code>[ ]</code>. El primer caràcter sempre té índex <code>0</code>:</p>
 
         <div class="simulador"
              data-code='paraula = "Python"
@@ -70,7 +73,7 @@ print(paraula[-2])  # penúltim caràcter'
              data-height="220">
         </div>
 
-        <p>Prova a canviar el text i els índexs per explorar com funciona:</p>
+        <p>Pots modificar el codi següent, per explorar com funciona:</p>
 
         <div class="simulador"
              data-code='text = "Hola, món!"
@@ -85,13 +88,16 @@ print(text[-1])'
            SECCIÓ 2 — Llargada amb len()
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Llargada amb <code>len()</code></h2>
+        <h2>Llargada d'un text</h2>
 
-        <p>La funció <code>len()</code> retorna el nombre de caràcters d'un text, espais inclosos:</p>
+        <p>La funció <code>len()</code> retorna el nombre de caràcters d'un text, amb els espais també comptats:</p>
 
         <div class="simulador"
-             data-code='missatge = "Hola, món!"
-print(len(missatge))   # 10 caràcters
+             data-code='missatge_curt = "Hola"
+print(len(missatge_curt))   # 4 caràcters
+
+missatge_llarg = "Hola, món!"
+print(len(missatge_llarg))   # 10 caràcters
 
 buit = ""
 print(len(buit))       # 0 caràcters'
@@ -99,14 +105,10 @@ print(len(buit))       # 0 caràcters'
              data-height="240">
         </div>
 
-        <p>Combinat amb l'indexació, <code>len()</code> és molt útil per accedir a l'últim caràcter sense saber d'avançada quant és de llarg el text:</p>
+        
 
         <div class="simulador"
-             data-code='paraula = "programació"
-darrer_index = len(paraula) - 1
-print("Darrer caràcter:", paraula[darrer_index])
-# Equivalent, però més curt:
-print("Darrer caràcter:", paraula[-1])'
+             data-code=''
              data-height="280">
         </div>
       </section>
@@ -116,9 +118,9 @@ print("Darrer caràcter:", paraula[-1])'
            SECCIÓ 3 — Slicing
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Retallar un fragment: <em>slicing</em></h2>
+        <h2>Retallar un fragment de text</h2>
 
-        <p>En lloc d'agafar un sol caràcter, pots agafar un tros del text indicant <strong>inici</strong> i <strong>fi</strong> separats per <code>:</code>. La fi no s'inclou, igual que <code>range()</code>:</p>
+        <p>En lloc d'agafar un sol caràcter, pots agafar un tros del text indicant <strong>inici</strong> i <strong>fi</strong> separats per <code>:</code>.<br> Atenció, tingues en compte que l'últim caràcter serà <code>fi - 1</code></p>
 
         <div class="simulador"
              data-code='text = "Barcelona"
