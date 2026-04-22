@@ -58,7 +58,7 @@
              data-code='paraula = "Python"
 print(paraula[0])   # primer caràcter
 print(paraula[1])   # segon caràcter
-print(paraula[5])   # últim caràcter'
+print(paraula[2])   # tercer caràcter'
              data-readonly="true"
              data-height="240">
         </div>
@@ -76,7 +76,7 @@ print(paraula[-2])  # penúltim caràcter'
         <p>Pots modificar el codi següent, per explorar com funciona:</p>
 
         <div class="simulador"
-             data-code='text = "Hola, món!"
+             data-code='text = "Hola"
 print(text[0])
 print(text[-1])'
              data-height="200">
@@ -135,11 +135,12 @@ print(text[4:])     # des del 4 fins al final → "elona"'
         <p>El tercer valor opcional és el <strong>pas</strong>. Un pas de <code>-1</code> recorre el text al revés — una manera còmoda d'invertir una cadena:</p>
 
         <div class="simulador"
-             data-code='paraula = "Python"
-print(paraula[::-1])   # inverteix la cadena → "nohtyP"
+             data-code='paraula = "Elisenda"
 
-# Cada dos caràcters
-print(paraula[::2])    # → "Pto"'
+print(paraula[::2])    # escriu un de cada dos caràcters
+print(paraula[::-1])   # inverteix la cadena
+
+'
              data-readonly="true"
              data-height="240">
         </div>
@@ -147,9 +148,11 @@ print(paraula[::2])    # → "Pto"'
         <p>Experimenta retallant la teva pròpia cadena:</p>
 
         <div class="simulador"
-             data-code='text = "programació"
-# Prova diferents retalls:
-print(text[3:7])'
+             data-code='paraula_meva = "programació"
+print(paraula_meva[3:7])
+print(paraula_meva[::-1])
+
+'
              data-height="200">
         </div>
       </section>
@@ -161,34 +164,44 @@ print(text[3:7])'
       <section class="chapter-section">
         <h2>Mètodes habituals de text</h2>
 
-        <p>Els textos tenen <strong>mètodes</strong> propis que es criden amb un punt: <code>text.metode()</code>. Cap d'ells modifica el text original; tots retornen un text nou.</p>
+        <p>
+          Els textos tenen <strong>mètodes</strong> propis que es criden amb el signe punt, d'aquesta manera: <code>text.metode()</code>. 
+          Cap d'ells modifica el text original, sinó que semper retornen un text nou.
+          Amb aquests exemples es veurà més clar:
+        </p>
 
-        <p><strong><code>.upper()</code> i <code>.lower()</code></strong> — converteixen a majúscules o minúscules:</p>
+        <p>
+          <code>.upper()</code>: converteix un text a majúscules
+          <code>.lower()</code>: converteix un text a minúscules
+        </p>
 
         <div class="simulador"
-             data-code='salutació = "Hola, Món!"
-print(salutació.upper())   # HOLA, MÓN!
-print(salutació.lower())   # hola, món!'
+             data-code='salutació = "Hola, món!"
+print(salutació.upper())
+print(salutació.lower())'
              data-readonly="true"
              data-height="220">
         </div>
 
-        <p><strong><code>.strip()</code></strong> — elimina els espais en blanc (i salts de línia) dels extrems. Molt útil per netejar l'entrada de l'usuari:</p>
+        <p>
+          <strong><code>.strip()</code></strong>: elimina els espais en blanc (i salts de línia) dels extrems.
+          Això és molt útil per a poder netejar l'entrada d'una persona usuària:
+        </p>
 
         <div class="simulador"
-             data-code='resposta = "  sí  "
-print(resposta)           # "  sí  "
-print(resposta.strip())   # "sí"'
+             data-code='resposta = "    sí   "
+print(resposta)   
+print(resposta.strip())'
              data-readonly="true"
              data-height="220">
         </div>
 
-        <p><strong><code>.replace(vell, nou)</code></strong> — substitueix totes les aparicions d'una subcadena per una altra:</p>
+        <p><strong><code>.replace(vell, nou)</code></strong>: substitueix totes les aparicions d'una subcadena per una altra:</p>
 
         <div class="simulador"
-             data-code='frase = "El gat seu damunt del gat"
+             data-code='frase = "Un gat està dormint i l&apos;altre gat està despert"
 nova = frase.replace("gat", "gos")
-print(nova)   # El gos seu damunt del gos'
+print(nova)'
              data-readonly="true"
              data-height="220">
         </div>
