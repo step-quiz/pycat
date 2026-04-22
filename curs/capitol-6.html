@@ -82,27 +82,30 @@ for i in range(5):
           <code>range(inici, fi, pas)</code>
         </h2>
 
-        <p><code>range()</code> accepta fins a tres arguments: <strong>inici</strong>, <strong>fi</strong> (sense incloure) i <strong>pas</strong>. Amb dos arguments, triem exactament on comença i on acaba:</p>
+        <p><code>range()</code> accepta dos arguments: <strong>inici</strong>, <strong>fi</strong> (sense incloure). Amb aquestes dos arguments, triem exactament on comença i on acaba la nostra repetició.</p>
 
         <div class="simulador"
-             data-code='# Comptar de l1 al 10 (sense trucs)
+             data-code='# Comptar de l&apos;1 al 10
 for i in range(1, 11):
     print(i)'
              data-readonly="true"
              data-height="240">
         </div>
 
-        <p>Amb el tercer argument —el <strong>pas</strong>— controlem quant avança <code>i</code> a cada iteració:</p>
+        <p>
+          Si afegim un tercer argument a <code>range</code>, podem controlar quant avança el comptador <code>i</code> a cada iteració.
+          Per exemple, si volem fer una llista de nombres parells, ens convé saltar de dos en dos:
+        </p>
 
         <div class="simulador"
-             data-code='# Parells del 0 al 10
+             data-code='# Nombres parells, del 0 al 10
 for i in range(0, 11, 2):
     print(i)'
              data-readonly="true"
              data-height="240">
         </div>
 
-        <p>El pas també pot ser <strong>negatiu</strong> per comptar enrere. En aquest cas l'inici ha de ser més gran que la fi:</p>
+        <p>El pas també pot ser <strong>negatiu</strong>, i això vol dir comptar enrere. En aquest cas el nombre d'inici ha de ser més gran que el nombre de final:</p>
 
         <div class="simulador"
              data-code='# Compte enrere: del 5 al 1
@@ -118,30 +121,29 @@ print("Enlairem!")'
            SECCIÓ 3 — Bucles imbricats
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Bucles imbricats: la taula de multiplicar</h2>
+        <h2>La taula de multiplicar</h2>
 
-        <p>Pots posar un <code>for</code> dins d'un altre <code>for</code>. El bucle interior s'executa sencer per cada iteració del bucle exterior. Això s'anomena <strong>bucles imbricats</strong> (en anglès, <em>nested loops</em>).</p>
+        <p>Una instrucció <code>for</code> pot contenir, a dins, una altra instrucció <code>for</code>. La interior s'executa sencera per a cada pas de l'exterior. Això s'anomena <strong>iteracions enniuades</strong> (en anglès, <em>nested loops</em>).</p>
 
         <p>L'exemple clàssic és la taula de multiplicar:</p>
 
         <div class="simulador"
              data-code='# Taula de multiplicar del 1 al 3
 for fila in range(1, 4):
-    for columna in range(1, 4):
+    for columna in range(1, 10):
         resultat = fila * columna
         print(fila, "x", columna, "=", resultat)'
              data-readonly="true"
              data-height="320">
         </div>
 
-        <p>Observa la indentació: el <code>print</code> té <strong>8 espais</strong> (dues capes d'indentació) perquè pertany al bucle interior, que al seu torn pertany al bucle exterior.</p>
+        <p>És obligatori fer servir la indentació correctament: la instrucció <code>print</code> té <strong>el doble d'espais</strong> perquè pertany a la iteració interior.</p>
 
-        <p>Modifica el codi per generar la taula completa del 1 al 10:</p>
+        <p>Modifica el codi següent, amb l'objectiu de generar la taula completa de l'1 al 10:</p>
 
         <div class="simulador"
-             data-code='# Modifica el range per generar la taula fins al 10
-for fila in range(1, 4):
-    for columna in range(1, 4):
+             data-code='for fila in range(1, 4):
+    for columna in range(1, 10):
         print(fila, "x", columna, "=", fila * columna)'
              data-height="320">
         </div>
