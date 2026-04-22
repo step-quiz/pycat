@@ -38,8 +38,8 @@
            ───────────────────────────────────────── -->
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 6</span>
-        <h1>Repetir amb <code>for</code> i <code>range</code></h1>
-        <p class="chapter-lead">Si saps quantes vegades has de repetir una cosa, <code>for</code> és més curt i clar que <code>while</code>.</p>
+        <h1>La instrucció <code>for</code> i <code>in range</code></h1>
+        <p class="chapter-lead">Si saps quantes vegades hauràs de repetir una cosa, la instrucció<code>for</code> acostuma a ser millor que <code>while</code>.</p>
       </header>
 
 
@@ -49,7 +49,7 @@
       <section class="chapter-section">
         <h2><code>for i in range(n)</code></h2>
 
-        <p>Al capítol anterior vam fer servir <code>while</code> per comptar fins a 5. Ho pots fer amb molt menys codi usant <code>for</code> (en anglès, <em>for loop</em>):</p>
+        <p>Al capítol anterior vam fer servir <code>while</code> per comptar fins a 5. Ho pots aconseguir escrivint menys codi, usant <code>for</code>. Fixa't com s'escriu:</p>
 
         <div class="simulador"
              data-code='for i in range(5):
@@ -58,11 +58,11 @@
              data-height="220">
         </div>
 
-        <p>Llegeix-ho: «<em>per cada <code>i</code> dins de <code>range(5)</code>, imprimeix <code>i</code></em>». <code>range(5)</code> genera la seqüència de nombres <code>0, 1, 2, 3, 4</code> —cinc valors que comencen a <strong>0</strong> i arriben fins a <strong>4</strong> (sense incloure el 5). Fixa't que el valor <code>5</code> no apareix mai a la sortida.</p>
+        <p>Llegeix-ho: «<em>per cada <code>i</code> dins de <code>range(5)</code>, imprimeix <code>i</code></em>». <code>range(5)</code> genera la seqüència de nombres <code>0, 1, 2, 3, 4</code> —cinc valors que comencen a <strong>0</strong> i arriben fins a <strong>4</strong> (sense incloure el 5).<br> Fixa't que el valor <code>5</code> no apareix mai a la sortida.</p>
 
-        <p>El <code>for</code> ja s'encarrega de tot: inicialitzar <code>i</code>, avançar-lo i aturar-se quan s'acaba la seqüència. No cal escriure <code>i = 0</code> ni <code>i = i + 1</code>.</p>
+        <p>La instrucció <code>for</code> inicialitza <code>i=0</code>, augmenta en una unitat i s'aturar quan cal.<br> És a dir, no cal escriure <code>i = 0</code> ni <code>i = i + 1</code>.</p>
 
-        <p>Si vols que els números comencin a 1 en comptes de 0, pots sumar-hi 1 o usar la forma de dos arguments (que veurem a continuació):</p>
+        <p>Si vols que la teva numeració comencin per 1 en comptes de 0, una opció és sumar 1 dintre de la iteració. Aquest exemple donarà com a resultat els nombres <code>1, 2, 3, 4, 5</code></p>
 
         <div class="simulador"
              data-code='# Comptar de l1 al 5
@@ -77,7 +77,10 @@ for i in range(5):
            SECCIÓ 2 — range amb start, stop i step
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2><code>range(inici, fi)</code> i <code>range(inici, fi, pas)</code></h2>
+        <h2>
+          <code>range(inici, fi)</code><br>
+          <code>range(inici, fi, pas)</code>
+        </h2>
 
         <p><code>range()</code> accepta fins a tres arguments: <strong>inici</strong>, <strong>fi</strong> (sense incloure) i <strong>pas</strong>. Amb dos arguments, triem exactament on comença i on acaba:</p>
 
