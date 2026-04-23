@@ -49,7 +49,7 @@
       <section class="chapter-section">
         <h2>Crear una llista</h2>
 
-        <p>Fins ara cada variable guardava un sol valor. Una <strong>llista</strong> (en anglès, <em>list</em>) pot guardar-ne molts, separats per comes i entre claudàtors <code>[ ]</code>:</p>
+        <p>Fins ara cada variable guardava un sol valor. <br>Una <strong>llista</strong> (en anglès, <em>list</em>) pot guardar-ne molts.</p>
 
         <div class="simulador"
              data-code='numeros = [3, 7, 2, 9, 4]
@@ -65,16 +65,16 @@ print(fruites)'
 
         <div class="simulador"
              data-code='buida = []
-print(buida)         # []
-print(len(buida))    # 0
+print(buida)         
+print(len(buida))    
 
-mixta = [1, "hola", 3.14, True]
-print(mixta)'
+llista_mixta = [1, "hola", 3.14, True]
+print(llista_mixta)'
              data-readonly="true"
              data-height="250">
         </div>
 
-        <p>Prova a crear la teva pròpia llista i mostra-la:</p>
+        <p>Exercici. Prova a modificar la llista i, posteriorment, mostra-la:</p>
 
         <div class="simulador"
              data-code='colors = ["vermell", "verd", "blau"]
@@ -94,10 +94,10 @@ print(colors)'
 
         <div class="simulador"
              data-code='planetes = ["Mercuri", "Venus", "Terra", "Mart"]
-print(planetes[0])       # Mercuri
-print(planetes[2])       # Terra
-print(planetes[-1])      # Mart
-print(len(planetes))     # 4'
+print(planetes[0])      
+print(planetes[2])       
+print(planetes[-1])      
+print(len(planetes))     '
              data-readonly="true"
              data-height="270">
         </div>
@@ -127,7 +127,7 @@ print("Després:", notes)'
              data-code='compra = ["pa", "llet"]
 compra.append("ous")
 compra.append("fruita")
-print(compra)   # ["pa", "llet", "ous", "fruita"]'
+print(compra)   '
              data-readonly="true"
              data-height="230">
         </div>
@@ -137,11 +137,13 @@ print(compra)   # ["pa", "llet", "ous", "fruita"]'
         <div class="simulador"
              data-code='numeros = [10, 20, 30, 40]
 darrer = numeros.pop()
-print("Tret:", darrer)       # 40
-print("Queda:", numeros)     # [10, 20, 30]
+print("He tret aquest valor:", darrer)       
+print("Queden aquests valors:", numeros)     
 
-numeros.pop(0)               # treu el primer
-print("Queda:", numeros)     # [20, 30]'
+primer = numeros.pop(0)              
+print("Ara he tret aquest valor:", primer)       
+print("I només queden aquests valors:", numeros)     
+'
              data-readonly="true"
              data-height="280">
         </div>
@@ -151,7 +153,7 @@ print("Queda:", numeros)     # [20, 30]'
         <div class="simulador"
              data-code='animals = ["gat", "gos", "ocell", "peix"]
 del animals[1]   # esborra "gos"
-print(animals)   # ["gat", "ocell", "peix"]'
+print(animals)'
              data-height="220">
         </div>
       </section>
@@ -188,9 +190,9 @@ print("Total:", total)'
 
         <div class="simulador"
              data-code='notes = [7, 5, 9, 8, 6]
-print("Suma:", sum(notes))     # 35
-print("Mínima:", min(notes))   # 5
-print("Màxima:", max(notes))   # 9'
+print("Suma:", sum(notes))     
+print("Mínima:", min(notes))   
+print("Màxima:", max(notes))   '
              data-readonly="true"
              data-height="250">
         </div>
@@ -219,7 +221,7 @@ for i in range(len(alumnes)):
              data-code='numeros = [3, 7, 2, 9]
 for i in range(len(numeros)):
     numeros[i] = numeros[i] * 2
-print(numeros)   # [6, 14, 4, 18]'
+print(numeros)   '
              data-height="240">
         </div>
       </section>
@@ -247,7 +249,7 @@ print("Última paraula:", paraules[-1])'
         <p>Pots passar-li un separador diferent de l'espai. Per exemple, per dividir una data en parts:</p>
 
         <div class="simulador"
-             data-code='data = "14/04/2026"
+             data-code='data = "19/03/2027"
 parts = data.split("/")
 print("Dia:", parts[0])
 print("Mes:", parts[1])
@@ -261,7 +263,7 @@ print("Any:", parts[2])'
         <div class="simulador"
              data-code='ingredients = ["farina", "ous", "sucre", "llet"]
 recepta = ", ".join(ingredients)
-print(recepta)   # farina, ous, sucre, llet'
+print(recepta)   '
              data-height="210">
         </div>
       </section>
@@ -277,7 +279,7 @@ print(recepta)   # farina, ous, sucre, llet'
 
         <div class="simulador"
              data-code='colors = ["vermell", "verd", "blau"]
-print(colors[5])   # ERROR: índex fora de rang'
+print(colors[5])   '
              data-readonly="true"
              data-height="200">
         </div>
@@ -286,8 +288,8 @@ print(colors[5])   # ERROR: índex fora de rang'
 
         <div class="simulador"
              data-code='numeros = [1, 2, 3]
-numeros = numeros.append(4)   # ERROR LÒGIC: ara numeros val None
-print(numeros)                # None, no [1, 2, 3, 4]'
+numeros = numeros.append(4)   # Es crearà un error
+print(numeros)                '
              data-readonly="true"
              data-height="210">
         </div>
@@ -295,11 +297,11 @@ print(numeros)                # None, no [1, 2, 3, 4]'
         <p><strong>3. Modificar una llista mentre la recorres</strong> — afegir o esborrar elements dins d'un <code>for x in llista:</code> pot saltar-se elements o donar IndexError. Si has de modificar la llista, usa <code>range(len(llista))</code> o treballa amb una còpia:</p>
 
         <div class="simulador"
-             data-code='# Segur: recórrer per índex si cal modificar
+             data-code='# És bona estratègia recórrer la llista d&apos;aquesta manera
 numeros = [1, 2, 3, 4, 5]
 for i in range(len(numeros)):
     numeros[i] = numeros[i] + 10
-print(numeros)   # [11, 12, 13, 14, 15]'
+print(numeros)   '
              data-height="230">
         </div>
       </section>
@@ -320,11 +322,7 @@ print(numeros)   # [11, 12, 13, 14, 15]'
         <p>Pista: guarda cada nombre llegit a la llista amb <code>.append()</code>. Quan tinguis els 5, calcula la mitjana amb <code>sum()</code> i <code>len()</code>.</p>
 
         <div class="simulador"
-             data-code="numeros = []
-# Llegeix 5 nombres i guarda'ls a la llista:
-
-# Calcula i mostra la mitjana:
-"
+             data-code="numeros = []"
              data-tests='[
                {"stdin": "10\n20\n30\n40\n50", "expected": "30.0"},
                {"stdin": "1\n2\n3\n4\n5", "expected": "3.0"},
