@@ -38,8 +38,8 @@
            ───────────────────────────────────────── -->
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 12</span>
-        <h1>4 en ratlla</h1>
-        <p class="chapter-lead">Programarem el classic joc de taula 4 en ratlla: tu contra la maquina, torn a torn, al simulador.</p>
+        <h1>El joc "4 en ratlla"</h1>
+        <p class="chapter-lead">Programarem el clàssic joc de taula "4 en ratlla", on juguen la persona i la màquina.</p>
       </header>
 
 
@@ -51,15 +51,15 @@
 
         <p><strong>4 en ratlla</strong> (en angles, <em>Connect Four</em>) es un joc de taula per a dos jugadors. El tauler te 7 columnes i 6 files. Cada torn, un jugador deixa caure una fitxa per una columna i la fitxa cau fins a la posicio mes baixa disponible, com per gravetat. Guanya el primer que aconsegueix alinear <strong>4 fitxes seguides</strong> en horitzontal, vertical o diagonal.</p>
 
-        <p>Es un joc perfecte per al simulador de PyCat perque es <strong>per torns per naturalesa</strong>: el jugador tria una columna, la fitxa cau, i despres juga la maquina. No cal res especial, nomes <code>print()</code> i <code>input()</code>.</p>
+        <p>Es un joc perfecte per al simulador de PyCat perque es <strong>per torns</strong>: el jugador tria una columna, la fitxa cau, i despres juga la maquina.</p>
 
         <p>Construirem el joc pas a pas:</p>
 
         <ul>
           <li>El <strong>tauler</strong>, guardat com una llista de llistes i dibuixat amb Unicode.</li>
           <li>La <strong>gravetat</strong>: la fitxa cau fins a la fila mes baixa buida.</li>
-          <li>La <strong>deteccio</strong> de 4 en ratlla (la part mes enginyosa).</li>
-          <li>La <strong>intel·ligencia</strong> de la maquina.</li>
+          <li>La <strong>detecció</strong> de 4 en ratlla (la part mes enginyosa).</li>
+          <li><strong>L'estratègia</strong> de la màquina per intentar guanyar la partida.</li>
         </ul>
       </section>
 
@@ -68,9 +68,14 @@
            SECCIÓ 1 — El tauler
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Peca 1: el tauler</h2>
+        <h2>Peça 1: el tauler</h2>
 
-        <p>El tauler es una llista de 6 files, i cada fila es una llista de 7 valors. Fem servir strings per representar cada casella: <code>"\u00b7"</code> per buida, <code>"\u25cf"</code> per la fitxa del jugador (●) i <code>"\u25cb"</code> per la de la maquina (○):</p>
+        <p>
+          El tauler es una llista de 6 files, i cada fila es una llista de 7 valors. Fem servir cadenes de caràcters per representar cada casella.
+          <br><code>"\u00b7"</code> per buida ( · ), 
+          <br><code>"\u25cf"</code> per la fitxa del jugador (●)
+          <br><code>"\u25cb"</code> per la de la maquina (○)
+        </p>
 
         <div class="simulador"
              data-code='FILES = 6
@@ -101,7 +106,7 @@ dibuixa()'
              data-height="380">
         </div>
 
-        <p>El doble bucle dins de <code>dibuixa()</code> recorre cada fila i columna. Per a cada casella, afegeix un espai i el simbol corresponent. El resultat es un tauler net amb les vores Unicode que ja coneixem.</p>
+        
       </section>
 
 
@@ -109,9 +114,9 @@ dibuixa()'
            SECCIÓ 2 — La gravetat
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Peca 2: la gravetat</h2>
+        <h2>Peça 2: la gravetat</h2>
 
-        <p>Quan un jugador tria una columna, la fitxa no queda a dalt: <strong>cau</strong> fins a la fila mes baixa que estigui buida. Per trobar-la, recorrem la columna de baix a dalt:</p>
+        <p>Quan un jugador tria una columna, la fitxa no queda a dalt sinó que directament <strong>cau</strong> fins a la fila mes baixa que estigui buida. Per trobar aquesta altura que ha de caure, recorrem la columna de baix a dalt:</p>
 
         <div class="simulador"
              data-code='FILES = 6
@@ -150,7 +155,8 @@ def deixa_fitxa(col, fitxa):
         tauler[fila][col] = fitxa
     return fila
 
-# Provem: deixem caure 3 fitxes a la columna 3
+# Aquest codi és només per provar la funció
+# Deixem caure 3 fitxes a la columna 3
 deixa_fitxa(3, HUMA)
 deixa_fitxa(3, MAQUINA)
 deixa_fitxa(3, HUMA)
@@ -162,7 +168,7 @@ dibuixa()'
              data-height="480">
         </div>
 
-        <p>La funcio <code>fila_lliure(col)</code> busca de baix a dalt amb <code>range(FILES - 1, -1, -1)</code>, que genera <code>5, 4, 3, 2, 1, 0</code>. La primera casella buida que trobi es on cau la fitxa. Si la columna es plena, retorna <code>-1</code>.</p>
+        
       </section>
 
 
@@ -170,11 +176,11 @@ dibuixa()'
            SECCIÓ 3 — Detecció del guanyador
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Peca 3: qui ha guanyat?</h2>
+        <h2>Peça 3: qui ha guanyat?</h2>
 
         <p>Cada cop que es col·loca una fitxa, hem de comprovar si forma una linia de 4. En lloc de mirar tot el tauler, nomes comprovem des de la fitxa acabada de posar en <strong>4 direccions</strong>: horitzontal, vertical i les dues diagonals.</p>
 
-        <p>Per a cada direccio, comptem quantes fitxes consecutives del mateix jugador hi ha cap a un costat i cap a l'altre. Si el total arriba a 4 o mes, ha guanyat:</p>
+        <p>Per a cada direccio, comptem quantes fitxes consecutives del mateix jugador hi ha cap a un costat i cap a l'altre. Si el total arriba a 4 o mes, vol dir que ha guanyat:</p>
 
         <div class="simulador"
              data-code='FILES = 6
@@ -211,7 +217,7 @@ def ha_guanyat(fila, col, fitxa):
             return True
     return False
 
-# Provem: posem 4 fitxes en horitzontal
+# Aquest codi és només per provar si funciona
 tauler[5][1] = HUMA
 tauler[5][2] = HUMA
 tauler[5][3] = HUMA
@@ -219,16 +225,20 @@ tauler[5][4] = HUMA
 
 print("4 en horitzontal:", ha_guanyat(5, 4, HUMA))
 
-# Nomes 3 en horitzontal
+# Ara buidem una casella, i com que només hi ha 3 fitxes consecutives, vol dir que encara no s&apos;ha guanyat.
 tauler[5][4] = BUIT
 print("Nomes 3:", ha_guanyat(5, 3, HUMA))'
              data-readonly="true"
              data-height="500">
         </div>
 
-        <p>Aquesta es la part mes enginyosa del joc. La llista <code>direccions</code> conte 4 parelles <code>[df, dc]</code> que representen com ens movem per cada eix. Per exemple, <code>[0, 1]</code> vol dir "mateixa fila, columna seguent" (horitzontal) i <code>[1, -1]</code> vol dir "fila seguent, columna anterior" (diagonal).</p>
+        <p>
+          Aquesta peça que has llegit és, probablement, la més enginyosa del joc.
+          <br>La llista <code>direccions</code> conte 4 parelles <code>[df, dc]</code> que representen com ens movem per cada eix. Per exemple, <code>[0, 1]</code> vol dir "mateixa fila, columna seguent" (horitzontal) i <code>[1, -1]</code> vol dir "fila seguent, columna anterior" (diagonal).
+          <br> Per a cada direcció, el primer <code>while</code> compta cap endavant (<code>+df, +dc</code>) i el segon cap enrere (<code>-df, -dc</code>). Aixi detectem linies on la fitxa nova esta al mig, no nomes al final.
+        </p>
 
-        <p>Per a cada direccio, el primer <code>while</code> compta cap endavant (<code>+df, +dc</code>) i el segon cap enrere (<code>-df, -dc</code>). Aixi detectem linies on la fitxa nova esta al mig, no nomes al final.</p>
+        
       </section>
 
 
@@ -236,17 +246,17 @@ print("Nomes 3:", ha_guanyat(5, 3, HUMA))'
            SECCIÓ 4 — La IA
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Peca 4: la intel·ligencia de la maquina</h2>
+        <h2>Peça 4: l'estratègia de joc de la màquina</h2>
 
-        <p>La nostra maquina segueix una estrategia senzilla de tres passos:</p>
+        <p>La nostra màquina segueix una estrategia senzilla de tres passos:</p>
 
         <ol>
           <li><strong>Puc guanyar?</strong> Prova cada columna. Si posar-hi una fitxa dona 4 en ratlla, juga alla.</li>
           <li><strong>He de bloquejar?</strong> Prova cada columna amb la fitxa del rival. Si el rival guanyaria, la maquina bloqueja aquella columna.</li>
-          <li><strong>Si no,</strong> prefereix les columnes del centre (que donen mes opcions).</li>
+          <li><strong>Si no </strong> es compleixen les condicions anteriors, escollirà les columnes del centre, perquè són les que donen més opcions.</li>
         </ol>
 
-        <p>El truc per "provar" una jugada es: posar la fitxa, comprovar si guanya, i <strong>treure-la</strong> si no era la jugada definitiva:</p>
+        
 
         <div class="simulador"
              data-code='# (Suposant que tauler, fila_lliure, deixa_fitxa
@@ -280,8 +290,7 @@ def torn_maquina():
         if fila >= 0:
             deixa_fitxa(col, MAQUINA)
             return fila, col
-
-print("(Aquesta funcio es provara al joc complet)")'
+'
              data-readonly="true"
              data-height="440">
         </div>
@@ -296,7 +305,12 @@ print("(Aquesta funcio es provara al joc complet)")'
       <section class="chapter-section">
         <h2>El joc complet</h2>
 
-        <p>Ara juntem totes les peces. Tu ets <strong>●</strong> i la maquina es <strong>○</strong>. A cada torn, escriu el numero de columna (1–7) i prem Enter. A jugar!</p>
+        <p>
+          Ara juntem totes les peces.
+          <br>La persona que juga té les fitxes <strong>●</strong>, i la màquina, les <strong>○</strong>.
+          <br> A cada torn, la persona escriu el numero de columna (1–7) escollit i prem la tecla <code>Retorn</code>.
+          <br> Ja pots jugar!
+        </p>
 
         <div class="simulador"
              data-code='import random
@@ -558,10 +572,8 @@ while True:
 
         <ul>
           <li><strong>Maquina mes intel·ligent.</strong> Afegeix un quart pas a la IA: abans de triar el centre, comprova si posar una fitxa dona 3 en ratlla (preparant un 4 en ratlla futur).</li>
-          <li><strong>Maquina mes beneita.</strong> Afegeix <code>if random.random() &gt; 0.5:</code> perque la maquina de vegades ignori el bloqueig. Aixi es mes facil guanyar-la.</li>
           <li><strong>Dos jugadors.</strong> Modifica el programa perque dos humans puguin jugar alternant torns, sense la IA.</li>
           <li><strong>Tauler mes gran.</strong> Canvia <code>FILES</code> i <code>COLS</code> per fer un tauler 9x7. Funciona sense tocar res mes!</li>
-          <li><strong>Destaca el guanyador.</strong> Quan algu guanya, modifica <code>dibuixa()</code> per mostrar les 4 fitxes guanyadores amb un simbol diferent.</li>
         </ul>
 
         <div class="simulador"
@@ -782,13 +794,7 @@ while True:
            ───────────────────────────────────────── -->
       <section class="chapter-section">
         <h2>Resum</h2>
-        <ul>
-          <li>Una llista de llistes es perfecta per representar un tauler 2D. Accedim a una casella amb <code>tauler[fila][col]</code>.</li>
-          <li>La gravetat es simula recorrent la columna de baix a dalt amb <code>range(FILES - 1, -1, -1)</code> fins a trobar una casella buida.</li>
-          <li>Per detectar 4 en ratlla, comptem fitxes consecutives en 4 direccions des de la fitxa acabada de posar. No cal mirar tot el tauler.</li>
-          <li>La IA de la maquina segueix una estrategia simple: primer intenta guanyar, despres bloqueja el rival, i si no, prefereix el centre. Posar, comprovar i desfer es un patro molt util.</li>
-          <li>Una funcio pot retornar dues coses alhora (<code>return fila, col</code>) i les recollim amb <code>f, c = torn_maquina()</code>.</li>
-        </ul>
+        
       </section>
 
 
