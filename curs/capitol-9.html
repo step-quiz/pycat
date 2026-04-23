@@ -92,7 +92,7 @@ saluda()'
              data-height="270">
         </div>
 
-        <p>Fixa't que la funció s'ha escrit primer i s'ha cridat després. Python llegeix el fitxer de dalt a baix: si intentes cridar una funció abans de definir-la, obtindràs un error.</p>
+        
 
         <p>Prova a modificar el missatge de la funció i observa com canvia en totes tres crides alhora:</p>
 
@@ -116,7 +116,7 @@ linia_separadora()'
       <section class="chapter-section">
         <h2>Paràmetres: fer funcions flexibles</h2>
 
-        <p>Els <strong>paràmetres</strong> són variables especials que reben valors quan crides la funció. Es declaren dins dels parèntesis del <code>def</code>. Gràcies a ells, la mateixa funció pot treballar amb dades diferents cada vegada:</p>
+        <p>Els <strong>paràmetres</strong> són variables especials que reben valors quan crides la funció. Es declaren dins dels parèntesis del <code>def</code>.<br>Gràcies a ells, la mateixa funció pot treballar amb dades diferents cada vegada:</p>
 
         <div class="simulador"
              data-code='def saluda(nom):
@@ -154,7 +154,7 @@ comiat("Carla", "en")'
            SECCIÓ 4 — return vs print
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2><code>return</code> vs <code>print</code>: la diferència clau</h2>
+        <h2>Una diferència molt important: <code>return</code> comparat amb <code>print</code></h2>
 
         <p>Aquesta és la distinció més important de tot el capítol. Una funció pot <strong>imprimir</strong> un resultat o <strong>retornar-lo</strong>. Sembla el mateix, però no ho és.</p>
 
@@ -164,9 +164,8 @@ comiat("Carla", "en")'
              data-code='def dobla_imprimit(n):
     print(n * 2)        # mostra el resultat, però no el retorna
 
-dobla_imprimit(5)       # mostra: 10
-resultat = dobla_imprimit(5)  # mostra: 10, però resultat és None!
-print("Resultat:", resultat)  # Resultat: None'
+resultat = dobla_imprimit(5)
+print("Resultat:", resultat)  # Volíem obtenir 10, però no ha estat així'
              data-readonly="true"
              data-height="270">
         </div>
@@ -177,15 +176,15 @@ print("Resultat:", resultat)  # Resultat: None'
              data-code='def dobla(n):
     return n * 2        # retorna el resultat sense imprimir-lo
 
-resultat = dobla(5)     # 10, guardat en una variable
-print(resultat + 3)     # 13
-print(dobla(7))         # 14
-print(dobla(dobla(4)))  # dobla(4)=8, dobla(8)=16'
+resultat = dobla(5)     
+print(resultat + 3)     
+print(dobla(7))         
+print(dobla(dobla(4)))'
              data-readonly="true"
              data-height="280">
         </div>
 
-        <p>La instrucció <code>return</code> <strong>acaba la funció immediatament</strong>. Qualsevol codi que posis després d'un <code>return</code> no s'executarà mai:</p>
+        <p>És important explicar que la instrucció <code>return</code> <strong>finalitza la funció immediatament</strong>. Això vol dir que qualsevol codi que posis a continuació d'un <code>return</code> no s'executarà mai, és a dir, no té cap sentit posar-lo.</p>
 
         <div class="simulador"
              data-code='def valor_absolut(n):
@@ -193,9 +192,9 @@ print(dobla(dobla(4)))  # dobla(4)=8, dobla(8)=16'
         return n        # si n és positiu, acabem aquí
     return -n           # si no, retornem el valor negat
 
-print(valor_absolut(7))    # 7
-print(valor_absolut(-3))   # 3
-print(valor_absolut(0))    # 0'
+print(valor_absolut(7))    
+print(valor_absolut(-3))   
+print(valor_absolut(0))    '
              data-height="290">
         </div>
       </section>
@@ -207,7 +206,7 @@ print(valor_absolut(0))    # 0'
       <section class="chapter-section">
         <h2>Funcions amb diversos paràmetres</h2>
 
-        <p>Una funció pot tenir tants paràmetres com necessitis, separats per comes. L'ordre importa: el primer valor que passes va al primer paràmetre, el segon al segon, i així successivament:</p>
+        <p>Una funció pot tenir tants paràmetres com necessitis, separats per comes.<br> Això sí, és molt important l'ordre: el primer valor que passes va al primer paràmetre, el segon al segon, i així successivament:</p>
 
         <div class="simulador"
              data-code='def area_rectangle(base, alçada):
@@ -218,8 +217,8 @@ def perimetre_rectangle(base, alçada):
 
 b = 4
 a = 3
-print("Àrea:", area_rectangle(b, a))          # 12
-print("Perímetre:", perimetre_rectangle(b, a)) # 14'
+print("Àrea:", area_rectangle(b, a))          
+print("Perímetre:", perimetre_rectangle(b, a))'
              data-readonly="true"
              data-height="290">
         </div>
@@ -233,8 +232,8 @@ print("Perímetre:", perimetre_rectangle(b, a)) # 14'
 def suma_quadrats(a, b):
     return quadrat(a) + quadrat(b)
 
-print(suma_quadrats(3, 4))   # 9 + 16 = 25
-print(suma_quadrats(5, 12))  # 25 + 144 = 169'
+print(suma_quadrats(3, 4))   
+print(suma_quadrats(5, 12))  '
              data-height="270">
         </div>
       </section>
