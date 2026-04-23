@@ -38,7 +38,7 @@
            ───────────────────────────────────────── -->
       <header class="chapter-header">
         <span class="chapter-badge">Capítol 11</span>
-        <h1>Posant-ho tot junt</h1>
+        <h1>Combinar tot el que s'ha après</h1>
         <p class="chapter-lead">Hora de combinar tot el que has après en un programa de veritat.</p>
       </header>
 
@@ -51,15 +51,18 @@
 
         <p>Aquest capítol és diferent dels anteriors. En lloc d'un concepte nou, construirem un programa complet pas a pas: un <strong>quiz de cultura general</strong>. El programa farà preguntes en ordre aleatori, comprovarà les respostes i mostrarà una nota final.</p>
 
-        <p>Per a cada peça que afegim faràs servir coses que ja coneixes: llistes, funcions, bucles <code>for</code>, condicionals, <code>input()</code> i el mòdul <code>random</code>. L'objectiu no és aprendre res nou, sinó veure com tots aquests elements treballen junts en un programa real.</p>
+        <p>
+          Per a cada peça que afegim faràs servir coses que ja coneixes: llistes, funcions, bucles <code>for</code>, condicionals, <code>input()</code> i el mòdul <code>random</code>.
+          <br>L'objectiu és aprendre com tots els elements treballen junts en un programa real.
+        </p>
 
         <p>Aquí tens un resum del que construirem:</p>
 
         <ul>
-          <li>Una llista de parelles pregunta–resposta com a <strong>dades</strong> del programa.</li>
+          <li>Una llista de parelles pregunta–resposta, com a <strong>dades</strong> del programa.</li>
           <li>Una funció <code>pregunta()</code> que fa una pregunta i diu si l'usuari ha encertat.</li>
-          <li>Un bucle principal que recorre totes les preguntes en <strong>ordre aleatori</strong>.</li>
-          <li>Un comptador d'encerts i un <strong>missatge final</strong> segons la puntuació.</li>
+          <li>Una iteració principal que recorre totes les preguntes en <strong>ordre aleatori</strong>.</li>
+          <li>Un comptador d'encerts i un <strong>missatge final</strong>, segons la puntuació obtinguda.</li>
         </ul>
       </section>
 
@@ -70,7 +73,7 @@
       <section class="chapter-section">
         <h2>Peça 1: les dades</h2>
 
-        <p>Comencem guardant les preguntes i les respostes. Cada element de la llista és una altra llista de dos elements: el text de la pregunta i la resposta correcta en minúscules (per simplificar la comparació més endavant):</p>
+        <p>Comencem desant les preguntes i les respostes. Cada element de la llista és una altra llista de dos elements: el text de la pregunta i la resposta correcta, en minúscules.</p>
 
         <div class="simulador"
              data-code='preguntes = [
@@ -89,7 +92,10 @@ for p, r in preguntes:
              data-height="350">
         </div>
 
-        <p>Fixa't en el bucle <code>for p, r in preguntes:</code>. Com que cada element és una llista de dos valors, Python desempaqueta automàticament el primer valor a <code>p</code> i el segon a <code>r</code>. Ja no cal escriure <code>preguntes[i][0]</code> i <code>preguntes[i][1]</code>.</p>
+        <p>
+          Fixa't en la intrucció del codi anterior: <code>for p, r in preguntes:</code>. Com que cada element és una llista de dos valors, Python desempaqueta automàticament el primer valor a <code>p</code> i el segon a <code>r</code>.
+          <br>Dit d'una altra manera, ja no cal escriure <code>preguntes[i][0]</code> i <code>preguntes[i][1]</code>.
+        </p>
       </section>
 
 
@@ -99,7 +105,7 @@ for p, r in preguntes:
       <section class="chapter-section">
         <h2>Peça 2: la funció <code>pregunta()</code></h2>
 
-        <p>En lloc d'escriure la lògica de "fer una pregunta" dins del bucle, la posem en una funció. Així el bucle principal queda net i la funció es pot provar sola:</p>
+        <p>Tot el procediment de "fer una pregunta", el posem en una funció independent. Així el nostre programa principal queda net, i la funció es pot provar sola:</p>
 
         <div class="simulador"
              data-code='def pregunta(text, resposta_correcta):
@@ -111,15 +117,18 @@ for p, r in preguntes:
         print("Incorrecte. La resposta era:", resposta_correcta)
         return False
 
-# Prova la funció amb una sola pregunta:
+# Aquesta línia és només per provar la funció
 pregunta("Quina es la capital de Franca?", "paris")'
              data-interactive="true"
              data-height="320">
         </div>
 
-        <p>La funció rep el text de la pregunta i la resposta correcta com a paràmetres. Crida <code>input()</code>, normalitza la resposta de l'usuari amb <code>.lower().strip()</code> (converteix a minúscules i treu espais dels extrems) i retorna <code>True</code> o <code>False</code> perquè el codi que la crida sàpiga si s'ha encertat.</p>
+        <p>
+          La funció <code>pregunta</code> rep dos paràmetres: el text de la pregunta i la resposta correcta.
+          <br>La funció fa servir <code>input()</code> per obtenir la resposta de l'usuari; posteriorment, la normalitza fent servir <code>.lower().strip()</code> (és a dir, converteix a minúscules i treu espais dels extrems). Finalment, retorna <code>True</code> o <code>False</code>, segons l'usuari l'hagi encertat, i així el codi que l'ha cridat sabrà si s'ha encertat.
+        </p>
 
-        <p>Prova-la amb una resposta incorrecta per veure el missatge d'error:</p>
+        <p>Pots provar, a continuació, la funció <code>pregunta</code> amb una resposta incorrecta i veuràs el missatge que retorna:</p>
 
         <div class="simulador"
              data-code='def pregunta(text, resposta_correcta):
@@ -142,9 +151,9 @@ pregunta("Quants dies te un any de traspos?", "366")'
            SECCIÓ 3 — El bucle principal
            ───────────────────────────────────────── -->
       <section class="chapter-section">
-        <h2>Peça 3: el bucle principal i el comptador</h2>
+        <h2>Peça 3: la iteració principal i el comptador</h2>
 
-        <p>Ara combinem la llista de preguntes amb la funció. Un bucle <code>for</code> recorre totes les preguntes, crida la funció per a cadascuna i compta els encerts:</p>
+        <p>Ara combinem la llista de preguntes amb la funció. Una iteració principal <code>for</code> recorre totes les preguntes, crida la funció per a cadascuna i compta els encerts:</p>
 
         <div class="simulador"
              data-code='def pregunta(text, resposta_correcta):
@@ -173,7 +182,7 @@ print("Has encertat", encerts, "de", len(preguntes), "preguntes.")'
              data-height="430">
         </div>
 
-        <p>El <code>if pregunta(p, r):</code> és una forma concisa d'aprofitar que la funció retorna <code>True</code> o <code>False</code> directament. Si retorna <code>True</code>, la condició és certa i sumem un encert.</p>
+        
       </section>
 
 
@@ -183,7 +192,10 @@ print("Has encertat", encerts, "de", len(preguntes), "preguntes.")'
       <section class="chapter-section">
         <h2>Peça 4: l'ordre aleatori</h2>
 
-        <p>Un quiz que sempre fa les preguntes en el mateix ordre és fàcil de memoritzar. El mòdul <code>random</code> de Python té la funció <code>shuffle()</code>, que barreja una llista al seu lloc (la modifica directament, no retorna una còpia nova):</p>
+        <p>
+          Un quiz que sempre fa les preguntes en el mateix ordre és fàcil de memoritzar. El mòdul <code>random</code> de Python té la funció <code>shuffle()</code>, que barreja una llista al seu lloc. Atenció, modifica directament la llista, és a dir, no retorna una còpia nova.
+          <br> Cal afegir una funcionalitat a Python per tal que pugui fer operacions aleatòries. Per aquest motiu, comencem amb la instrucció <code>import random</code>.
+        </p>
 
         <div class="simulador"
              data-code='import random
@@ -204,7 +216,7 @@ for p, r in preguntes:
              data-height="360">
         </div>
 
-        <p>Executa aquest codi diverses vegades i observa com canvia l'ordre de les preguntes. Ara ja pots afegir <code>import random</code> i <code>random.shuffle(preguntes)</code> al programa principal, just abans del bucle.</p>
+        <p>Pots executar el codi anterior diverses vegades i observaràs com canvia l'ordre de les preguntes.</p>
       </section>
 
 
@@ -246,7 +258,10 @@ else:
       <section class="chapter-section">
         <h2>El programa complet</h2>
 
-        <p>Ara juntem totes les peces. Executa el quiz i respon les preguntes directament al simulador:</p>
+        <p>
+          Ara agrupem totes les peces i en l'ordre adequat.
+          <br>Pots executa el programa i pots respondre directament les preguntes al simulador:
+        </p>
 
         <div class="simulador"
              data-code='import random
