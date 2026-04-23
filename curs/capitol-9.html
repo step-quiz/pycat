@@ -258,7 +258,7 @@ print(calcula_area(5, 3))  # 15
              data-height="240">
         </div>
 
-        <p>Tampoc no cal que els paràmetres tinguin el mateix nom que les variables que uses quan crides la funció. El valor es <em>copia</em> al paràmetre en el moment de la crida:</p>
+        <p>No és necessari que un paràmetre tinguin exactament el mateix nom que la variable corresponent, quan crides la funció. Es pot veure en l'exemple següent.</p>
 
         <div class="simulador"
              data-code='def duplica(n):
@@ -266,13 +266,13 @@ print(calcula_area(5, 3))  # 15
     return resultat
 
 x = 7
-y = duplica(x)    # x és 7, n rep el valor 7 dins de la funció
-print(y)          # 14
-print(x)          # 7 — x no ha canviat'
+y = duplica(x)    
+print(y)          
+print(x)          '
              data-height="270">
         </div>
 
-        <p>Per ara, la regla pràctica és senzilla: <strong>passa sempre les dades que necessita una funció com a paràmetres</strong>, i obté els resultats amb <code>return</code>. Evita llegir variables de fora de la funció directament.</p>
+        
       </section>
 
 
@@ -286,10 +286,10 @@ print(x)          # 7 — x no ha canviat'
 
         <div class="simulador"
              data-code='def suma(a, b):
-    print(a + b)    # hauria de ser: return a + b
+    print(a + b)    
 
-total = suma(3, 4)   # imprimeix 7, però total val None
-print(total * 2)     # TypeError: NoneType no es pot multiplicar'
+total = suma(3, 4)   # imprimeix 7, però la variable &apos;total&apos; val None
+print(total * 2)     # TypeError: &apos;total&apos; no és un nombre'
              data-readonly="true"
              data-height="240">
         </div>
@@ -297,7 +297,7 @@ print(total * 2)     # TypeError: NoneType no es pot multiplicar'
         <p><strong>2. Cridar la funció abans de definir-la</strong> — Python llegeix el codi de dalt a baix, de manera que si crides una funció que encara no ha estat definida, obtindràs un <code>NameError</code>:</p>
 
         <div class="simulador"
-             data-code='saluda("Marc")   # ERROR: la funció no existeix encara
+             data-code='saluda("Marc")   # ERROR: cal definir funció &apos;saluda&apos; prèviament
 
 def saluda(nom):
     print("Hola, " + nom + "!")'
@@ -311,13 +311,10 @@ def saluda(nom):
              data-code='def salutacio():
     return "Hola!"
 
-# Oblidant els parèntesis:
-resultat = salutacio    # assigna la funció, no el resultat!
-print(resultat)         # <function salutacio at 0x...>
-
-# Correcte:
-resultat = salutacio()
-print(resultat)         # Hola!'
+# Si oblidem posar els parèntesis, tindrem un error ben estrany:
+resultat = salutacio    # assigna la funció, i no el valor del <code>return</code>
+print(resultat)      
+'
              data-readonly="true"
              data-height="280">
         </div>
@@ -331,17 +328,25 @@ print(resultat)         # Hola!'
         <h2>Exercici</h2>
 
         <div class="exercise-enunciat">
-          Escriu una funció <code>es_primer(n)</code> que retorni <code>True</code> si <code>n</code> és un nombre primer, i <code>False</code> en cas contrari. Un nombre és primer si és més gran que 1 i no és divisible per cap nombre entre 2 i <code>n-1</code>.
+          Has d'escriure una funció <code>es_primer(n)</code> que retorni <code>True</code> si <code>n</code> és un nombre primer, i <code>False</code> en cas contrari.<br>
+          Un nombre és primer si és més gran que 1 i no és divisible per cap nombre entre 2 i <code>n-1</code>.
         </div>
 
-        <p>Per exemple: <code>es_primer(2)</code> → <code>True</code>, <code>es_primer(7)</code> → <code>True</code>, <code>es_primer(10)</code> → <code>False</code>, <code>es_primer(1)</code> → <code>False</code>.</p>
+        <p>
+          Per exemple:
+          <br><code>es_primer(2)</code> → <code>True</code>
+          <br><code>es_primer(7)</code> → <code>True</code>
+          <br><code>es_primer(10)</code> → <code>False</code>
+          <br><code>es_primer(1)</code> → <code>False</code>.
+        </p>
 
-        <p>Pista: fes servir un bucle <code>for</code> amb <code>range(2, n)</code> i l'operador <code>%</code> per comprovar si <code>n</code> és divisible per algun nombre. Si trobes un divisor, retorna <code>False</code> immediatament. Si el bucle acaba sense trobar-ne cap, retorna <code>True</code>.</p>
+        <p>
+          Pista: fes servir un bucle <code>for</code> amb <code>range(2, n)</code> i l'operador <code>%</code>, per comprovar si <code>n</code> és divisible per algun nombre.
+          <br>Si trobes un divisor, retorna <code>False</code> immediatament. Si el bucle acaba sense trobar-ne cap, retorna <code>True</code>.
+        </p>
 
         <div class="simulador"
              data-code="def es_primer(n):
-    # Escriu el codi aquí
-    pass
 "
              data-testcode="print(es_primer(2))
 print(es_primer(7))
