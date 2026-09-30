@@ -7,29 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
 </head>
-<body>
+<body data-pagina="capitol" data-num="2">
 
-<header class="topbar">
-  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <div class="logo">
-    <span class="logo-icon"></span>
-    <span>PyCat</span>
-  </div>
-  <nav class="topbar-nav">
-    <a href="capitol-1.html" class="topbar-nav-link active">Capítols</a>
-    <a href="repte-1.html" class="topbar-nav-link">Reptes</a>
-    <a href="../index.html" class="topbar-nav-link">Simulador</a>
-  </nav>
-  <div class="topbar-actions"></div>
-</header>
-
-<div class="curs-layout">
-  <div id="sidebar-overlay" aria-hidden="true"></div>
-  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
-    <div id="sidebar-nav"></div>
-  </nav>
-
-  <main class="curs-content">
+<main class="curs-content">
     <div class="chapter-content-inner">
 
 
@@ -235,7 +215,40 @@ print(missatge)'
 '
              data-expected="Em dic Ada, tinc 16 anys i estic aprenent Python"
              data-goal-id="cap-2-ex"
+             data-requires="variables,fstring"
              data-height="300">
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
+           COMPROVA QUÈ HAS APRÈS
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comprova què has après</h2>
+        <p>Respon sense executar el codi: primer pensa-hi, després tria. Si t'equivoques, pots tornar-ho a provar.</p>
+
+        <div class="quiz" data-goal-id="cap-2-quiz">
+          <div class="quiz-q" data-correcta="2" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">x = 5
+x = x + 2
+print(x)</pre>
+            <ol class="quiz-opcions"><li>5</li><li>7</li><li>x + 2</li></ol>
+            <p class="quiz-explica"><code>x = x + 2</code> calcula <code>5 + 2</code> i desa el resultat a <code>x</code>.</p>
+          </div>
+          <div class="quiz-q" data-correcta="2" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">nom = "Ada"
+print(f"Hola, {nom}!")</pre>
+            <ol class="quiz-opcions"><li>Hola, {nom}!</li><li>Hola, Ada!</li><li>Hola, nom!</li></ol>
+            <p class="quiz-explica">En una f-string, el que hi ha entre claus <code>{ }</code> se substitueix pel valor de la variable.</p>
+          </div>
+          <div class="quiz-q" data-correcta="2">
+            <p>Quin d'aquests noms de variable <strong>no</strong> és vàlid?</p>
+            <ol class="quiz-opcions"><li>edat_alumne</li><li>2nom</li><li>nomAlumne</li></ol>
+            <p class="quiz-explica">Els noms de variable no poden començar amb un número.</p>
+          </div>
         </div>
       </section>
 
@@ -252,28 +265,11 @@ print(missatge)'
       </section>
 
 
-      <!-- ─────────────────────────────────────────
-           NAVEGACIÓ
-           ───────────────────────────────────────── -->
-      <nav class="chapter-nav" aria-label="Navegació entre capítols">
-        <a href="capitol-1.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
-        <a href="capitol-3.html" class="btn-nav btn-nav--next">Capítol següent →</a>
-      </nav>
-
-
     </div>
-  </main>
-</div>
+</main>
 
 <script src="glossari-data.js"></script>
 <script src="capitols.js"></script>
-<script>
-  injectCursLogo();
-  renderSidebar(2);
-  renderSimuladors();
-  initSidebarToggle();
-</script>
-
 <script src="../footer.js"></script>
 </body>
 </html>

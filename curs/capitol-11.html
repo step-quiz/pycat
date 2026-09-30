@@ -7,29 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="curs.css">
 </head>
-<body>
+<body data-pagina="capitol" data-num="11">
 
-<header class="topbar">
-  <button id="sidebar-toggle" aria-label="Mostra/amaga els capítols" aria-expanded="false">☰</button>
-  <div class="logo">
-    <span class="logo-icon"></span>
-    <span>PyCat</span>
-  </div>
-  <nav class="topbar-nav">
-    <a href="capitol-1.html" class="topbar-nav-link active">Capítols</a>
-    <a href="repte-1.html" class="topbar-nav-link">Reptes</a>
-    <a href="../index.html" class="topbar-nav-link">Simulador</a>
-  </nav>
-  <div class="topbar-actions"></div>
-</header>
-
-<div class="curs-layout">
-  <div id="sidebar-overlay" aria-hidden="true"></div>
-  <nav id="sidebar" class="curs-sidebar" aria-label="Capítols del curs">
-    <div id="sidebar-nav"></div>
-  </nav>
-
-  <main class="curs-content">
+<main class="curs-content">
     <div class="chapter-content-inner">
 
 
@@ -77,14 +57,14 @@
 
         <div class="simulador"
              data-code='preguntes = [
-    ["Quina es la capital de Franca?", "paris"],
-    ["Quants dies te un any de traspos?", "366"],
-    ["Quin es l&apos;element quimic amb el simbol Au?", "or"],
+    ["Quina és la capital de França?", "paris"],
+    ["Quants dies té un any de traspàs?", "366"],
+    ["Quin és l&apos;element químic amb el símbol Au?", "or"],
     ["Quants anys tenia Mozart quan va fer la primera simfonia?", "8"],
-    ["Quin planeta es el mes gran del sistema solar?", "jupiter"],
+    ["Quin planeta és el més gran del sistema solar?", "jupiter"],
 ]
 
-print("El quiz te", len(preguntes), "preguntes.")
+print("El quiz té", len(preguntes), "preguntes.")
 print()
 for p, r in preguntes:
     print("-", p)'
@@ -118,7 +98,7 @@ for p, r in preguntes:
         return False
 
 # Aquesta línia és només per provar la funció
-pregunta("Quina es la capital de Franca?", "paris")'
+pregunta("Quina és la capital de França?", "paris")'
              data-interactive="true"
              data-height="320">
         </div>
@@ -140,7 +120,7 @@ pregunta("Quina es la capital de Franca?", "paris")'
         print("Incorrecte. La resposta era:", resposta_correcta)
         return False
 
-pregunta("Quants dies te un any de traspos?", "366")'
+pregunta("Quants dies té un any de traspàs?", "366")'
              data-interactive="true"
              data-height="310">
         </div>
@@ -166,9 +146,9 @@ pregunta("Quants dies te un any de traspos?", "366")'
         return False
 
 preguntes = [
-    ["Quina es la capital de Franca?", "paris"],
-    ["Quants dies te un any de traspos?", "366"],
-    ["Quin es l&apos;element quimic amb el simbol Au?", "or"],
+    ["Quina és la capital de França?", "paris"],
+    ["Quants dies té un any de traspàs?", "366"],
+    ["Quin és l&apos;element químic amb el símbol Au?", "or"],
 ]
 
 encerts = 0
@@ -201,16 +181,16 @@ print("Has encertat", encerts, "de", len(preguntes), "preguntes.")'
              data-code='import random
 
 preguntes = [
-    ["Quina es la capital de Franca?", "paris"],
-    ["Quants dies te un any de traspos?", "366"],
-    ["Quin es l&apos;element quimic amb el simbol Au?", "or"],
+    ["Quina és la capital de França?", "paris"],
+    ["Quants dies té un any de traspàs?", "366"],
+    ["Quin és l&apos;element químic amb el símbol Au?", "or"],
     ["Quants anys tenia Mozart quan va fer la primera simfonia?", "8"],
-    ["Quin planeta es el mes gran del sistema solar?", "jupiter"],
+    ["Quin planeta és el més gran del sistema solar?", "jupiter"],
 ]
 
 random.shuffle(preguntes)
 
-# Mostra l&apos;ordre resultant (cada execucio sera diferent):
+# Mostra l&apos;ordre resultant (cada execució serà diferent):
 for p, r in preguntes:
     print("-", p)'
              data-height="360">
@@ -237,13 +217,13 @@ print("Has encertat", encerts, "de", total, "preguntes.")
 print()
 
 if encerts == total:
-    print("Excel·lent! Puntuacio perfecta!")
+    print("Excel·lent! Puntuació perfecta!")
 elif encerts >= total * 0.8:
-    print("Molt be! Gairebe perfecte.")
+    print("Molt be! Gairebé perfecte.")
 elif encerts >= total * 0.6:
-    print("Be! Pero encara pots millorar.")
+    print("Be! Però encara pots millorar.")
 else:
-    print("Anim! Torna-ho a intentar.")'
+    print("Ànim! Torna-ho a intentar.")'
              data-readonly="true"
              data-height="310">
         </div>
@@ -266,7 +246,7 @@ else:
         <div class="simulador"
              data-code='import random
 
-# ── Funcio ──────────────────────────────────────
+# ── Funció ──────────────────────────────────────
 def pregunta(text, resposta_correcta):
     resposta = input(text + " ")
     if resposta.lower().strip() == resposta_correcta:
@@ -278,11 +258,11 @@ def pregunta(text, resposta_correcta):
 
 # ── Dades ───────────────────────────────────────
 preguntes = [
-    ["Quina es la capital de Franca?", "paris"],
-    ["Quants dies te un any de traspos?", "366"],
-    ["Quin es l&apos;element quimic amb el simbol Au?", "or"],
+    ["Quina és la capital de França?", "paris"],
+    ["Quants dies té un any de traspàs?", "366"],
+    ["Quin és l&apos;element químic amb el símbol Au?", "or"],
     ["Quants anys tenia Mozart quan va fer la primera simfonia?", "8"],
-    ["Quin planeta es el mes gran del sistema solar?", "jupiter"],
+    ["Quin planeta és el més gran del sistema solar?", "jupiter"],
 ]
 
 # ── Joc ─────────────────────────────────────────
@@ -303,13 +283,13 @@ print("Has encertat", encerts, "de", total, "preguntes.")
 print()
 
 if encerts == total:
-    print("Excel·lent! Puntuacio perfecta!")
+    print("Excel·lent! Puntuació perfecta!")
 elif encerts >= total * 0.8:
-    print("Molt be! Gairebe perfecte.")
+    print("Molt be! Gairebé perfecte.")
 elif encerts >= total * 0.6:
-    print("Be! Pero encara pots millorar.")
+    print("Be! Però encara pots millorar.")
 else:
-    print("Anim! Torna-ho a intentar.")'
+    print("Ànim! Torna-ho a intentar.")'
              data-interactive="true"
              data-height="500">
         </div>
@@ -344,11 +324,11 @@ def pregunta(text, resposta_correcta):
         return False
 
 preguntes = [
-    ["Quina es la capital de Franca?", "paris"],
-    ["Quants dies te un any de traspos?", "366"],
-    ["Quin es l&apos;element quimic amb el simbol Au?", "or"],
+    ["Quina és la capital de França?", "paris"],
+    ["Quants dies té un any de traspàs?", "366"],
+    ["Quin és l&apos;element químic amb el símbol Au?", "or"],
     ["Quants anys tenia Mozart quan va fer la primera simfonia?", "8"],
-    ["Quin planeta es el mes gran del sistema solar?", "jupiter"],
+    ["Quin planeta és el més gran del sistema solar?", "jupiter"],
 ]
 
 random.shuffle(preguntes)
@@ -406,36 +386,19 @@ print("Has encertat", encerts, "de", total, "preguntes.")'
         </ul>
       </section>
 
-
-      <!-- ─────────────────────────────────────────
-           NAVEGACIÓ
-           ───────────────────────────────────────── -->
-      <nav class="chapter-nav" aria-label="Navegació entre capítols">
-        <a href="capitol-10.html" class="btn-nav btn-nav--prev">← Capítol anterior</a>
-        <a href="index.html" class="btn-nav btn-nav--next">Tornar a l'índex →</a>
-      </nav>
-
-      <section class="chapter-section" style="margin-top:2rem; padding:1.5rem; border:2px dashed #3776AB; border-radius:8px; text-align:center;">
-        <h2>Vols mes diversio?</h2>
-        <p>Ara que has completat el curs, hi ha un <strong>capitol extra</strong> esperant-te: programar el classic joc de taula <strong>4 en ratlla</strong> amb Python. Tu contra la maquina!</p>
-        <p><a href="capitol-12.html" class="btn-nav btn-nav--next" style="display:inline-block;">Jugar a 4 en ratlla &rarr;</a></p>
+      <section class="chapter-section seccio-destacada">
+        <h2>Vols més diversió?</h2>
+        <p>Ara que has completat el curs, hi ha un <strong>capítol extra</strong> esperant-te: programar el clàssic joc de taula <strong>4 en ratlla</strong> amb Python. Tu contra la màquina!</p>
+        <p><a href="capitol-12.html" class="btn-nav btn-nav--next btn-nav--inline">Jugar a 4 en ratlla &rarr;</a></p>
       </section>
       </nav>
 
 
     </div>
-  </main>
-</div>
+</main>
 
 <script src="glossari-data.js"></script>
 <script src="capitols.js"></script>
-<script>
-  injectCursLogo();
-  renderSidebar(11);
-  renderSimuladors();
-  initSidebarToggle();
-</script>
-
 <script src="../footer.js"></script>
 </body>
 </html>

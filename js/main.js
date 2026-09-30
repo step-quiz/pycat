@@ -12,6 +12,10 @@
 //   ?tests=BASE64    → JSON de test cases: [{stdin, expected}, ...]
 //   ?testcode=BASE64 → codi Python afegit al final del codi de l'alumne abans d'executar
 //   ?goalId=ID       → identificador del repte (per postMessage)
+//   ?requires=a,b    → construccions que el codi ha de fer servir (js/pycat_requires.py)
+//   ?save=CLAU       → desa el codi de l'alumne a localStorage[CLAU] i mostra «⟲ Codi inicial»
+//   ?interactive=1   → exercici amb input(): primer s'executa en mode interactiu i
+//                       després el botó passa a «▶ Valida» (cal SharedArrayBuffer)
 //   ?theme=light     → força mode clar
 // ════════════════════════════════════════════════════════
 
@@ -42,16 +46,34 @@
   // 0c) Obrir / Desar fitxers
   P.initFileActions();
 
+  // 0d) «👣 Pas a pas»
+  P.initStepper();
+
   // 1) Editor
   P.initEditor();
-  const ta = document.getElementById('code-editor');
-  if (ta) {
-    const useLS = !params.get('embed') && !params.get('code');
-    const urlCode = params.get('code') ? dec(params.get('code')) : null;
-    const saved = useLS ? localStorage.getItem(P.LS_KEY_CODE) : null;
-    ta.value = urlCode || saved || P.DEFAULT_CODE;
+  const ta       = document.getElementById('code-editor');
+  const embed    = params.get('embed') === '1';
+  const readonly = params.get('readonly') === '1';
+  const urlCode  = params.has('code') ? dec(params.get('code')) : null;
 
-    if (params.get('readonly') === '1') {
+  // ── On es desa el codi de l'alumne ──
+  //   · simulador lliure (sense codi a la URL): la clau de sempre
+  //   · exercici del curs (?save=CLAU): una clau pròpia per a cada exercici
+  //   · exemples no editables o enllaços amb codi: no es desa
+  const saveKey = params.get('save');
+  if (!embed && urlCode === null)  P.codeStorageKey = P.LS_KEY_CODE;
+  else if (saveKey && !readonly)   P.codeStorageKey = saveKey;
+  else                             P.codeStorageKey = null;
+  P.initialCode = urlCode !== null ? urlCode : P.DEFAULT_CODE;
+
+  if (ta) {
+    let saved = null;
+    if (P.codeStorageKey) {
+      try { saved = localStorage.getItem(P.codeStorageKey); } catch(_) {}
+    }
+    ta.value = saved !== null ? saved : P.initialCode;
+
+    if (readonly) {
       ta.setAttribute('readonly', 'readonly');
       ta.style.cursor = 'default';
       document.body.classList.add('is-readonly');
@@ -74,8 +96,48 @@
     setTimeout(() => P.updateEditor(), 50);
   }
 
+  // 1b) Botons extra de la barra d'eines (només als exercicis del curs)
+  const spacer = document.querySelector('.toolbar .toolbar-spacer');
+  function addToolbarButton(id, text, title, onClick) {
+    const b = document.createElement('button');
+    b.className = 'btn';
+    b.id = id;
+    b.type = 'button';
+    b.textContent = text;
+    b.title = title;
+    b.addEventListener('click', onClick);
+    if (spacer) spacer.parentNode.insertBefore(b, spacer);
+    return b;
+  }
+
+  // «⟲ Codi inicial»: torna a l'esquelet original de l'exercici
+  if (ta && P.codeStorageKey && P.codeStorageKey !== P.LS_KEY_CODE) {
+    addToolbarButton('btn-restore-code', P.t('ui.restore'), P.t('ui.restore_title'), function() {
+      if (ta.value === P.initialCode) return;
+      if (!confirm(P.t('ui.restore_confirm'))) return;
+      P.editText(ta, P.initialCode, 0, ta.value.length);   // Ctrl+Z ho desfà
+      ta.setSelectionRange(0, 0);
+      ta.scrollTop = 0;
+      P.consolePush(P.t('log.code_restored'), 'dim');
+    });
+  }
+
+  // «✕ Surt»: visible quan la pàgina del curs posa aquest simulador a
+  // pantalla completa (ho avisa amb un missatge 'pycat-fs').
+  if (embed && window.parent !== window) {
+    const exitBtn = addToolbarButton('btn-exit-fs', P.t('ui.exit_fs'), P.t('ui.exit_fs_title'), function() {
+      try { window.parent.postMessage({ type: 'pycat-exit-fs' }, P.parentOrigin); } catch(_) {}
+    });
+    exitBtn.hidden = true;
+    window.addEventListener('message', function(e) {
+      if (e.source !== window.parent || !e.data || e.data.type !== 'pycat-fs') return;
+      exitBtn.hidden = !e.data.on;
+    });
+  }
+
   // 2) Paràmetres de validació — estat normalitzat
   S.goalId    = params.get('goalId') || '';
+  S.requires  = params.get('requires') || '';
   S.testCode  = params.get('testcode') ? (dec(params.get('testcode')) || '') : '';
 
   const urlStdin = params.get('stdin') ? dec(params.get('stdin')) : null;
@@ -106,28 +168,30 @@
     S.freeStdin = urlStdin;
   }
 
-  // 3) Inicialitza Pyodide (pre-carrega al worker)
-  P.pyInit();
-
-  // 3b) Paràmetre interactive (opt-in per a dual-mode)
+  // 3) Python (Pyodide)
+  //    · Simulador lliure: es pre-carrega de seguida (només n'hi ha un).
+  //    · Simuladors incrustats al curs: es carrega en el PRIMER clic a
+  //      ▶ Executa (P.pyRun ho fa sol). Una pàgina amb 20 simuladors ja no
+  //      carrega 20 intèrprets de Python quan l'alumne fa scroll.
   S.wantsInteractive = params.get('interactive') === '1';
 
-  // 4) Estat inicial de la UI
-  P.setStateUI('loading');
+  if (embed) {
+    P.setStateUI('idle');
+    P.consolePush(P.t('log.lazy'), 'dim');
+  } else {
+    P.pyInit();
+    P.setStateUI('loading');
+  }
 
   // 5) Mostra el panell stdin si estem en mode lliure sense SAB
   //    i el codi per defecte (o el carregat) conté input()
   if (!S.testCases && !S.freeStdin && !P.canInteractive()) {
     var code = ta ? ta.value : '';
     if (/\binput\s*\(/.test(code)) {
-      // Mostra el panell un cop Pyodide estigui llest (per no tapar el loading)
-      var origReady = P.state.pyodideReady;
-      var checkReady = setInterval(function() {
-        if (P.state.pyodideReady || P.state.currentState === 'idle') {
-          clearInterval(checkReady);
-          P.consoleShowStdinPanel();
-        }
-      }, 500);
+      // Simulador lliure: es mostra quan Python és llest (per no tapar el
+      // missatge de càrrega). Incrustat (càrrega sota demanda): de seguida.
+      if (embed) P.consoleShowStdinPanel();
+      else P.whenReady(P.consoleShowStdinPanel);
     }
   }
 

@@ -56,6 +56,7 @@ body {
   align-items: center;
   font-size: 1.2rem;
 }
+.logo-img { width: 1.4em; height: 1.4em; display: block; }
 
 .topbar-nav {
   display: flex;
@@ -249,6 +250,39 @@ pre.code-example {
 .chapter-nav a:hover { text-decoration: underline; }
 
 
+/* Dificultat dels reptes (insígnia de la capçalera) */
+.chapter-badge.badge--facil     { background: #d1fae5; color: #065f46; }
+.chapter-badge.badge--intermedi { background: #fef3c7; color: #92400e; }
+.chapter-badge.badge--dificil   { background: #fee2e2; color: #991b1b; }
+
+/* Consell destacat dins d'un capítol */
+.consell {
+  background: #fefce8;
+  border-left: 4px solid #eab308;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+/* Pista plegable dels reptes */
+details.pista { margin-top: 1.5rem; }
+details.pista summary { cursor: pointer; font-size: 0.82rem; color: var(--muted); }
+details.pista > p,
+details.pista > div { margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted); }
+
+/* Secció destacada (p. ex. enllaç al capítol extra) */
+.seccio-destacada {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 2px dashed #3776AB;
+  border-radius: 8px;
+  text-align: center;
+}
+.btn-nav--inline { display: inline-block; }
+
+/* Separador entre capítols i reptes a l'índex */
+.capitols-separador { margin: 1.2rem 0; border-top: 1px solid var(--border); list-style: none; }
+
+
 /* ══════════════════════════════════════════════════════
    SIMULADORS INCRUSTATS
 ══════════════════════════════════════════════════════ */
@@ -271,13 +305,49 @@ pre.code-example {
 .simulador-feedback.fb-ok { color: #16a34a; }
 .simulador-feedback.fb-ko { color: #dc2626; }
 
-/* Botó de pantalla completa (només visible en mòbil) */
+/* Diferències línia per línia (exercici fallit) */
+.diff-stdin {
+  font-weight: 400;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.diff-table {
+  border-collapse: collapse;
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--text);
+  max-width: 100%;
+  display: block;
+  overflow-x: auto;
+}
+.diff-table th {
+  text-align: left;
+  color: var(--muted);
+  font-weight: 700;
+  padding: 2px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.diff-table td {
+  padding: 2px 10px;
+  white-space: pre;
+  vertical-align: top;
+}
+.diff-table td.diff-num { color: var(--muted); text-align: right; padding-right: 6px; }
+.diff-table td.diff-missing { color: var(--muted); font-style: italic; }
+.diff-table tr.diff-bad td { background: #fee2e2; color: #991b1b; }
+.diff-table tr.diff-bad td.diff-num { color: #991b1b; font-weight: 700; }
+
+/* Botó de pantalla completa */
 .simulador-fullscreen-btn {
-  display: none;
-  text-align: right;
+  display: block;
+  margin-left: auto;
   font-size: 0.78rem;
   color: var(--muted, #888);
-  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
   padding: 5px 2px 0;
   font-family: inherit;
 }
@@ -285,9 +355,21 @@ pre.code-example {
   color: var(--accent, #0070f3);
   text-decoration: underline;
 }
-@media (max-width: 640px) {
-  .simulador-fullscreen-btn { display: block; }
+
+/* Pantalla completa sense Fullscreen API (p. ex. iPhone): l'iframe
+   ocupa tota la finestra i es tanca amb el botó «✕ Surt» de dins. */
+.simulador.sim-fs iframe {
+  position: fixed;
+  inset: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  border: none !important;
+  border-radius: 0 !important;
+  z-index: 1000;
+  background: #fff;
 }
+body.sim-fs-open { overflow: hidden; }
 
 
 /* ══════════════════════════════════════════════════════
@@ -583,26 +665,85 @@ body.light .sidebar-check {
 }
 
 
+
 /* ══════════════════════════════════════════════════════
-   INDICADOR OFFLINE-READY (Service Worker)
+   ACTIVITATS (curs/activitats.js): Parsons i qüestionaris
 ══════════════════════════════════════════════════════ */
 
-#offline-indicator {
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
-  z-index: 10000;
-  background: #2a6e2a;
-  color: #fff;
-  padding: 8px 14px;
-  border-radius: 4px;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.75rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  opacity: 1;
-  transition: opacity 0.4s ease-out;
+.parsons, .quiz {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
 }
 
-#offline-indicator.fade {
-  opacity: 0;
+/* Botons comuns */
+.btn-activitat {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
 }
+.btn-activitat:hover { border-color: var(--accent); color: var(--accent); }
+.btn-activitat--p { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-activitat--p:hover { color: #fff; filter: brightness(1.1); }
+
+/* Parsons */
+.parsons-llista { list-style: none; padding: 0; margin: 0.5rem 0; }
+.parsons-linia {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 6px 4px 10px;
+  margin-bottom: 4px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: grab;
+  transition: margin-left 0.12s;
+}
+.parsons-linia code { background: none; font-size: 0.85rem; white-space: pre; }
+.parsons-linia.sobre { border-color: var(--accent); border-style: dashed; }
+.parsons-linia.malament { border-color: #dc2626; background: #fef2f2; }
+.parsons-botons { display: flex; gap: 2px; flex-shrink: 0; }
+.parsons-botons button {
+  font-family: var(--mono);
+  width: 1.9em;
+  height: 1.9em;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  cursor: pointer;
+  color: var(--text);
+}
+.parsons-botons button:hover { border-color: var(--accent); color: var(--accent); }
+.parsons-accions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Qüestionari */
+.quiz-q { padding: 0.6rem 0; border-bottom: 1px dashed var(--border); }
+.quiz-q:last-of-type { border-bottom: none; }
+.quiz-num { font-size: 0.75rem; color: var(--muted); font-family: var(--mono); }
+.quiz-opcions { list-style: none; padding: 0; margin: 0.5rem 0; display: flex; flex-direction: column; gap: 6px; }
+.quiz-opcio {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+}
+.quiz-opcio:hover:not(:disabled) { border-color: var(--accent); }
+.quiz-opcio:disabled { cursor: default; }
+.quiz-opcio.bona    { border-color: #16a34a; background: #f0fdf4; color: #166534; font-weight: 700; }
+.quiz-opcio.bona::after { content: '  ✓'; }
+.quiz-opcio.dolenta { border-color: #dc2626; background: #fef2f2; color: #991b1b; text-decoration: line-through; }
+.quiz-explica { font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; }

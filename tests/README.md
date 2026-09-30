@@ -42,6 +42,12 @@ Prevé regressions quan s'editen els test cases o el codi d'un exercici. Detecta
 - Test cases on la solució correcta no hi encaixa.
 - Exercicis sense solució de referència.
 
-## Verificació local (sense navegador)
+## Verificació local (sense navegador) i CI
 
-També pots verificar les solucions amb CPython local executant el script de Node inclòs durant el desenvolupament d'aquesta tasca (veure historial de commits). Això és útil per al CI.
+```bash
+python3 tests/comprova-curs.py
+```
+
+Fa la mateixa comprovació amb el Python de l'ordinador (imitant el simulador: `input()` no imprimeix la pregunta i cada execució comença amb variables noves). A més, comprova que la solució compleixi els requisits de `data-requires`, que cap `data-code` contingui HTML (senyal d'una cometa de tancament oblidada), que el «pas a pas» de cada solució doni la mateixa sortida, que les solucions dels problemes de Parsons s'executin bé, que les respostes marcades com a correctes dels qüestionaris (`data-comprova`) siguin realment la sortida del codi, que el codi inicial de cada exercici **no** superi els tests, que no hi hagi `goalId` repetits i que els `goalId` de `curs/capitols.js` existeixin. Surt amb error si alguna cosa falla.
+
+S'executa automàticament a GitHub a cada push i pull request (`.github/workflows/comprova-curs.yml`).

@@ -48,6 +48,8 @@ function handleRunClick() {
 
 // ── Construeix el codi final (codi de l'alumne + testCode) ──
 function _buildFinalCode(userCode) {
+  // Nombre de línies de l'alumne: un error més avall és del testCode
+  P.state.userLineCount = userCode.split('\n').length;
   var tc = P.state.testCode || '';
   if (!tc) return userCode;
   return userCode + '\n\n# ── Tests ──\n' + tc;
@@ -90,12 +92,14 @@ function _ensureStdinPanel(code) {
 
 // ── Executa el programa ──────────────────────────────────
 async function runProgram() {
+  if (P.exitTrace) P.exitTrace();
+  if (P.turtleClear) P.turtleClear();
   P.consoleClear();
   P.clearLineMarks();
 
   var userCode = (document.getElementById('code-editor') || {}).value || '';
   if (!userCode.trim()) {
-    P.consolePush('⚠ Escriu codi abans d\'executar.', 'dim');
+    P.consolePush(P.t('log.empty_code'), 'dim');
     return;
   }
 
@@ -173,7 +177,7 @@ async function _runBatchValidation(finalCode) {
     var tc = S.testCases[i];
 
     if (S.testCases.length > 1) {
-      P.consolePush('── Test ' + (i + 1) + '/' + S.testCases.length + ' ──', 'dim');
+      P.consolePush(P.t('log.test_n').replace('{i}', i + 1).replace('{n}', S.testCases.length), 'dim');
     }
 
     var output = await P.pyRunAsync(finalCode, tc.stdin || null);
@@ -192,7 +196,18 @@ async function _runBatchValidation(finalCode) {
     if (output === null) break;
   }
 
-  _notifyResults(results);
+  // Sortida correcta: comprova també COM està fet (data-requires)
+  var missing = [];
+  var allPassed = results.length > 0 && results.every(function(r) { return r.passed; });
+  if (allPassed && S.requires) {
+    var userCode = (document.getElementById('code-editor') || {}).value || '';
+    missing = await P.pyCheck(userCode, S.requires);
+    if (missing.length) {
+      P.consolePush(P.t('log.requires_missing') + ' ' + missing.join(', ') + '.', 'err');
+    }
+  }
+
+  _notifyResults(results, missing);
 }
 
 // ── Atura el programa ────────────────────────────────────
@@ -202,6 +217,8 @@ function stopProgram() {
 
 // ── Neteja la consola ────────────────────────────────────
 function resetConsole() {
+  if (P.exitTrace) P.exitTrace();
+  if (P.turtleClear) P.turtleClear();
   P.consoleClear();
   P.clearLineMarks();
   P.state.ranInteractive = false;
@@ -229,14 +246,18 @@ function _notifyClear() {
   } catch(_) {}
 }
 
-function _notifyResults(results) {
+function _notifyResults(results, missing) {
   if (!P.state.goalId) return;
-  var allPassed = results.length > 0 && results.every(function(r) { return r.passed; });
+  missing = missing || [];
+  var allPassed = results.length > 0 && missing.length === 0 &&
+                  results.every(function(r) { return r.passed; });
   try {
     window.parent.postMessage({
       type:    'pycat-result',
       goalId:  P.state.goalId,
       success: allPassed,
+      total:   (P.state.testCases || []).length,
+      missing: missing,
       results: results
     }, P.parentOrigin);
   } catch(_) {}
@@ -251,7 +272,7 @@ function updateThemeBtn() {
   if (!btn) return;
   var isLight = document.body.classList.contains('light');
   btn.innerHTML = isLight ? ICON_MOON : ICON_SUN;
-  btn.title     = isLight ? 'Mode fosc' : 'Mode clar';
+  btn.title     = P.t(isLight ? 'ui.theme_dark' : 'ui.theme_light');
 }
 
 function toggleTheme() {
@@ -323,10 +344,7 @@ function initFileActions() {
       var ta = document.getElementById('code-editor');
       if (!ta) return;
       ta.value = e.target.result;
-      P.updateEditor();
-      if (!document.body.classList.contains('embed')) {
-        try { localStorage.setItem(P.LS_KEY_CODE, ta.value); } catch(_) {}
-      }
+      P.updateEditor();   // també desa el codi (P.saveCode)
       ta.focus();
     };
     reader.readAsText(file);
@@ -351,6 +369,8 @@ function initFileActions() {
 
 // ── Exporta ──────────────────────────────────────────────
 P.setStateUI     = setStateUI;
+P.buildFinalCode = _buildFinalCode;   // l'usa stepper.js
+P.usesInput      = _usesInput;
 P.handleRunClick = handleRunClick;
 P.initTheme      = initTheme;
 P.initGlossari   = initGlossari;

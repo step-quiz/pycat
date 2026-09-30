@@ -13,6 +13,9 @@
 //   P.pyInit()                          — carrega Pyodide al worker
 //   P.pyRun(code, stdin, onDone)        — executa i crida callback(output|null)
 //   P.pyRunAsync(code, stdin)           — executa i retorna Promise<output|null>
+//   P.pyCheck(code, requires)           — Promise<requisits que falten> (data-requires)
+//   P.pyTrace(code, stdin, userLines)   — Promise<execució pas a pas> (pycat_trace.py)
+//   P.whenReady(fn)                     — crida fn quan Python estigui llest
 //   P.pyKill()                          — mata el worker
 //   P.pyStop()                          — mata i re-spawna
 //   P.canInteractive()                  — true si SharedArrayBuffer disponible
@@ -58,7 +61,7 @@ function _spawnWorker() {
   };
 
   S.worker.onerror = function(e) {
-    P.consolePush('Error intern del worker: ' + e.message, 'err');
+    P.consolePush(P.t('log.worker_error') + ' ' + e.message, 'err');
     P.setStateUI('error');
   };
 }
@@ -73,6 +76,10 @@ var _handlers = {
     _triedFallback = false;   // Reset per a futures recàrregues
     P.consoleClear();
     P.setStateUI('idle');
+    // Executa el que esperava que Python estigués llest (vegeu whenReady)
+    var cua = _readyQueue;
+    _readyQueue = [];
+    cua.forEach(function(fn) { fn(); });
   },
   load_error: function(d) {
     // Si encara no hem provat el CDN alternatiu, torna a provar automàticament
@@ -110,6 +117,7 @@ var _handlers = {
     P.state.running = false;
     P.consolePush(P.t('log.done') + ' (' + d.elapsed + 'ms)', 'ok');
     P.setStateUI('done');
+    if (d.turtle && P.turtleShow) P.turtleShow(d.turtle);
     var cb = _onDone;
     _onDone = null;   // ← FIX: nul·lifica ABANS de cridar per evitar doble invocació
     if (cb) cb(d.output != null ? d.output : _currentOutput.join('\n'));
@@ -117,12 +125,24 @@ var _handlers = {
   error: function(d) {
     _clearTimeout();
     P.state.running = false;
-    P.consolePush(P.t('log.error') + ': ' + d.msg, 'err');
-    if (d.line) P.markErrorLine(d.line);
+    _showError(d.msg, d.line);
+    if (d.turtle && P.turtleShow) P.turtleShow(d.turtle);   // el que s'ha dibuixat fins a l'error
     P.setStateUI('error');
     var cb = _onDone;
     _onDone = null;   // ← FIX: nul·lifica ABANS de cridar per evitar doble invocació
     if (cb) cb(null);
+  },
+  trace_result: function(d) {
+    var cb = _onTrace;
+    _onTrace = null;
+    var data = null;
+    try { data = d.data ? JSON.parse(d.data) : null; } catch (_) {}
+    if (cb) cb(data);
+  },
+  check_result: function(d) {
+    var cb = _onCheck;
+    _onCheck = null;
+    if (cb) cb(d.missing || []);
   },
   input_request: function() {
     // El worker necessita input de l'alumne
@@ -136,6 +156,26 @@ var _handlers = {
     });
   }
 };
+
+// ── Mostra un error: explicació en català + missatge original ──
+// d.line és relativa al codi executat (codi de l'alumne + testCode):
+// si cau dins del testCode, no es marca cap línia de l'editor.
+function _showError(msg, line) {
+  var userLines = P.state.userLineCount || Infinity;
+  var inUserCode = line && line <= userLines;
+  var info = P.explainError ? P.explainError(msg) : null;
+  var where = inUserCode ? P.t('log.error_line').replace('{n}', line)
+            : (line ? P.t('log.error_testcode') : P.t('log.error'));
+
+  if (info) {
+    P.consolePush(where + ': ' + info.text, 'err');
+    if (info.hint) P.consolePush('💡 ' + info.hint, 'hint');
+    P.consolePush(msg, 'dim');                   // l'original, per aprendre a llegir-lo
+  } else {
+    P.consolePush(where + ': ' + msg, 'err');
+  }
+  if (inUserCode) P.markErrorLine(line);
+}
 
 // ── Envia l'input al worker via SharedArrayBuffer ────────
 function _sendInputToWorker(text) {
@@ -154,7 +194,6 @@ function _sendInputToWorker(text) {
 var _currentOutput = [];
 var _timeoutId     = null;
 var _onDone        = null;
-var _currentCode   = null;   // per reiniciar el timeout
 
 function _clearTimeout() {
   if (_timeoutId) { clearTimeout(_timeoutId); _timeoutId = null; }
@@ -182,7 +221,6 @@ function _showRetryButton() {
   var btn = document.createElement('button');
   btn.textContent = P.t('ui.retry');
   btn.className = 'retry-btn';
-  btn.style.cssText = 'margin:8px 0;padding:6px 16px;border:none;border-radius:4px;background:#e67e22;color:#fff;cursor:pointer;font-size:14px;';
   btn.onclick = function() {
     btn.remove();
     _triedFallback = false;
@@ -209,35 +247,22 @@ function pyInit() {
 function pyRun(code, stdin, onDone, interactive) {
   var S = P.state;
 
-  // Inicialitza Pyodide si encara no s'ha fet
-  if (!S.worker) {
-    _spawnWorker();
-    var origReady = _handlers.ready;
-    _handlers.ready = function() {
-      origReady();
-      _handlers.ready = origReady;
-      pyRun(code, stdin, onDone, interactive);
-    };
-    P.setStateUI('loading');
-    P.consolePush(P.t('log.loading'), 'dim');
-    S.worker.postMessage({ type: 'init', cdnUrl: P.PYODIDE_CDN });
-    return;
-  }
-
-  if (!S.pyodideReady) {
-    var origReady2 = _handlers.ready;
-    _handlers.ready = function() {
-      origReady2();
-      _handlers.ready = origReady2;
-      pyRun(code, stdin, onDone, interactive);
-    };
+  // Si Python encara no és a punt, s'executa quan ho sigui
+  // (i, si el worker no existeix, primer es carrega: càrrega sota demanda)
+  if (!S.worker || !S.pyodideReady) {
+    if (!S.worker) {
+      _spawnWorker();
+      P.setStateUI('loading');
+      P.consolePush(P.t('log.loading'), 'dim');
+      S.worker.postMessage({ type: 'init', cdnUrl: P.PYODIDE_CDN });
+    }
+    whenReady(function() { pyRun(code, stdin, onDone, interactive); });
     return;
   }
 
   // Reset
   _currentOutput = [];
   _onDone = onDone || null;
-  _currentCode = code;
   S.running = true;
   S.startTime = Date.now();
 
@@ -269,6 +294,52 @@ function pyRunAsync(code, stdin, interactive) {
   });
 }
 
+// Comprova els requisits d'un exercici (data-requires) sobre el codi de
+// l'alumne. Retorna Promise<array de descripcions dels que falten>.
+// Només es crida després d'una validació, amb Python ja carregat.
+var _onCheck = null;
+function pyCheck(code, requires) {
+  return new Promise(function(resolve) {
+    var S = P.state;
+    if (!requires || !S.worker || !S.pyodideReady) { resolve([]); return; }
+    _onCheck = resolve;
+    S.worker.postMessage({ type: 'check', code: code, requires: requires });
+  });
+}
+
+// Enregistra una execució pas a pas (pycat_trace.py). Carrega Python si
+// cal. Retorna Promise<{passos, sortida, error, tallat} | null>.
+var _onTrace = null;
+function pyTrace(code, stdin, userLines) {
+  return new Promise(function(resolve) {
+    var S = P.state;
+    function envia() {
+      // Límit de temps (p. ex. un càlcul enorme dins d'una sola línia)
+      var t = setTimeout(function() {
+        _onTrace = null;
+        pyStop();
+        resolve(null);
+      }, P.EXEC_TIMEOUT);
+      _onTrace = function(data) { clearTimeout(t); resolve(data); };
+      S.worker.postMessage({ type: 'trace', code: code, stdin: stdin, userLines: userLines });
+    }
+    if (!S.worker) {
+      _spawnWorker();
+      P.setStateUI('loading');
+      P.consolePush(P.t('log.loading'), 'dim');
+      S.worker.postMessage({ type: 'init', cdnUrl: P.PYODIDE_CDN });
+    }
+    whenReady(envia);
+  });
+}
+
+// Crida fn() quan Python estigui llest (immediatament si ja ho és)
+var _readyQueue = [];
+function whenReady(fn) {
+  if (P.state.pyodideReady) fn();
+  else _readyQueue.push(fn);
+}
+
 // Mata el worker (atura qualsevol execució)
 function pyKill() {
   var S = P.state;
@@ -290,7 +361,7 @@ function pyStop() {
   pyKill();
   _spawnWorker();
   P.setStateUI('loading');
-  P.consolePush('🔄 Re-inicialitzant Python…', 'dim');
+  P.consolePush(P.t('log.restarting'), 'dim');
   P.state.worker.postMessage({ type: 'init', cdnUrl: P.PYODIDE_CDN });
 }
 
@@ -299,6 +370,9 @@ function pyStop() {
 P.pyInit         = pyInit;
 P.pyRun          = pyRun;
 P.pyRunAsync     = pyRunAsync;
+P.pyCheck        = pyCheck;
+P.pyTrace        = pyTrace;
 P.pyKill         = pyKill;
 P.pyStop         = pyStop;
 P.canInteractive = canInteractive;
+P.whenReady      = whenReady;
