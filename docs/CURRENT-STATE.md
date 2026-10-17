@@ -119,7 +119,7 @@ curs/curs.css         Estils del curs
 tests/comprova-curs.py     Test automàtic (vegeu §9)
 tests/solutions.js         Solucions de referència per goalId
 tests/test-exercises.html  Versió de navegador del test (amb Pyodide)
-.github/workflows/comprova-curs.yml   Executa el test a cada push i PR
+(No hi ha cap .github/workflows/: el test s'executa a mà.)
 ```
 
 **Ordre de càrrega a `index.html`** (depenen del namespace global `P`):
@@ -348,8 +348,8 @@ executa les solucions dels Parsons i comprova les respostes marcades com a
 correctes de les preguntes amb `data-comprova`. Imita el simulador (sense
 pregunta a `input()`, variables noves a cada execució, mòdul `turtle` propi).
 
-La GitHub Action `comprova-curs.yml` l'executa a cada push i PR, juntament amb
-`node --check` de tots els fitxers JS.
+No hi ha cap GitHub Action que l'executi (el repositori no té `.github/workflows/`):
+cal executar-lo a mà, i també `node --check` dels fitxers JS que es toquin.
 
 ---
 

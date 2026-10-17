@@ -38,10 +38,21 @@ El curs té **13 capítols** (els dos últims són extres: el joc del 4 en ratll
 ```
 index.html        Simulador lliure (també és el simulador incrustat als capítols)
 style.css         Estils del simulador
-js/               Motor: Pyodide en un Web Worker, editor, consola, validació
-curs/             Capítols, reptes, índex, capitols.js (dades i esquelet), curs.css
+family.js         Selector «EXPLORA» dels projectes germans (KarelCat, PyCat, JSCat, HTMLCat)
+footer.js         Peu de pàgina comú
+sw.js, js/sw-register.js  «Kill switch» que desinstal·la un service worker antic (vegeu TODO.md, tasca 5)
+_headers          Capçaleres de Cloudflare Pages
+js/               Motor: Pyodide en un Web Worker, editor, consola, validació, pas a pas,
+                  tortuga (pycat_turtle.py, pycat_trace.py, pycat_requires.py)
+curs/             Capítols, reptes, índex, capitols.js (dades i esquelet), activitats.js,
+                  glossari-data.js, curs.css
 tests/            Test automàtic del curs i solucions de referència
-docs/             CURRENT-STATE.md: estat complet del projecte
+tools/            Generador de pàgines a partir de JSON (vegeu tools/README.md)
+docs/             CURRENT-STATE.md: estat complet del projecte. ARCHITECTURE.md: disseny inicial
+                  (desactualitzat)
+PYCAT-*-PLAN.md   Plans amb què es van escriure els capítols i els reptes
+TODO.md           Feina feta i pendent
+CHANGES-PART-A.md Notes d'un lliurament antic (ja aplicat)
 ```
 
 ## Servir en local
@@ -64,7 +75,7 @@ Després de qualsevol canvi en un exercici, executa el test automàtic (només c
 python3 tests/comprova-curs.py
 ```
 
-A GitHub s'executa sol a cada push i a cada pull request (pestanya «Actions»). Més detalls a [`tests/README.md`](tests/README.md).
+Ara fa 44 exercicis i 99 casos de prova, tots correctes. No hi ha cap GitHub Action que l'executi sol: cal llançar-lo a mà. Més detalls a [`tests/README.md`](tests/README.md).
 
 <!-- atribucio-centre:inici -->
 

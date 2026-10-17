@@ -1,5 +1,7 @@
 # PyCat — Reptes Plan (15 Challenges, Increasing Difficulty)
 
+> **Status (2026-10-17):** all 15 reptes in this plan exist (`curs/repte-1.html` … `repte-15.html`). The current state is in `docs/CURRENT-STATE.md`.
+
 > **Audience:** This document is written for an AI assistant that will author the 15 reptes (challenges) of the PyCat course. Read it in full before producing any HTML.
 
 ---

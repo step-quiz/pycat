@@ -1,5 +1,7 @@
 # PyCat — Curriculum Plan (11 Chapters)
 
+> **Status (2026-10-17):** this plan has been carried out. The course now has 13 chapters: the 11 planned here plus two extras added later (12 «4 en ratlla» and 13 «Dibuixa amb la tortuga»). The current state is in `docs/CURRENT-STATE.md`.
+
 > **Audience:** This document is written for an AI assistant that will author the remaining chapters of the PyCat course. Read it in full before producing any HTML.
 
 ---

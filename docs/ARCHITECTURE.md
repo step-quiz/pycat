@@ -9,6 +9,7 @@
 > Aquest document va ser escrit com a pla inicial del projecte i no s'ha actualitzat sistemàticament. Conté informació desactualitzada: fitxers que no existeixen, noms d'atributs incorrectes i un pla de fases que ja s'ha completat.
 >
 > Per a l'estat real del projecte, consulteu:
+> - **`docs/CURRENT-STATE.md`** — estat complet i actual del projecte
 > - **`README.md`** — estructura de fitxers actual i com servir el projecte
 > - **`TODO.md`** — tasques completades i pendents
 > - **El codi font** — és la font de veritat

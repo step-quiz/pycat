@@ -1,5 +1,9 @@
 # PyCat — Canvis de la part A (correcció de bugs)
 
+> **Document històric.** Són les notes d'un lliurament antic, que ja s'ha aplicat (per exemple,
+> `simulador.html` ja no existeix). No cal seguir-ne cap instrucció. L'estat actual és a
+> `docs/CURRENT-STATE.md`.
+
 Aquest paquet conté **només els arxius modificats**. Cal descomprimir-lo sobre la còpia existent del projecte, respectant la jerarquia de directoris.
 
 ## Acció manual addicional
