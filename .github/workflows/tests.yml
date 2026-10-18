@@ -37,3 +37,6 @@ jobs:
         run: |
           for f in $(git ls-files '*.js'); do node --check "$f" || exit 1; done
           echo "Sintaxi correcta a $(git ls-files '*.js' | wc -l) fitxers."
+
+      - name: Documentació ↔ codi
+        run: python3 tests/docs_vs_codi.py

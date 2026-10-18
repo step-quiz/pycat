@@ -51,3 +51,7 @@ python3 tests/comprova-curs.py
 Fa la mateixa comprovació amb el Python de l'ordinador (imitant el simulador: `input()` no imprimeix la pregunta i cada execució comença amb variables noves). A més, comprova que la solució compleixi els requisits de `data-requires`, que cap `data-code` contingui HTML (senyal d'una cometa de tancament oblidada), que el «pas a pas» de cada solució doni la mateixa sortida, que les solucions dels problemes de Parsons s'executin bé, que les respostes marcades com a correctes dels qüestionaris (`data-comprova`) siguin realment la sortida del codi, que el codi inicial de cada exercici **no** superi els tests, que no hi hagi `goalId` repetits i que els `goalId` de `curs/capitols.js` existeixin. Surt amb error si alguna cosa falla.
 
 S'executa sol a GitHub a cada canvi a `main` i a cada pull request (`.github/workflows/tests.yml`), i després de cada ZIP pujat a `_uploads/`.
+
+## Documentació ↔ codi
+
+`python3 tests/docs_vs_codi.py` comprova que la documentació diu el mateix que el codi: les rutes que citen els documents principals existeixen i el README diu tants capítols i reptes com `curs/capitols.js`, amb els mateixos títols. També s'executa a GitHub. Si falla perquè has canviat el curs, posa al dia el document que diu el missatge.
