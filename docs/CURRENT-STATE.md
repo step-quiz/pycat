@@ -119,7 +119,8 @@ curs/curs.css         Estils del curs
 tests/comprova-curs.py     Test automàtic (vegeu §9)
 tests/solutions.js         Solucions de referència per goalId
 tests/test-exercises.html  Versió de navegador del test (amb Pyodide)
-.github/workflows/unzip-upload.yml  Descomprimeix els ZIP de _uploads/ (no hi ha cap workflow de proves: el test s'executa a mà)
+.github/workflows/tests.yml         Executa el test i node --check a cada push a main i a cada PR
+.github/workflows/unzip-upload.yml  Descomprimeix els ZIP de _uploads/ (i després llança tests.yml)
 ```
 
 **Ordre de càrrega a `index.html`** (depenen del namespace global `P`):
@@ -348,8 +349,8 @@ executa les solucions dels Parsons i comprova les respostes marcades com a
 correctes de les preguntes amb `data-comprova`. Imita el simulador (sense
 pregunta a `input()`, variables noves a cada execució, mòdul `turtle` propi).
 
-No hi ha cap GitHub Action que l'executi (l'únic workflow és `unzip-upload.yml`, el dels ZIP):
-cal executar-lo a mà, i també `node --check` dels fitxers JS que es toquin.
+La GitHub Action `tests.yml` l'executa a cada push a main i a cada PR, juntament amb
+`node --check` de tots els fitxers JS.
 
 ---
 

@@ -75,7 +75,7 @@ Després de qualsevol canvi en un exercici, executa el test automàtic (només c
 python3 tests/comprova-curs.py
 ```
 
-Ara fa 44 exercicis i 99 casos de prova, tots correctes. No hi ha cap GitHub Action que l'executi sol: cal llançar-lo a mà. Més detalls a [`tests/README.md`](tests/README.md).
+Ara fa 44 exercicis i 99 casos de prova, tots correctes. A GitHub s'executa sol a cada canvi a `main` i a cada pull request (`.github/workflows/tests.yml`), juntament amb `node --check` de tots els fitxers JS. Més detalls a [`tests/README.md`](tests/README.md).
 
 <!-- atribucio-centre:inici -->
 
