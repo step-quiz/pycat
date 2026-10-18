@@ -18,6 +18,8 @@
 //   consoleGetStdin()        → retorna el contingut del textarea
 // ════════════════════════════════════════════════════════
 
+import { t } from './i18n.js';
+
 function consolePush(text, type) {
   const el = document.getElementById('console-output');
   if (!el) return;
@@ -67,7 +69,7 @@ function consoleShowInput(onSubmit) {
   inp.setAttribute('autocomplete', 'off');
   inp.setAttribute('autocorrect', 'off');
   inp.setAttribute('spellcheck', 'false');
-  inp.placeholder = P.t('log.input.placeholder');
+  inp.placeholder = t('log.input.placeholder');
 
   inp.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
@@ -105,8 +107,8 @@ function consoleShowStdinPanel() {
 
   const label = document.createElement('div');
   label.className = 'stdin-label';
-  label.innerHTML = '<span>' + P.t('log.stdin') + '</span>' +
-                    '<span class="stdin-hint">' + P.t('log.stdin.hint') + '</span>';
+  label.innerHTML = '<span>' + t('log.stdin') + '</span>' +
+                    '<span class="stdin-hint">' + t('log.stdin.hint') + '</span>';
 
   const ta = document.createElement('textarea');
   ta.id = 'stdin-textarea';
@@ -132,11 +134,11 @@ function consoleGetStdin() {
 
 
 // ── Exporta ──────────────────────────────────────────────
-P.consolePush         = consolePush;
-P.consolePushPartial  = consolePushPartial;
-P.consoleClear        = consoleClear;
-P.consoleShowInput    = consoleShowInput;
-P.consoleHideInput    = consoleHideInput;
-P.consoleShowStdinPanel  = consoleShowStdinPanel;
-P.consoleHideStdinPanel  = consoleHideStdinPanel;
-P.consoleGetStdin        = consoleGetStdin;
+export { consolePush };
+export { consolePushPartial };
+export { consoleClear };
+export { consoleShowInput };
+export { consoleHideInput };
+export { consoleShowStdinPanel };
+export { consoleHideStdinPanel };
+export { consoleGetStdin };

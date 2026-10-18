@@ -19,8 +19,17 @@
 //   ?theme=light     → força mode clar
 // ════════════════════════════════════════════════════════
 
+import { consolePush, consoleShowStdinPanel } from './console.js';
+import { DEFAULT_CODE, LS_KEY_CODE } from './constants.js';
+import { editText, initEditor, updateEditor } from './editor.js';
+import { t } from './i18n.js';
+import { canInteractive, pyInit, whenReady } from './pyrunner.js';
+import { state } from './state.js';
+import { initStepper } from './stepper.js';
+import { initFileActions, initGlossari, initTheme, setStateUI } from './ui.js';
+
 (function init() {
-  const S      = P.state;
+  const S      = state;
   const params = new URLSearchParams(location.search);
 
   // ── Decode base64 → UTF-8 ──
@@ -29,7 +38,7 @@
   }
 
   // ── Origen segur per a postMessage ──
-  P.parentOrigin = (() => {
+  state.parentOrigin = (() => {
     try {
       return document.referrer
         ? new URL(document.referrer).origin
@@ -38,19 +47,19 @@
   })();
 
   // 0) Tema
-  P.initTheme();
+  initTheme();
 
   // 0b) Glossari
-  P.initGlossari();
+  initGlossari();
 
   // 0c) Obrir / Desar fitxers
-  P.initFileActions();
+  initFileActions();
 
   // 0d) «👣 Pas a pas»
-  P.initStepper();
+  initStepper();
 
   // 1) Editor
-  P.initEditor();
+  initEditor();
   const ta       = document.getElementById('code-editor');
   const embed    = params.get('embed') === '1';
   const readonly = params.get('readonly') === '1';
@@ -61,17 +70,17 @@
   //   · exercici del curs (?save=CLAU): una clau pròpia per a cada exercici
   //   · exemples no editables o enllaços amb codi: no es desa
   const saveKey = params.get('save');
-  if (!embed && urlCode === null)  P.codeStorageKey = P.LS_KEY_CODE;
-  else if (saveKey && !readonly)   P.codeStorageKey = saveKey;
-  else                             P.codeStorageKey = null;
-  P.initialCode = urlCode !== null ? urlCode : P.DEFAULT_CODE;
+  if (!embed && urlCode === null)  state.codeStorageKey = LS_KEY_CODE;
+  else if (saveKey && !readonly)   state.codeStorageKey = saveKey;
+  else                             state.codeStorageKey = null;
+  state.initialCode = urlCode !== null ? urlCode : DEFAULT_CODE;
 
   if (ta) {
     let saved = null;
-    if (P.codeStorageKey) {
-      try { saved = localStorage.getItem(P.codeStorageKey); } catch(_) {}
+    if (state.codeStorageKey) {
+      try { saved = localStorage.getItem(state.codeStorageKey); } catch(_) {}
     }
-    ta.value = saved !== null ? saved : P.initialCode;
+    ta.value = saved !== null ? saved : state.initialCode;
 
     if (readonly) {
       ta.setAttribute('readonly', 'readonly');
@@ -81,7 +90,7 @@
       // Toast "No editable" en clicar l'editor readonly
       var toast = document.createElement('div');
       toast.className = 'readonly-toast';
-      toast.textContent = P.t('ui.readonly');
+      toast.textContent = t('ui.readonly');
       document.querySelector('.editor-inner').appendChild(toast);
 
       var hideTimer = null;
@@ -92,8 +101,8 @@
       });
     }
 
-    P.updateEditor();
-    setTimeout(() => P.updateEditor(), 50);
+    updateEditor();
+    setTimeout(() => updateEditor(), 50);
   }
 
   // 1b) Botons extra de la barra d'eines (només als exercicis del curs)
@@ -111,22 +120,22 @@
   }
 
   // «⟲ Codi inicial»: torna a l'esquelet original de l'exercici
-  if (ta && P.codeStorageKey && P.codeStorageKey !== P.LS_KEY_CODE) {
-    addToolbarButton('btn-restore-code', P.t('ui.restore'), P.t('ui.restore_title'), function() {
-      if (ta.value === P.initialCode) return;
-      if (!confirm(P.t('ui.restore_confirm'))) return;
-      P.editText(ta, P.initialCode, 0, ta.value.length);   // Ctrl+Z ho desfà
+  if (ta && state.codeStorageKey && state.codeStorageKey !== LS_KEY_CODE) {
+    addToolbarButton('btn-restore-code', t('ui.restore'), t('ui.restore_title'), function() {
+      if (ta.value === state.initialCode) return;
+      if (!confirm(t('ui.restore_confirm'))) return;
+      editText(ta, state.initialCode, 0, ta.value.length);   // Ctrl+Z ho desfà
       ta.setSelectionRange(0, 0);
       ta.scrollTop = 0;
-      P.consolePush(P.t('log.code_restored'), 'dim');
+      consolePush(t('log.code_restored'), 'dim');
     });
   }
 
   // «✕ Surt»: visible quan la pàgina del curs posa aquest simulador a
   // pantalla completa (ho avisa amb un missatge 'pycat-fs').
   if (embed && window.parent !== window) {
-    const exitBtn = addToolbarButton('btn-exit-fs', P.t('ui.exit_fs'), P.t('ui.exit_fs_title'), function() {
-      try { window.parent.postMessage({ type: 'pycat-exit-fs' }, P.parentOrigin); } catch(_) {}
+    const exitBtn = addToolbarButton('btn-exit-fs', t('ui.exit_fs'), t('ui.exit_fs_title'), function() {
+      try { window.parent.postMessage({ type: 'pycat-exit-fs' }, state.parentOrigin); } catch(_) {}
     });
     exitBtn.hidden = true;
     window.addEventListener('message', function(e) {
@@ -171,27 +180,27 @@
   // 3) Python (Pyodide)
   //    · Simulador lliure: es pre-carrega de seguida (només n'hi ha un).
   //    · Simuladors incrustats al curs: es carrega en el PRIMER clic a
-  //      ▶ Executa (P.pyRun ho fa sol). Una pàgina amb 20 simuladors ja no
+  //      ▶ Executa (pyRun ho fa sol). Una pàgina amb 20 simuladors ja no
   //      carrega 20 intèrprets de Python quan l'alumne fa scroll.
   S.wantsInteractive = params.get('interactive') === '1';
 
   if (embed) {
-    P.setStateUI('idle');
-    P.consolePush(P.t('log.lazy'), 'dim');
+    setStateUI('idle');
+    consolePush(t('log.lazy'), 'dim');
   } else {
-    P.pyInit();
-    P.setStateUI('loading');
+    pyInit();
+    setStateUI('loading');
   }
 
   // 5) Mostra el panell stdin si estem en mode lliure sense SAB
   //    i el codi per defecte (o el carregat) conté input()
-  if (!S.testCases && !S.freeStdin && !P.canInteractive()) {
+  if (!S.testCases && !S.freeStdin && !canInteractive()) {
     var code = ta ? ta.value : '';
     if (/\binput\s*\(/.test(code)) {
       // Simulador lliure: es mostra quan Python és llest (per no tapar el
       // missatge de càrrega). Incrustat (càrrega sota demanda): de seguida.
-      if (embed) P.consoleShowStdinPanel();
-      else P.whenReady(P.consoleShowStdinPanel);
+      if (embed) consoleShowStdinPanel();
+      else whenReady(consoleShowStdinPanel);
     }
   }
 

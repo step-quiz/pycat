@@ -24,11 +24,11 @@
   //   disposicio → 'sota' o 'fixa'
   //   api        → nom de l'objecte global de l'editor que té editText(ta, text)
   //                i, si cal, indentSelection(ta) / dedentSelection(ta)
-  //                (p. ex. 'K' a KarelCat, 'P' a PyCat). Si no n'hi ha, s'escriu
+  //                (p. ex. 'K' a KarelCat). Si no n'hi ha, s'escriu
   //                amb una funció pròpia equivalent.
   //   tecles     → llista: "x" (escriu x), null (separador) o
   //                { "label": "if", "text": "if ", "title": "…", "accio": "indenta" | "desindenta" }
-  var CONFIG = {"disposicio": "fixa", "api": "P", "tecles": ["(", ")", "[", "]", "{", "}", null, "\"", "'", ":", "#", "_", null, "=", "+", "-", "*", "/", "%", null, "<", ">", "!"]};
+  var CONFIG = {"disposicio": "fixa", "tecles": ["(", ")", "[", "]", "{", "}", null, "\"", "'", ":", "#", "_", null, "=", "+", "-", "*", "/", "%", null, "<", ">", "!"]};
   var FIXA = CONFIG.disposicio === 'fixa';
   var API = objecteGlobal(CONFIG.api);
   var TECLES = CONFIG.tecles || [];

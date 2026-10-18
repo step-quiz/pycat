@@ -10,10 +10,19 @@
 //   4. Un cop acaba tot, notifica el pare amb {success, results}.
 // ════════════════════════════════════════════════════════
 
+import { consoleClear, consoleGetStdin, consoleHideStdinPanel, consolePush, consoleShowStdinPanel } from './console.js';
+import { LS_KEY_THEME } from './constants.js';
+import { clearLineMarks, updateEditor } from './editor.js';
+import { t } from './i18n.js';
+import { canInteractive, pyCheck, pyRunAsync, pyStop } from './pyrunner.js';
+import { state as estat } from './state.js';
+import { exitTrace } from './stepper.js';
+import { turtleClear } from './turtle-view.js';
+
 // ── Badge d'estat + mutació del botó ─────────────────────
 
 function setStateUI(state) {
-  P.state.currentState = state;
+  estat.currentState = state;
 
   var btn = document.getElementById('btn-run');
   if (btn) {
@@ -22,9 +31,9 @@ function setStateUI(state) {
     var wantValid  = (state === 'ran-interactive');
 
     if (wantValid) {
-      btn.textContent = P.t('ui.validate');
+      btn.textContent = t('ui.validate');
     } else {
-      btn.textContent = P.t(running ? 'ui.stop' : 'ui.run');
+      btn.textContent = t(running ? 'ui.stop' : 'ui.run');
     }
     btn.classList.toggle('p', !running);
     btn.classList.toggle('r', running);
@@ -36,7 +45,7 @@ function setStateUI(state) {
 
 // ── Handler del botó principal ───────────────────────────
 function handleRunClick() {
-  var s = P.state.currentState;
+  var s = estat.currentState;
   if (s === 'running' || s === 'validating') {
     stopProgram();
   } else if (s === 'ran-interactive') {
@@ -49,8 +58,8 @@ function handleRunClick() {
 // ── Construeix el codi final (codi de l'alumne + testCode) ──
 function _buildFinalCode(userCode) {
   // Nombre de línies de l'alumne: un error més avall és del testCode
-  P.state.userLineCount = userCode.split('\n').length;
-  var tc = P.state.testCode || '';
+  estat.userLineCount = userCode.split('\n').length;
+  var tc = estat.testCode || '';
   if (!tc) return userCode;
   return userCode + '\n\n# ── Tests ──\n' + tc;
 }
@@ -84,29 +93,29 @@ function _usesInput(code) {
 function _ensureStdinPanel(code) {
   // Mostra el panell stdin si el codi usa input() i estem en mode lliure
   // sense stdin predefinit, sense SAB, i sense tests
-  var S = P.state;
-  if (!S.testCases && !S.freeStdin && !P.canInteractive() && _usesInput(code)) {
-    P.consoleShowStdinPanel();
+  var S = estat;
+  if (!S.testCases && !S.freeStdin && !canInteractive() && _usesInput(code)) {
+    consoleShowStdinPanel();
   }
 }
 
 // ── Executa el programa ──────────────────────────────────
 async function runProgram() {
-  if (P.exitTrace) P.exitTrace();
-  if (P.turtleClear) P.turtleClear();
-  P.consoleClear();
-  P.clearLineMarks();
+  if (exitTrace) exitTrace();
+  if (turtleClear) turtleClear();
+  consoleClear();
+  clearLineMarks();
 
   var userCode = (document.getElementById('code-editor') || {}).value || '';
   if (!userCode.trim()) {
-    P.consolePush(P.t('log.empty_code'), 'dim');
+    consolePush(t('log.empty_code'), 'dim');
     return;
   }
 
   _notifyClear();
-  P.state.ranInteractive = false;
+  estat.ranInteractive = false;
 
-  var S = P.state;
+  var S = estat;
   var finalCode = _buildFinalCode(userCode);
 
   // ── Cas 1: sense validació (simulador lliure) ──
@@ -114,22 +123,22 @@ async function runProgram() {
     var stdin = S.freeStdin || null;
 
     // Mode interactiu: si SAB disponible i el codi usa input()
-    if (!stdin && P.canInteractive() && _usesInput(userCode)) {
-      P.consoleHideStdinPanel();
-      await P.pyRunAsync(finalCode, null, true);  // interactive=true
+    if (!stdin && canInteractive() && _usesInput(userCode)) {
+      consoleHideStdinPanel();
+      await pyRunAsync(finalCode, null, true);  // interactive=true
       return;
     }
 
     // Fallback: recull stdin del panell textarea si n'hi ha
     if (!stdin) {
-      var panelStdin = P.consoleGetStdin();
+      var panelStdin = consoleGetStdin();
       if (panelStdin) {
         stdin = panelStdin;
       }
     }
 
-    P.consoleHideStdinPanel();
-    await P.pyRunAsync(finalCode, stdin);
+    consoleHideStdinPanel();
+    await pyRunAsync(finalCode, stdin);
     // Mostra el panell per la propera execució si cal
     _ensureStdinPanel(userCode);
     return;
@@ -139,13 +148,13 @@ async function runProgram() {
 
   // Dual-mode: si wantsInteractive i SAB disponible i el codi usa input(),
   // primer executa interactivament, després l'alumne fa clic a Valida.
-  if (S.wantsInteractive && P.canInteractive() && _usesInput(userCode)) {
-    P.consoleHideStdinPanel();
-    await P.pyRunAsync(finalCode, null, true);  // interactive=true
+  if (S.wantsInteractive && canInteractive() && _usesInput(userCode)) {
+    consoleHideStdinPanel();
+    await pyRunAsync(finalCode, null, true);  // interactive=true
     // Si el programa ha acabat bé (no error/timeout), entrem en mode validació
-    if (P.state.currentState === 'done') {
-      P.state.ranInteractive = true;
-      P.consolePush(P.t('log.ran_interactive'), 'dim');
+    if (estat.currentState === 'done') {
+      estat.ranInteractive = true;
+      consolePush(t('log.ran_interactive'), 'dim');
       setStateUI('ran-interactive');
     }
     return;
@@ -160,27 +169,27 @@ async function _runValidation() {
   var userCode = (document.getElementById('code-editor') || {}).value || '';
   var finalCode = _buildFinalCode(userCode);
 
-  P.consoleClear();
-  P.clearLineMarks();
-  P.consolePush(P.t('log.validating'), 'dim');
+  consoleClear();
+  clearLineMarks();
+  consolePush(t('log.validating'), 'dim');
   setStateUI('validating');
 
-  P.state.ranInteractive = false;
+  estat.ranInteractive = false;
   await _runBatchValidation(finalCode);
 }
 
 // ── Itera pels test cases en batch ──────────────────────
 async function _runBatchValidation(finalCode) {
-  var S = P.state;
+  var S = estat;
   var results = [];
   for (var i = 0; i < S.testCases.length; i++) {
     var tc = S.testCases[i];
 
     if (S.testCases.length > 1) {
-      P.consolePush(P.t('log.test_n').replace('{i}', i + 1).replace('{n}', S.testCases.length), 'dim');
+      consolePush(t('log.test_n').replace('{i}', i + 1).replace('{n}', S.testCases.length), 'dim');
     }
 
-    var output = await P.pyRunAsync(finalCode, tc.stdin || null);
+    var output = await pyRunAsync(finalCode, tc.stdin || null);
 
     var passed = output !== null &&
                  _normalizeOutput(output) === _normalizeOutput(tc.expected || '');
@@ -201,9 +210,9 @@ async function _runBatchValidation(finalCode) {
   var allPassed = results.length > 0 && results.every(function(r) { return r.passed; });
   if (allPassed && S.requires) {
     var userCode = (document.getElementById('code-editor') || {}).value || '';
-    missing = await P.pyCheck(userCode, S.requires);
+    missing = await pyCheck(userCode, S.requires);
     if (missing.length) {
-      P.consolePush(P.t('log.requires_missing') + ' ' + missing.join(', ') + '.', 'err');
+      consolePush(t('log.requires_missing') + ' ' + missing.join(', ') + '.', 'err');
     }
   }
 
@@ -212,18 +221,18 @@ async function _runBatchValidation(finalCode) {
 
 // ── Atura el programa ────────────────────────────────────
 function stopProgram() {
-  P.pyStop();
+  pyStop();
 }
 
 // ── Neteja la consola ────────────────────────────────────
 function resetConsole() {
-  if (P.exitTrace) P.exitTrace();
-  if (P.turtleClear) P.turtleClear();
-  P.consoleClear();
-  P.clearLineMarks();
-  P.state.ranInteractive = false;
-  P.setStateUI('idle');
-  P.consolePush(P.t('log.reset'), 'dim');
+  if (exitTrace) exitTrace();
+  if (turtleClear) turtleClear();
+  consoleClear();
+  clearLineMarks();
+  estat.ranInteractive = false;
+  setStateUI('idle');
+  consolePush(t('log.reset'), 'dim');
   _notifyClear();
   // Mostra el panell stdin si cal
   var code = (document.getElementById('code-editor') || {}).value || '';
@@ -238,28 +247,28 @@ function _normalizeOutput(s) {
 
 // ── Notificacions al pare (iframe) ───────────────────────
 function _notifyClear() {
-  if (!P.state.goalId) return;
+  if (!estat.goalId) return;
   try {
     window.parent.postMessage({
-      type: 'pycat-clear', goalId: P.state.goalId
-    }, P.parentOrigin);
+      type: 'pycat-clear', goalId: estat.goalId
+    }, estat.parentOrigin);
   } catch(_) {}
 }
 
 function _notifyResults(results, missing) {
-  if (!P.state.goalId) return;
+  if (!estat.goalId) return;
   missing = missing || [];
   var allPassed = results.length > 0 && missing.length === 0 &&
                   results.every(function(r) { return r.passed; });
   try {
     window.parent.postMessage({
       type:    'pycat-result',
-      goalId:  P.state.goalId,
+      goalId:  estat.goalId,
       success: allPassed,
-      total:   (P.state.testCases || []).length,
+      total:   (estat.testCases || []).length,
       missing: missing,
       results: results
-    }, P.parentOrigin);
+    }, estat.parentOrigin);
   } catch(_) {}
 }
 
@@ -272,17 +281,17 @@ function updateThemeBtn() {
   if (!btn) return;
   var isLight = document.body.classList.contains('light');
   btn.innerHTML = isLight ? ICON_MOON : ICON_SUN;
-  btn.title     = P.t(isLight ? 'ui.theme_dark' : 'ui.theme_light');
+  btn.title     = t(isLight ? 'ui.theme_dark' : 'ui.theme_light');
 }
 
 function toggleTheme() {
   var isLight = document.body.classList.toggle('light');
-  localStorage.setItem(P.LS_KEY_THEME, isLight ? 'light' : 'dark');
+  localStorage.setItem(LS_KEY_THEME, isLight ? 'light' : 'dark');
   updateThemeBtn();
 }
 
 function initTheme() {
-  var saved = localStorage.getItem(P.LS_KEY_THEME);
+  var saved = localStorage.getItem(LS_KEY_THEME);
   if (saved !== 'dark') document.body.classList.add('light');
   updateThemeBtn();
 }
@@ -344,7 +353,7 @@ function initFileActions() {
       var ta = document.getElementById('code-editor');
       if (!ta) return;
       ta.value = e.target.result;
-      P.updateEditor();   // també desa el codi (P.saveCode)
+      updateEditor();   // també desa el codi (saveCode)
       ta.focus();
     };
     reader.readAsText(file);
@@ -368,15 +377,15 @@ function initFileActions() {
 
 
 // ── Exporta ──────────────────────────────────────────────
-P.setStateUI     = setStateUI;
-P.buildFinalCode = _buildFinalCode;   // l'usa stepper.js
-P.usesInput      = _usesInput;
-P.handleRunClick = handleRunClick;
-P.initTheme      = initTheme;
-P.initGlossari   = initGlossari;
-P.initFileActions = initFileActions;
-P.toggleTheme    = toggleTheme;
-P.updateThemeBtn = updateThemeBtn;
+export { setStateUI };
+export { _buildFinalCode as buildFinalCode };   // l'usa stepper.js
+export { _usesInput as usesInput };
+export { handleRunClick };
+export { initTheme };
+export { initGlossari };
+export { initFileActions };
+export { toggleTheme };
+export { updateThemeBtn };
 
 window.handleRunClick = handleRunClick;
 window.runProgram     = runProgram;

@@ -1,7 +1,7 @@
 // ════════════════════════════════════════════════════════
 // errors.js — Explicació en català dels errors de Python
 //
-// P.explainError(msg) rep l'última línia del traceback
+// explainError(msg) rep l'última línia del traceback
 // (p. ex. "NameError: name 'x' is not defined") i retorna
 //   { text: 'explicació curta', hint: 'pista (o null)' }
 // o null si no el sabem explicar (llavors només es mostra
@@ -198,4 +198,4 @@ function explainError(msg) {
 
 
 // ── Exporta ──────────────────────────────────────────────
-P.explainError = explainError;
+export { explainError };

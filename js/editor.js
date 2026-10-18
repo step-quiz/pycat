@@ -7,6 +7,10 @@
 //   - Comentaris (#) que no es confonen amb # dins de strings
 // ════════════════════════════════════════════════════════
 
+import { escHtml } from './constants.js';
+import { state } from './state.js';
+import { handleRunClick } from './ui.js';
+
 // ── Vocabulari Python per al ressaltat ───────────────────
 const PY_KEYWORDS = new Set([
   'if','elif','else','for','while','def','return','class',
@@ -41,7 +45,7 @@ function tokenizeLine(line, tripleState) {
           i + 2 < line.length && line[i + 2] === tripleState) {
         s += tripleState + tripleState + tripleState;
         i += 3;
-        out += '<span class="hl-str">' + P.escHtml(s) + '</span>';
+        out += '<span class="hl-str">' + escHtml(s) + '</span>';
         tripleState = null;
         break;
       }
@@ -52,7 +56,7 @@ function tokenizeLine(line, tripleState) {
     }
     if (tripleState) {
       // Encara dins la string, consumeix tota la línia
-      out += '<span class="hl-str">' + P.escHtml(s) + '</span>';
+      out += '<span class="hl-str">' + escHtml(s) + '</span>';
       return { html: out, tripleState: tripleState };
     }
   }
@@ -63,7 +67,7 @@ function tokenizeLine(line, tripleState) {
 
     // Comentari (fins a final de línia)
     if (c === '#') {
-      out += '<span class="hl-cm">' + P.escHtml(line.slice(i)) + '</span>';
+      out += '<span class="hl-cm">' + escHtml(line.slice(i)) + '</span>';
       break;
     }
 
@@ -71,7 +75,7 @@ function tokenizeLine(line, tripleState) {
     if (/\s/.test(c)) {
       var ws = '';
       while (i < line.length && /\s/.test(line[i])) ws += line[i++];
-      out += P.escHtml(ws);
+      out += escHtml(ws);
       continue;
     }
 
@@ -103,7 +107,7 @@ function tokenizeLine(line, tripleState) {
           s += line[i++];
         }
 
-        out += '<span class="hl-str">' + P.escHtml(s) + '</span>';
+        out += '<span class="hl-str">' + escHtml(s) + '</span>';
         if (!closed) {
           // La triple-quote continua a la línia següent
           tripleState = q;
@@ -118,13 +122,13 @@ function tokenizeLine(line, tripleState) {
         s += line[i++];
       }
       if (i < line.length) s += line[i++]; // tancament
-      out += '<span class="hl-str">' + P.escHtml(s) + '</span>';
+      out += '<span class="hl-str">' + escHtml(s) + '</span>';
       continue;
     }
 
     // Puntuació
     if ('()[]{}:,.=+-*/<>!%@&|^~'.includes(c)) {
-      out += '<span class="hl-br">' + P.escHtml(c) + '</span>';
+      out += '<span class="hl-br">' + escHtml(c) + '</span>';
       i++;
       continue;
     }
@@ -140,7 +144,7 @@ function tokenizeLine(line, tripleState) {
         }
         n += line[i++];
       }
-      out += '<span class="hl-num">' + P.escHtml(n) + '</span>';
+      out += '<span class="hl-num">' + escHtml(n) + '</span>';
       continue;
     }
 
@@ -148,14 +152,14 @@ function tokenizeLine(line, tripleState) {
     if (/[a-zA-Z_]/.test(c)) {
       var w = '';
       while (i < line.length && /[a-zA-Z0-9_]/.test(line[i])) w += line[i++];
-      if (PY_KEYWORDS.has(w))      out += '<span class="hl-kw">' + P.escHtml(w) + '</span>';
-      else if (PY_BUILTINS.has(w)) out += '<span class="hl-cmd">' + P.escHtml(w) + '</span>';
-      else                         out += '<span class="hl-user">' + P.escHtml(w) + '</span>';
+      if (PY_KEYWORDS.has(w))      out += '<span class="hl-kw">' + escHtml(w) + '</span>';
+      else if (PY_BUILTINS.has(w)) out += '<span class="hl-cmd">' + escHtml(w) + '</span>';
+      else                         out += '<span class="hl-user">' + escHtml(w) + '</span>';
       continue;
     }
 
     // Caràcter no reconegut
-    out += P.escHtml(line[i++]);
+    out += escHtml(line[i++]);
   }
 
   return { html: out, tripleState: tripleState || null };
@@ -215,11 +219,11 @@ function updateEditor() {
 }
 
 // ── Desa el codi de l'alumne ─────────────────────────────
-// P.codeStorageKey el decideix main.js: la clau del simulador lliure,
+// state.codeStorageKey el decideix main.js: la clau del simulador lliure,
 // la d'un exercici del curs (?save=...) o null (exemples: no es desa res).
 function saveCode(code) {
-  if (!P.codeStorageKey) return;
-  try { localStorage.setItem(P.codeStorageKey, code); } catch(_) {}
+  if (!state.codeStorageKey) return;
+  try { localStorage.setItem(state.codeStorageKey, code); } catch(_) {}
 }
 
 
@@ -334,7 +338,7 @@ function initEditor() {
     // Ctrl+Enter (o Cmd+Enter): equivalent a clicar el botó Executa/Atura
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault();
-      if (P.handleRunClick) P.handleRunClick();
+      if (handleRunClick) handleRunClick();
       return;
     }
     if (ta.readOnly) return;
@@ -497,9 +501,9 @@ function initAutocomplete(ta) {
 
 
 // ── Exporta ──────────────────────────────────────────────
-P.initEditor     = initEditor;
-P.updateEditor   = updateEditor;
-P.markErrorLine  = markErrorLine;
-P.clearLineMarks = clearLineMarks;
-P.editText       = editText;       // l'usen la barra tàctil i el botó «Codi inicial»
-P.saveCode       = saveCode;
+export { initEditor };
+export { updateEditor };
+export { markErrorLine };
+export { clearLineMarks };
+export { editText };       // l'usen la barra tàctil i el botó «Codi inicial»
+export { saveCode };

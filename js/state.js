@@ -2,10 +2,10 @@
 // state.js — Estat centralitzat de PyCat
 //
 // Substitueix les globals disperses per un únic objecte.
-// Patró idèntic a KarelCat (K.state → P.state).
+// Patró idèntic a KarelCat (K.state → state).
 // ════════════════════════════════════════════════════════
 
-P.state = {
+export const state = {
   // Estat de la UI
   currentState: 'idle',   // idle | loading | running | done | error
 
@@ -36,4 +36,9 @@ P.state = {
   // Dual-mode: interactive run + batch validation
   wantsInteractive: false, // true si el simulador té data-interactive="true"
   ranInteractive:   false, // true després d'una execució interactiva (pendent de validació)
+
+  // Els posa main.js en arrencar
+  parentOrigin:   null,    // origen de la pàgina del curs (destí dels postMessage)
+  codeStorageKey: null,    // clau de localStorage on es desa el codi (null: no es desa)
+  initialCode:    '',      // codi inicial de l'editor (per a «⟲ Codi inicial»)
 };

@@ -11,8 +11,16 @@
 // Mentre dura, l'editor no es pot modificar. «✕ Surt», ▶ Executa o
 // ↺ Neteja en surten.
 //
-// API: P.initStepper(), P.startTrace(), P.exitTrace(), P.isTracing()
+// API: initStepper(), startTrace(), exitTrace(), isTracing()
 // ════════════════════════════════════════════════════════
+
+import { consoleClear, consoleGetStdin, consoleHideStdinPanel, consolePush, consoleShowStdinPanel } from './console.js';
+import { clearLineMarks, markErrorLine } from './editor.js';
+import { explainError } from './errors.js';
+import { t } from './i18n.js';
+import { pyTrace } from './pyrunner.js';
+import { state } from './state.js';
+import { buildFinalCode, usesInput } from './ui.js';
 
 var _trace = null;   // { passos, sortida, error, tallat, idx, wasReadonly }
 
@@ -26,8 +34,8 @@ function initStepper() {
   b.className = 'btn';
   b.id = 'btn-step';
   b.type = 'button';
-  b.textContent = P.t('ui.step');
-  b.title = P.t('ui.step_title');
+  b.textContent = t('ui.step');
+  b.title = t('ui.step_title');
   b.addEventListener('click', function() {
     if (_trace) exitTrace(); else startTrace();
   });
@@ -46,31 +54,31 @@ function initStepper() {
 
 // ── Comença: enregistra l'execució ───────────────────────
 async function startTrace() {
-  var S  = P.state;
+  var S  = state;
   var ta = document.getElementById('code-editor');
   var userCode = ta ? ta.value : '';
-  if (!userCode.trim()) { P.consolePush(P.t('log.empty_code'), 'dim'); return; }
+  if (!userCode.trim()) { consolePush(t('log.empty_code'), 'dim'); return; }
   if (S.currentState === 'running' || S.currentState === 'validating' || S.currentState === 'loading') return;
 
   // Entrades per a input(): les de l'exemple, les del primer test o les del panell
   var stdin = S.freeStdin ||
               (S.testCases && S.testCases.length ? (S.testCases[0].stdin || '') : '') ||
-              P.consoleGetStdin() || '';
-  if (!stdin && P.usesInput(userCode)) {
-    P.consoleClear();
-    P.consolePush(P.t('log.step_needs_input'), 'dim');
-    P.consoleShowStdinPanel();
+              consoleGetStdin() || '';
+  if (!stdin && usesInput(userCode)) {
+    consoleClear();
+    consolePush(t('log.step_needs_input'), 'dim');
+    consoleShowStdinPanel();
     return;
   }
 
-  P.consoleClear();
-  P.clearLineMarks();
-  P.consolePush(P.t('log.step_recording'), 'dim');
-  var finalCode = P.buildFinalCode(userCode);
-  var data = await P.pyTrace(finalCode, stdin, S.userLineCount);
-  P.consoleClear();
+  consoleClear();
+  clearLineMarks();
+  consolePush(t('log.step_recording'), 'dim');
+  var finalCode = buildFinalCode(userCode);
+  var data = await pyTrace(finalCode, stdin, S.userLineCount);
+  consoleClear();
   if (!data || !data.passos) {
-    P.consolePush(P.t('log.step_failed'), 'err');
+    consolePush(t('log.step_failed'), 'err');
     return;
   }
   _enter(data);
@@ -84,10 +92,10 @@ function _enter(data) {
   _trace.wasReadonly = ta ? ta.readOnly : false;
   if (ta) ta.readOnly = true;
   document.body.classList.add('tracing');
-  P.consoleHideStdinPanel();
+  consoleHideStdinPanel();
 
   var btn = document.getElementById('btn-step');
-  if (btn) btn.textContent = P.t('ui.step_exit');
+  if (btn) btn.textContent = t('ui.step_exit');
 
   var area = document.querySelector('.console-area');
   var panel = document.createElement('div');
@@ -95,16 +103,16 @@ function _enter(data) {
   panel.className = 'trace-panel';
   panel.innerHTML =
     '<div class="trace-controls">' +
-      '<button type="button" class="btn" data-go="first" title="' + P.t('ui.step_first') + '">⏮</button>' +
-      '<button type="button" class="btn" data-go="prev" title="' + P.t('ui.step_prev') + '">◀</button>' +
+      '<button type="button" class="btn" data-go="first" title="' + t('ui.step_first') + '">⏮</button>' +
+      '<button type="button" class="btn" data-go="prev" title="' + t('ui.step_prev') + '">◀</button>' +
       '<span class="trace-count"></span>' +
-      '<button type="button" class="btn p" data-go="next" title="' + P.t('ui.step_next') + '">▶</button>' +
-      '<button type="button" class="btn" data-go="last" title="' + P.t('ui.step_last') + '">⏭</button>' +
+      '<button type="button" class="btn p" data-go="next" title="' + t('ui.step_next') + '">▶</button>' +
+      '<button type="button" class="btn" data-go="last" title="' + t('ui.step_last') + '">⏭</button>' +
     '</div>' +
-    '<input type="range" class="trace-range" min="0" value="0" aria-label="' + P.t('ui.step_title') + '">' +
+    '<input type="range" class="trace-range" min="0" value="0" aria-label="' + t('ui.step_title') + '">' +
     '<div class="trace-line"></div>' +
     '<div class="trace-vars"></div>' +
-    '<div class="trace-out-title">' + P.t('ui.step_output') + '</div>' +
+    '<div class="trace-out-title">' + t('ui.step_output') + '</div>' +
     '<pre class="trace-out"></pre>';
   area.appendChild(panel);
 
@@ -133,9 +141,9 @@ function exitTrace() {
   var panel = document.getElementById('trace-panel');
   if (panel) panel.remove();
   document.querySelectorAll('.lbg-row.step').forEach(function(el) { el.classList.remove('step'); });
-  P.clearLineMarks();
+  clearLineMarks();
   var btn = document.getElementById('btn-step');
-  if (btn) btn.textContent = P.t('ui.step');
+  if (btn) btn.textContent = t('ui.step');
 }
 
 // ── Mostra el pas número i ───────────────────────────────
@@ -151,7 +159,7 @@ function _goTo(i) {
   if (!panel) return;
 
   panel.querySelector('.trace-count').textContent =
-    P.t('ui.step_count').replace('{i}', i + 1).replace('{n}', n);
+    t('ui.step_count').replace('{i}', i + 1).replace('{n}', n);
   panel.querySelector('.trace-range').value = String(i);
   panel.querySelector('[data-go="prev"]').disabled  = (i === 0);
   panel.querySelector('[data-go="first"]').disabled = (i === 0);
@@ -161,24 +169,24 @@ function _goTo(i) {
   // Línia a punt d'executar-se (o final / error)
   var lineEl = panel.querySelector('.trace-line');
   lineEl.className = 'trace-line';
-  P.clearLineMarks();
+  clearLineMarks();
   document.querySelectorAll('.lbg-row.step').forEach(function(el) { el.classList.remove('step'); });
   if (last && _trace.error) {
     lineEl.classList.add('err');
     var errLine = _trace.error.linia;
-    var info = P.explainError ? P.explainError(_trace.error.missatge) : null;
-    lineEl.textContent = (errLine ? P.t('log.error_line').replace('{n}', errLine) : P.t('log.error')) +
+    var info = explainError ? explainError(_trace.error.missatge) : null;
+    lineEl.textContent = (errLine ? t('log.error_line').replace('{n}', errLine) : t('log.error')) +
       ': ' + (info ? info.text : _trace.error.missatge);
-    if (errLine) P.markErrorLine(errLine);
+    if (errLine) markErrorLine(errLine);
   } else if (last && _trace.tallat) {
     lineEl.classList.add('err');
-    lineEl.textContent = P.t('log.step_cut');
+    lineEl.textContent = t('log.step_cut');
   } else if (pas.linia) {
-    lineEl.textContent = P.t('log.step_line').replace('{n}', pas.linia);
+    lineEl.textContent = t('log.step_line').replace('{n}', pas.linia);
     _markStepLine(pas.linia);
   } else {
     lineEl.classList.add('ok');
-    lineEl.textContent = P.t('log.step_end');
+    lineEl.textContent = t('log.step_end');
   }
 
   // Variables per nivell de crida
@@ -191,12 +199,12 @@ function _goTo(i) {
     box.className = 'trace-level';
     var h = document.createElement('div');
     h.className = 'trace-level-name';
-    h.textContent = nom === 'programa' ? P.t('ui.step_main') : P.t('ui.step_func').replace('{f}', nom);
+    h.textContent = nom === 'programa' ? t('ui.step_main') : t('ui.step_func').replace('{f}', nom);
     box.appendChild(h);
     if (!llista.length) {
       var buit = document.createElement('div');
       buit.className = 'trace-empty';
-      buit.textContent = P.t('ui.step_novars');
+      buit.textContent = t('ui.step_novars');
       box.appendChild(buit);
     } else {
       var table = document.createElement('table');
@@ -241,7 +249,7 @@ function _markStepLine(n) {
 
 
 // ── Exporta ──────────────────────────────────────────────
-P.initStepper = initStepper;
-P.startTrace  = startTrace;
-P.exitTrace   = exitTrace;
-P.isTracing   = isTracing;
+export { initStepper };
+export { startTrace };
+export { exitTrace };
+export { isTracing };

@@ -44,7 +44,7 @@ from pycat_requires import pycat_requisits_que_falten  # noqa: E402  (mateix cod
 from pycat_trace import pycat_traca  # noqa: E402
 
 ARREL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPS_MAXIM = 10  # segons per execució (com P.EXEC_TIMEOUT)
+TEMPS_MAXIM = 10  # segons per execució (com EXEC_TIMEOUT de js/constants.js)
 TURTLE = os.path.join(ARREL, 'js', 'pycat_turtle.py')
 
 # Programa que executa el codi de l'alumne com ho fa el simulador

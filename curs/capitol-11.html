@@ -350,6 +350,55 @@ print("Has encertat", encerts, "de", total, "preguntes.")'
 
 
       <!-- ─────────────────────────────────────────
+           COMPROVA QUÈ HAS APRÈS (dona el ✓ del capítol)
+           ───────────────────────────────────────── -->
+      <section class="chapter-section">
+        <h2>Comprova què has après</h2>
+
+        <p>Cinc preguntes sobre les peces del quiz. Quan les encertis totes, el capítol queda marcat com a fet.</p>
+
+        <div class="quiz" data-goal-id="cap-11-quiz">
+          <div class="quiz-q" data-correcta="2" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">def pregunta(text, correcta):
+    return text == correcta
+
+print(pregunta("or", "or"))</pre>
+            <ol class="quiz-opcions"><li>or</li><li>True</li><li>correcta</li></ol>
+            <p class="quiz-explica">La funció torna el resultat de la comparació <code>text == correcta</code>, que és un booleà: <code>True</code> si són iguals.</p>
+          </div>
+          <div class="quiz-q" data-correcta="1" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">p, r = ["2 + 2?", "4"]
+print(r)</pre>
+            <ol class="quiz-opcions"><li>4</li><li>2 + 2?</li><li>["2 + 2?", "4"]</li></ol>
+            <p class="quiz-explica">Una llista de dos elements es pot repartir en dues variables: <code>p</code> rep el primer element i <code>r</code> el segon. És el que fa <code>for p, r in preguntes:</code> a cada volta.</p>
+          </div>
+          <div class="quiz-q" data-correcta="3" data-comprova>
+            <p>Què imprimeix aquest programa?</p>
+            <pre class="code-example">encerts = 0
+for resultat in [True, False, True]:
+    if resultat:
+        encerts = encerts + 1
+print(encerts)</pre>
+            <ol class="quiz-opcions"><li>1</li><li>3</li><li>2</li></ol>
+            <p class="quiz-explica">El comptador només augmenta quan <code>resultat</code> és <code>True</code>: dues vegades de tres.</p>
+          </div>
+          <div class="quiz-q" data-correcta="2">
+            <p>Per què el quiz crida <code>random.shuffle(preguntes)</code> abans de començar?</p>
+            <ol class="quiz-opcions"><li>Per ordenar les preguntes alfabèticament</li><li>Perquè les preguntes surtin en un ordre diferent cada vegada</li><li>Per esborrar les preguntes repetides</li></ol>
+            <p class="quiz-explica"><code>random.shuffle()</code> barreja la llista: així, si tornes a jugar, l'ordre canvia.</p>
+          </div>
+          <div class="quiz-q" data-correcta="1">
+            <p>Per què la funció <code>pregunta()</code> compara <code>resposta.lower().strip()</code> i no <code>resposta</code> tal com arriba?</p>
+            <ol class="quiz-opcions"><li>Perquè «Paris», «PARIS» i «paris » també comptin com a correctes</li><li>Perquè <code>input()</code> sempre torna majúscules</li><li>Perquè sense això el programa dona un error</li></ol>
+            <p class="quiz-explica"><code>lower()</code> passa el text a minúscules i <code>strip()</code> treu els espais del principi i del final. Així no es penalitza com s'ha escrit la resposta.</p>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ─────────────────────────────────────────
            I ARA QUÈ?
            ───────────────────────────────────────── -->
       <section class="chapter-section">

@@ -8,7 +8,9 @@
 
 PyCat is a browser-based interactive Python course in Catalan, built with vanilla HTML/CSS/JS and Pyodide (CPython via WebAssembly). It is the sequel to KarelCat. The codebase has no build step, no framework, no bundler.
 
-**What has already been done (this round):**
+There are no open tasks in this file right now (tasks 7 and 8 were done on 2026-10-18). Pending ideas are listed in `docs/CURRENT-STATE.md` (§11, «Tasques pendents»).
+
+**What has already been done:**
 - Fixed the `_onDone` double-invocation bug in `pyrunner.js`
 - Implemented a progress system with checkmarks in the sidebar (`capitols.js`, `curs.css`)
 - Fixed multi-line triple-quote syntax highlighting in `editor.js`
@@ -21,36 +23,9 @@ PyCat is a browser-based interactive Python course in Catalan, built with vanill
 - **[Task 3]** Extracted the i18n system into `js/i18n.js`. Removed `UI_LANGS` and `P.t` from `constants.js`. Added Spanish (`es`) and English (`en`) translations for all 22 UI keys. Added a language selector (`<select id="lang-select">`) in the topbar, with persistence via `localStorage` (`pycat_lang`). `P.setLang(code)` refreshes visible UI elements (run button, reset button, state badge). Hidden in embed mode. **Later removed:** today `js/i18n.js` is Catalan only and there is no language selector. Loaded in `index.html` between `constants.js` and `state.js`. Course pages (`curs/*.html`) are unaffected — they don't load these scripts and remain Catalan-only.
 - **[Task 4]** Created `tests/test-exercises.html` — a browser-based test runner that loads Pyodide, extracts all exercises from `curs/*.html` via `fetch` + `DOMParser`, and runs the reference solution for each `goalId` against its test cases. Solutions live in `tests/solutions.js` (23 solutions covering all chapter exercises and reptes 1–15). The runner shows PASS/FAIL per exercise with per-test diff. Verified locally with CPython: **81/81 tests pass** (at the time; `tests/comprova-curs.py` now checks 44 exercises and 99 test cases). Includes `tests/README.md` with usage instructions. Not linked from the course UI (development tool).
 - **[Task 5]** ~~Added offline support via Service Worker.~~ **REVERTED in production** — the SW was causing `ERR_FAILED` in production at pycat.step-quiz.net (Cloudflare Pages) on repeat visits. Both `sw.js` and `js/sw-register.js` have been replaced with kill-switch variants that actively unregister any previously-installed SW and clear all `pycat-*` caches. The files remain in place so that any user browser that had cached the old SW receives the self-destruct update. They can be kept as-is indefinitely with no side effects. If offline support is needed in the future, rewrite from scratch with extensive production testing — don't restore the old files.
+- **[Task 7]** (2026-10-18) Migrated `js/` to ES modules. Every app file exports its public API and imports what it needs; the global `P` namespace is gone (the three values `main.js` used to put on `P` — `parentOrigin`, `codeStorageKey`, `initialCode` — now live in `state`). `index.html` loads only `<script type="module" src="js/main.js">`; `kbd-accessory.js`, `sw-register.js`, `glossari-data.js`, `footer.js` and `family.js` stay classic scripts, and `ui.js` still exposes the inline `onclick` handlers on `window`. `pyworker.js` is unchanged. Verified in Chromium with a local Pyodide: all 29 exercises with reference solutions pass end to end from the course pages, and the editor page (run, error explanation, interactive `input()`, turtle, step-by-step, theme, glossary, touch key bar) behaves exactly as before.
+- **[Task 8]** (2026-10-18) Chapter 11 now has a 5-question quiz (`cap-11-quiz`, «Comprova què has après», before «I ara què?»), and `capitols.js` uses it as the chapter's `goalId`, so the sidebar shows ✓ when it is done.
 - **[Task 6]** Created `tools/generate-pages.js` — a zero-dependency Node.js generator that produces `curs/{capitol,repte}-N.html` from JSON descriptions in `tools/pages/*.json`. The CLI supports `--only`, `--dry-run`, `--input`, `--out`. The JSON format allows grouping multiple `h2`+body into a single `<section>` via `parts[]` to preserve the `.chapter-section { margin-bottom: 2rem }` layout. Two example inputs are included (`repte-1.json`, `repte-6.json`) — verified end-to-end: generated pages extract identically to originals via DOMParser, and Task 4's reference solutions still pass 6/6 tests against them. `tools/README.md` documents the format and workflow.
-
----
-
-## Task 7 — Migrate to ES Modules
-
-**Priority: LOW — Only do if the project grows significantly.**
-
-**What:** Convert the global namespace `P.*` pattern to ES modules (`import`/`export`).
-
-**How:**
-1. Change all `<script>` tags to `<script type="module">`.
-2. Convert each JS file to use `export` for its public API and `import` for dependencies.
-3. Remove the global `P` object.
-4. The Web Worker (`pyworker.js`) already runs in its own scope and doesn't need module conversion.
-5. Test that everything still works in all target browsers (Chrome 89+, Firefox 89+, Safari 15.2+).
-
-**Risk:** This is a large refactor. Only worthwhile if the JS codebase grows beyond ~15 modules.
-
----
-
-## Task 8 — Progress Tracking for Capítol 11
-
-**Priority: LOW**
-
-**What:** Capítol 11 (Posant-ho tot junt) currently has no `data-goal-id` (`goalId: null` in `capitols.js`) and therefore no progress tracking.
-
-> **Note:** Capítol 2 already has `data-goal-id="cap-2-ex"` in the HTML and `goalId: 'cap-2-ex'` in `capitols.js` — that part is resolved.
-
-**For Capítol 11:** This is a project chapter. It could have a `data-goal-id` tied to a specific exercise within it, or a \"mark as done\" button.
 
 ---
 

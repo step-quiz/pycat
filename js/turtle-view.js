@@ -13,8 +13,10 @@
 //
 // La velocitat (camp s, 0–10) és la de turtle.speed(): 0 = instantani.
 //
-// API: P.turtleShow(json), P.turtleClear()
+// API: turtleShow(json), turtleClear()
 // ════════════════════════════════════════════════════════
+
+import { t as tr } from './i18n.js';
 
 var _tv = null;   // { ops, idx, raf, tortugues, bg, escala, ... }
 
@@ -29,11 +31,11 @@ function _turtlePanel() {
   panel.className = 'turtle-panel';
   panel.innerHTML =
     '<div class="turtle-header">' +
-      '<span>🐢 ' + P.t('ui.turtle_title') + '</span>' +
+      '<span>🐢 ' + tr('ui.turtle_title') + '</span>' +
       '<span class="turtle-actions">' +
-        '<button type="button" class="btn" data-tv="skip" title="' + P.t('ui.turtle_skip_title') + '">⏩</button>' +
-        '<button type="button" class="btn" data-tv="save" title="' + P.t('ui.turtle_save_title') + '">💾</button>' +
-        '<button type="button" class="btn" data-tv="close" title="' + P.t('ui.turtle_close_title') + '">✕</button>' +
+        '<button type="button" class="btn" data-tv="skip" title="' + tr('ui.turtle_skip_title') + '">⏩</button>' +
+        '<button type="button" class="btn" data-tv="save" title="' + tr('ui.turtle_save_title') + '">💾</button>' +
+        '<button type="button" class="btn" data-tv="close" title="' + tr('ui.turtle_close_title') + '">✕</button>' +
       '</span>' +
     '</div>' +
     '<div class="turtle-stage">' +
@@ -273,5 +275,5 @@ function _save() {
 
 
 // ── Exporta ──────────────────────────────────────────────
-P.turtleShow  = turtleShow;
-P.turtleClear = turtleClear;
+export { turtleShow };
+export { turtleClear };

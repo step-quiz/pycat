@@ -2,11 +2,11 @@
 // i18n.js — Textos de la interfície PyCat (català)
 //
 // Conté:
-//   P.UI       — Diccionari de textos
-//   P.t(key)   — Retorna el text de la clau
+//   UI       — Diccionari de textos
+//   t(key)   — Retorna el text de la clau
 // ════════════════════════════════════════════════════════
 
-P.UI = {
+export const UI = {
   'ui.run':               '▶ Executa',
   'ui.stop':              '■ Atura',
   'ui.reset':             '↺ Neteja',
@@ -74,6 +74,6 @@ P.UI = {
 };
 
 // ── Funció de traducció ──────────────────────────────────
-P.t = function(key) {
-  return P.UI[key] !== undefined ? P.UI[key] : key;
-};
+export function t(key) {
+  return UI[key] !== undefined ? UI[key] : key;
+}

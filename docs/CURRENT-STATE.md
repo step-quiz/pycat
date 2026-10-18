@@ -42,7 +42,7 @@ Els títols coincideixen amb `CAPITOLS_DATA` i `REPTES_DATA` (`curs/capitols.js`
 | 8 | Llistes | `cap-8-ex`, `cap-8-bug` | `list` · `for` |
 | 9 | Funcions | `cap-9-ex` (amb `data-testcode`) | `def,return` |
 | 10 | Diccionaris | `cap-10-ex` | `dict,for` |
-| 11 | Posant-ho tot junt (projecte: quiz) | — | — |
+| 11 | Posant-ho tot junt (projecte: quiz) | — (qüestionari `cap-11-quiz`, que dona el ✓) | — |
 | 12 | 4 en ratlla (capítol extra) | — | — |
 | 13 | Dibuixa amb la tortuga (capítol extra) | — (Parsons `cap-13-parsons`) | — |
 
@@ -53,7 +53,8 @@ A més dels exercicis amb simulador, els capítols tenen **activitats** (§5.3):
 
 - «🐞 Troba l'error» (exercicis validats amb un programa que té errors): capítols 4, 6 i 8.
 - «🧩 Ordena el programa» (problemes de Parsons, `cap-N-parsons`): capítols 4, 6, 9 i 13.
-- «Comprova què has après» (qüestionari de 3 preguntes, `cap-N-quiz`): capítols 1–10 i 13.
+- «Comprova què has après» (qüestionari, `cap-N-quiz`): capítols 1–10 i 13, de 3 preguntes, i 11,
+  de 5 (és el que marca el capítol 11 com a fet, perquè el projecte no té exercici validat).
 
 ### 2.2 Reptes (15)
 
@@ -89,13 +90,13 @@ sw.js                 Kill-switch del Service Worker antic (vegeu §10)
 _headers              Capçaleres COOP/COEP per a Cloudflare Pages (SharedArrayBuffer)
 img/logo.svg          Logo (simulador i curs)
 
-js/constants.js       Namespace global P, claus de localStorage, CDN de Pyodide
-js/i18n.js            Textos de la interfície (P.t(clau)). Només català
-js/state.js           Estat centralitzat (P.state)
+js/constants.js       Claus de localStorage, codi per defecte, timeout, CDN de Pyodide
+js/i18n.js            Textos de la interfície (t(clau)). Només català
+js/state.js           Estat centralitzat (state)
 js/console.js         Consola de sortida, input interactiu, panell stdin
-js/errors.js          Explicació en català dels errors de Python (P.explainError)
+js/errors.js          Explicació en català dels errors de Python (explainError)
 js/editor.js          Editor: ressaltat, números de línia, autocompletat,
-                      indentació automàtica, Ctrl+Z (P.editText), desar codi
+                      indentació automàtica, Ctrl+Z (editText), desar codi
 js/pyrunner.js        Gestió del Worker: càrrega, execució, timeout, cua whenReady
 js/pyworker.js        Web Worker: executa Python amb Pyodide
 js/pycat_requires.py  Comprovació de data-requires (Pyodide i test automàtic)
@@ -124,9 +125,18 @@ tests/test-exercises.html  Versió de navegador del test (amb Pyodide)
 .github/workflows/unzip-upload.yml  Descomprimeix els ZIP de _uploads/ (i després llança tests.yml)
 ```
 
-**Ordre de càrrega a `index.html`** (depenen del namespace global `P`):
-`constants → i18n → state → console → errors → editor → pyrunner → ui →
-stepper → turtle-view → kbd-accessory → main → sw-register → glossari-data → footer`.
+**Mòduls ES.** Des del 18/10/2026, els fitxers de `js/` que fan l'aplicació són mòduls ES:
+cadascun exporta el que fan servir els altres (`export { pyRun }`) i importa el que necessita
+(`import { state } from './state.js'`). Ja no hi ha el namespace global `P`. `index.html` només
+carrega l'entrada, `<script type="module" src="js/main.js">`, que importa la resta (`constants`,
+`i18n`, `state`, `console`, `errors`, `editor`, `pyrunner`, `ui`, `stepper`, `turtle-view`).
+Després hi ha els scripts clàssics: `kbd-accessory` (fitxer comú; escriu amb la seva pròpia
+funció, no necessita l'editor), `sw-register`, `glossari-data`, `footer` i `family`. `ui.js` posa
+a `window` les funcions dels `onclick` de l'HTML (`handleRunClick`, `resetConsole`,
+`toggleTheme`…). El worker (`pyworker.js`) no és un mòdul: té el seu propi àmbit.
+
+Els mòduls ES necessiten un servidor HTTP (ja calia per Pyodide) i navegadors de 2021 o
+posteriors (Chrome 89, Firefox 89, Safari 15).
 
 El worker carrega també `pycat_requires.py`, `pycat_trace.py` i
 `pycat_turtle.py` (aquest com a `/pycat/turtle.py`).
@@ -161,13 +171,13 @@ Decisions importants de `pyworker.js`:
   El traceback intern no s'envia a la consola.
 - **Input interactiu**: `SharedArrayBuffer` + `Atomics.wait()` (cal COOP/COEP).
   Sense això, hi ha un panell de text per escriure les entrades abans d'executar.
-- **Timeout** de 10 s (`P.EXEC_TIMEOUT`): es mata el worker i se'n crea un de nou.
+- **Timeout** de 10 s (`EXEC_TIMEOUT`): es mata el worker i se'n crea un de nou.
 
 ### 4.2 Càrrega sota demanda
 
 El simulador lliure precarrega Python. Els simuladors incrustats al curs
-(`?embed=1`) el carreguen en el **primer clic** a ▶ Executa (`P.pyRun` ho fa sol
-i posa l'execució a la cua `P.whenReady`). Una pàgina amb 20 simuladors no
+(`?embed=1`) el carreguen en el **primer clic** a ▶ Executa (`pyRun` ho fa sol
+i posa l'execució a la cua `whenReady`). Una pàgina amb 20 simuladors no
 carrega 20 intèrprets.
 
 ### 4.3 Validació (`ui.js`)
@@ -175,7 +185,7 @@ carrega 20 intèrprets.
 1. Codi final = codi de l'alumne + `testCode` (si n'hi ha).
 2. S'executa un cop per cada cas de prova amb el seu stdin i es compara la
    sortida amb `expected` (`.trim()` de tota la sortida, `\r\n` → `\n`).
-3. Si tots passen i hi ha `requires`, es comprova el codi amb `P.pyCheck`.
+3. Si tots passen i hi ha `requires`, es comprova el codi amb `pyCheck`.
 4. Es notifica la pàgina del curs amb `postMessage` (§6).
 
 Amb `?interactive=1` i `SharedArrayBuffer`, el primer clic executa en mode
@@ -201,7 +211,7 @@ l'esborra de `sys.modules` abans de cada execució.
 
 ### 4.6 Errors en català (`errors.js`)
 
-`P.explainError(msg)` recorre `ERROR_RULES` (patró → explicació + pista). La
+`explainError(msg)` recorre `ERROR_RULES` (patró → explicació + pista). La
 consola mostra: «❌ Error a la línia N: explicació», «💡 pista» i, a sota, el
 missatge original. Si l'error és dins del `testCode`, no es marca cap línia.
 
@@ -390,6 +400,4 @@ Fases 1–5 del pla de millores fetes.
 - Continguts: capítol de `import` (`random`, `math`), tuples, `round()`,
   depuració amb `print()`; capítol 0 de pont des de KarelCat.
 - Guia del professorat i «📋 Copia el meu progrés».
-- Progrés del capítol 11 (no té exercici validat).
 - Unificar l'estil JS (`var`/`const`, funcions/fletxes) quan es toqui cada fitxer.
-- (Baixa prioritat) Passar a mòduls ES si el codi creix molt.

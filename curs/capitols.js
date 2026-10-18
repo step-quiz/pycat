@@ -38,7 +38,7 @@ var CAPITOLS_DATA = [
   { num: 8,  titol: 'Llistes',                     arxiu: 'capitol-8.html',  goalId: 'cap-8-ex' },
   { num: 9,  titol: 'Funcions',                    arxiu: 'capitol-9.html',  goalId: 'cap-9-ex' },
   { num: 10, titol: 'Diccionaris',                 arxiu: 'capitol-10.html', goalId: 'cap-10-ex' },
-  { num: 11, titol: 'Posant-ho tot junt',          arxiu: 'capitol-11.html', goalId: null },
+  { num: 11, titol: 'Posant-ho tot junt',          arxiu: 'capitol-11.html', goalId: 'cap-11-quiz' },
   { num: 12, titol: '4 en ratlla',                  arxiu: 'capitol-12.html', goalId: null },
   { num: 13, titol: 'Dibuixa amb la tortuga',      arxiu: 'capitol-13.html', goalId: 'cap-13-parsons' },
   // ...afegir capítols aquí
