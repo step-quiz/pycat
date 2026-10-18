@@ -42,4 +42,5 @@ Proves (des de l'arrel del repositori):
 ```
 python3 tests/comprova-curs.py
 python3 tests/docs_vs_codi.py
+node tools/generate-pages.js --comprova
 ```

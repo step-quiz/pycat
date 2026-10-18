@@ -40,3 +40,8 @@ jobs:
 
       - name: Documentació ↔ codi
         run: python3 tests/docs_vs_codi.py
+
+      # Les pàgines descrites a tools/pages/*.json han de ser les que hi ha a curs/
+      # (si algú en toca una a mà, o el JSON es queda enrere, falla aquí).
+      - name: Generador de pàgines ↔ curs/
+        run: node tools/generate-pages.js --comprova

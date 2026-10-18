@@ -3,8 +3,6 @@
   "num": 1,
   "titol": "El primer programa",
   "difficulty": "facil",
-  "prev": { "url": "capitol-1.html", "label": "← Capítol 1" },
-  "next": { "url": "repte-2.html",   "label": "Repte següent →" },
   "hint": "<p>Necessites tres instruccions <code>print()</code>, una per cada línia. Recorda posar el text entre cometes dobles: <code>print(\"text\")</code>. Per l'apòstrof de «M'encanta», pots usar cometes dobles per embolcallar el text.</p>",
   "sections": [
     {
