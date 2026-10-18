@@ -114,6 +114,7 @@ curs/capitol-N.html   Capítols (només el contingut; vegeu §5)
 curs/repte-N.html     Reptes (només el contingut)
 curs/capitols.js      Dades del curs + esquelet de pàgina + simuladors
 curs/progress.js      Progrés (getProgress, saveGoalCompleted…): fitxer comú (step-quiz-commons)
+curs/certificat.js    Certificat a l'índex quan els capítols 1–11 tenen la ✓, i enllaç a JSCat: fitxer comú
 curs/activitats.js    Problemes de Parsons i qüestionaris (es carrega si cal)
 curs/glossari-data.js Contingut del glossari (GLOSSARI_HTML)
 curs/curs.css         Estils del curs
