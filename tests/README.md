@@ -52,6 +52,10 @@ Fa la mateixa comprovació amb el Python de l'ordinador (imitant el simulador: `
 
 S'executa sol a GitHub a cada canvi a `main` i a cada pull request (`.github/workflows/tests.yml`), i després de cada ZIP pujat a `_uploads/`.
 
+## Enllaços entre webs
+
+`.github/comprova-enllacos.py` comprova que els enllaços cap als altres webs de Step Quiz (`*.step-quiz.net`) funcionen. GitHub l'executa a cada canvi a `main`, cada dilluns al matí i a mà (`.github/workflows/enllacos.yml`, «Enllaços» a la pestanya Actions).
+
 ## Documentació ↔ codi
 
 `python3 tests/docs_vs_codi.py` comprova que la documentació diu el mateix que el codi: les rutes que citen els documents principals existeixen i el README diu tants capítols i reptes com `curs/capitols.js`, amb els mateixos títols. També s'executa a GitHub. Si falla perquè has canviat el curs, posa al dia el document que diu el missatge.
