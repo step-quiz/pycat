@@ -105,7 +105,7 @@ def acaba(nom):
     print(f'✓ {nom}: la documentació quadra amb el codi.')
 
 DOCUMENTS = ['README.md', 'docs/CURRENT-STATE.md', 'tests/README.md']
-EXCEPCIONS = ['/pycat/turtle.py', 'curs/capitol-N.html', 'curs/repte-N.html']
+EXCEPCIONS = ['/pycat/turtle.py', 'comuns.json', 'curs/capitol-N.html', 'curs/repte-N.html']
 
 comprova_rutes(DOCUMENTS, EXCEPCIONS)
 

@@ -104,14 +104,15 @@ js/pycat_turtle.py    Mòdul turtle propi (enregistra les ordres de dibuix)
 js/stepper.js         Interfície del «👣 Pas a pas»
 js/turtle-view.js     Dibuix animat de la tortuga en un <canvas>
 js/ui.js              Botons, validació per casos de prova, tema, glossari, fitxers
-js/kbd-accessory.js   Barra de tecles per a pantalles tàctils
+js/kbd-accessory.js   Barra de tecles per a pantalles tàctils (fitxer comú: step-quiz-commons)
 js/main.js            Inicialització: llegeix els paràmetres d'URL
 js/sw-register.js     Kill-switch del Service Worker (vegeu §10)
 
 curs/index.html       Índex del curs
 curs/capitol-N.html   Capítols (només el contingut; vegeu §5)
 curs/repte-N.html     Reptes (només el contingut)
-curs/capitols.js      Dades del curs + esquelet de pàgina + simuladors + progrés
+curs/capitols.js      Dades del curs + esquelet de pàgina + simuladors
+curs/progress.js      Progrés (getProgress, saveGoalCompleted…): fitxer comú (step-quiz-commons)
 curs/activitats.js    Problemes de Parsons i qüestionaris (es carrega si cal)
 curs/glossari-data.js Contingut del glossari (GLOSSARI_HTML)
 curs/curs.css         Estils del curs
@@ -232,6 +233,7 @@ Cada pàgina només conté el seu contingut:
 </main>
 
 <script src="glossari-data.js"></script>
+<script src="progress.js"></script>
 <script src="capitols.js"></script>
 <script src="../footer.js"></script>
 </body>
@@ -364,7 +366,7 @@ La GitHub Action `tests.yml` l'executa a cada push a main i a cada PR, juntament
   (input interactiu). Sense ells, hi ha el panell d'entrades com a alternativa.
 - **Iframes amb `sandbox="allow-scripts allow-same-origin allow-modals"`**:
   `allow-modals` cal per al `confirm()` de «⟲ Codi inicial».
-- **Una sola clau de progrés** (`pycat_progress`), definida a `curs/capitols.js`.
+- **Una sola clau de progrés** (`pycat_progress`), definida a `comuns.json` de step-quiz-commons i escrita a `curs/progress.js`. No es pot canviar: l'alumnat perdria el progrés desat (el test de step-quiz-commons ho vigila).
 
 ---
 
