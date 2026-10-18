@@ -50,9 +50,9 @@ tests/            Test automàtic del curs i solucions de referència
 tools/            Generador de pàgines a partir de JSON (vegeu tools/README.md)
 docs/             CURRENT-STATE.md: estat complet del projecte. ARCHITECTURE.md: disseny inicial
                   (desactualitzat)
-PYCAT-*-PLAN.md   Plans amb què es van escriure els capítols i els reptes
+docs/historic/    Documents històrics: els plans amb què es van escriure els capítols i els
+                  reptes (PYCAT-*-PLAN.md) i les notes d'un lliurament antic (CHANGES-PART-A.md)
 TODO.md           Feina feta i pendent
-CHANGES-PART-A.md Notes d'un lliurament antic (ja aplicat)
 ```
 
 ## Servir en local
