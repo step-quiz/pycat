@@ -155,6 +155,7 @@ function renderSimuladors() {
 
     var iframe = document.createElement('iframe');
     iframe.src = '../index.html?' + params.toString();
+    iframe.title = 'Editor de codi de l\'exercici';
     iframe.style.width = '100%';
     iframe.style.height = height + 'px';
     iframe.style.border = '1px solid #d0d0d0';
